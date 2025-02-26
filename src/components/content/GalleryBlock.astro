@@ -1,0 +1,59 @@
+---
+import ContentBlockWrapper from "./ContentBlockWrapper.astro";
+import { urlForImage } from "../../lib/sanity";
+
+interface ImageType {
+    _type: string;
+    asset: {
+        _ref: string;
+    };
+    alt: string;
+    caption?: string;
+}
+
+interface Props {
+    title?: string;
+    images: ImageType[];
+    layout?: "grid" | "masonry" | "carousel" | "comparison";
+    showLabel?: boolean;
+}
+
+const { title, images, layout = "grid", showLabel = true } = Astro.props;
+---
+
+<ContentBlockWrapper type="Gallery Block" showLabel={showLabel}>
+    {title && <h3 class="text-xl font-semibold mb-6">{title}</h3>}
+
+    <div
+        class={`
+    ${layout === "grid" ? "grid grid-cols-1 md:grid-cols-2 gap-6" : ""}
+    ${layout === "masonry" ? "grid grid-cols-1 md:grid-cols-3 gap-3" : ""}
+    ${layout === "carousel" ? "flex overflow-x-auto gap-4 pb-4 snap-x" : ""}
+    ${layout === "comparison" ? "grid grid-cols-2 gap-2" : ""}
+  `}
+    >
+        {
+            images
+                ? images.map((image) => (
+                      <div
+                          class={`
+        relative rounded-lg overflow-hidden
+        ${layout === "carousel" ? "min-w-[300px] flex-shrink-0 snap-center" : ""}
+      `}
+                      >
+                          <img
+                              src={urlForImage(image).url()}
+                              alt={image.alt}
+                              class="w-full h-auto"
+                          />
+                          {image.caption && (
+                              <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 text-sm">
+                                  {image.caption}
+                              </div>
+                          )}
+                      </div>
+                  ))
+                : null
+        }
+    </div>
+</ContentBlockWrapper>

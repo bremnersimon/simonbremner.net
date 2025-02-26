@@ -1,0 +1,19 @@
+---
+import ContentBlockWrapper from "./ContentBlockWrapper.astro";
+
+interface Props {
+    style?: "line" | "dots" | "stars" | "space";
+    showLabel?: boolean;
+}
+
+const { style = "line", showLabel = true } = Astro.props;
+---
+
+<ContentBlockWrapper type="Divider Block" showLabel={showLabel}>
+    <div class="my-16 text-center text-2xl text-gray-300">
+        {style === "line" && <hr class="border-t-2" />}
+        {style === "dots" && "• • •"}
+        {style === "stars" && "★ ★ ★"}
+        {style === "space" && <div class="h-16" />}
+    </div>
+</ContentBlockWrapper>

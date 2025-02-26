@@ -1,0 +1,54 @@
+---
+import ContentBlockWrapper from "../content/ContentBlockWrapper.astro";
+
+interface Spec {
+    label: string;
+    value: string;
+}
+
+interface Props {
+    title?: string;
+    specs: Spec[];
+    layout?: "table" | "list";
+    showLabel?: boolean;
+}
+
+const {
+    title = "Technical Specifications",
+    specs,
+    layout = "table",
+    showLabel = true,
+} = Astro.props;
+---
+
+<ContentBlockWrapper type="Technical Specs Block" showLabel={showLabel}>
+    <h3 class="text-xl font-semibold mb-6">{title}</h3>
+
+    {
+        layout === "table" ? (
+            <table class="w-full">
+                <tbody>
+                    {specs.map((spec) => (
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 pr-4 align-top w-1/3">
+                                {spec.label}
+                            </th>
+                            <td class="py-3">{spec.value}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        ) : (
+            <ul class="space-y-2">
+                {specs.map((spec) => (
+                    <li class="flex flex-wrap">
+                        <span class="font-medium w-full md:w-1/3">
+                            {spec.label}:
+                        </span>
+                        <span class="w-full md:w-2/3">{spec.value}</span>
+                    </li>
+                ))}
+            </ul>
+        )
+    }
+</ContentBlockWrapper>

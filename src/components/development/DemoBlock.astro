@@ -1,0 +1,106 @@
+---
+import ContentBlockWrapper from "../content/ContentBlockWrapper.astro";
+
+interface EmbeddedVideo {
+  _type: string;
+  url: string;
+}
+
+interface DemoContent {
+  _type: string;
+  asset?: {
+    _ref: string;
+  };
+  alt?: string;
+  url?: string; // For embedded video
+}
+
+interface Props {
+  heading: string;
+  demoType?: string;
+  demoContent?: DemoContent[];
+  showLabel?: boolean;
+}
+
+const {
+  heading,
+  demoType = "Screenshot Tour",
+  demoContent = [],
+  showLabel = true,
+} = Astro.props;
+---
+
+<ContentBlockWrapper type="Project Demo" showLabel={showLabel}>
+  <div class="demo-block">
+    {heading && <h3 class="text-xl font-semibold mb-4">{heading}</h3>}
+
+    {
+      demoType && (
+        <div class="demo-type text-sm text-black/60 dark:text-white/60 mb-4">
+          {demoType}
+        </div>
+      )
+    }
+
+    <div class="demo-content">
+      {
+        demoType === "Video" &&
+          demoContent.map(
+            (item) =>
+              item._type === "embeddedVideo" && (
+                <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
+                  <iframe
+                    src={item.url?.replace("watch?v=", "embed/")}
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    class="w-full h-full"
+                  />
+                </div>
+              ),
+          )
+      }
+
+      {
+        demoType === "Screenshot Tour" && (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {demoContent.map(
+              (item) =>
+                item._type === "image" && (
+                  <div class="screenshot-item rounded-lg overflow-hidden">
+                    <img
+                      src={`<!-- URL to your Sanity image here -->/${item.asset?._ref}`}
+                      alt={item.alt || "Screenshot"}
+                      class="w-full h-auto"
+                    />
+                  </div>
+                ),
+            )}
+          </div>
+        )
+      }
+
+      {
+        demoType === "Interactive" && (
+          <div class="interactive-demo bg-black/5 dark:bg-white/10 p-6 rounded-lg">
+            <p class="mb-4">This project has an interactive demo available:</p>
+
+            {demoContent.map(
+              (item) =>
+                item._type === "file" && (
+                  <a
+                    href={`<!-- URL to your Sanity file here -->/${item.asset?._ref}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-block bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+                  >
+                    Launch Interactive Demo
+                  </a>
+                ),
+            )}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</ContentBlockWrapper>

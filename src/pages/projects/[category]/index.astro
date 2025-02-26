@@ -1,0 +1,69 @@
+---
+// src/pages/projects/[category].astro
+import Layout from "@/layouts/Layout.astro";
+import ProjectsGrid from "@/components/main/ProjectsGrid";
+import { projects } from "@/data/projects";
+
+// Define all possible paths for pre-rendering at build time
+export function getStaticPaths() {
+    // Get all unique categories from projects data
+    const categories = [
+        ...new Set(projects.map((project) => project.category.toLowerCase())),
+    ];
+
+    // Return an array of objects, each with a "params" property
+    return categories.map((category) => ({
+        params: { category },
+    }));
+}
+
+// Get category from URL parameter
+const { category } = Astro.params;
+
+// Get current path
+const currentPath = Astro.url.pathname;
+
+// Capitalize first letter for display purposes
+const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
+
+// Category descriptions - you can expand this object with more categories
+const categoryDescriptions = {
+    photography: "Creative visual storytelling through our lens",
+    design: "Innovative visual solutions for modern brands",
+    development: "Custom software and web solutions",
+    handcrafted: "Unique handmade creations with attention to detail",
+    // Add more categories as needed
+};
+
+// Default description if category isn't in our predefined list
+const defaultDescription = "Explore our portfolio of creative work";
+
+// Get appropriate subtitle for the category
+const categorySubtitle =
+    categoryDescriptions[category.toLowerCase()] || defaultDescription;
+
+// Filter projects for this category
+const categoryProjects = projects.filter(
+    (project) => project.category.toLowerCase() === category.toLowerCase(),
+);
+
+// Page metadata
+const pageTitle = `${categoryTitle} Projects`;
+const pageDescription = `Explore our ${category.toLowerCase()} portfolio - ${categorySubtitle}`;
+
+// 404 handling - if no projects found for this category (optional)
+if (categoryProjects.length === 0) {
+    return Astro.redirect("/404");
+}
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+    <ProjectsGrid
+        allProjects={categoryProjects}
+        title={`${categoryTitle} Portfolio`}
+        subtitle={categorySubtitle}
+        currentPath={currentPath}
+        hideTabsOnSubPages={true}
+        client:load
+    />
+</Layout>

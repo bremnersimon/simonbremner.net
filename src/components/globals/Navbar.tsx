@@ -145,7 +145,7 @@ export const Navbar = () => {
                 {/* Mobile Menu (Sheet from shadcn/ui) */}
                 <Sheet>
                     <SheetTrigger asChild className="md:hidden">
-                        <Button variant="ghost" size="icon" aria-label="Menu" className="bg-transparent">
+                        <Button variant="ghost" size="icon" aria-type="Menu" className="bg-transparent">
                             <Menu className="h-6 w-6" />
                         </Button>
                     </SheetTrigger>

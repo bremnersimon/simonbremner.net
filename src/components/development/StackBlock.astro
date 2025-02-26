@@ -1,0 +1,53 @@
+---
+import ContentBlockWrapper from "../content/ContentBlockWrapper.astro";
+
+interface Technology {
+  _id: string;
+  name: string;
+  category?: string;
+  logo?: {
+    asset: {
+      _ref: string;
+    };
+  };
+  url?: string;
+}
+
+interface Props {
+  heading: string;
+  technologies: Technology[];
+  showLabel?: boolean;
+}
+
+const { heading, technologies = [], showLabel = true } = Astro.props;
+---
+
+<ContentBlockWrapper type="Technology Stack" showLabel={showLabel}>
+  <div class="stack-block">
+    {heading && <h3 class="text-xl font-semibold mb-4">{heading}</h3>}
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {
+        technologies.map((tech) => (
+          <div class="tech-item bg-black/5 dark:bg-white/10 p-4 rounded-lg flex flex-col items-center text-center">
+            {tech.logo && (
+              <div class="w-12 h-12 mb-2 flex items-center justify-center">
+                <img
+                  src={`<!-- URL to your Sanity image here -->/${tech.logo.asset._ref}`}
+                  alt={tech.name}
+                  class="max-w-full max-h-full"
+                />
+              </div>
+            )}
+            <div class="tech-name font-medium">{tech.name}</div>
+            {tech.category && (
+              <div class="text-sm text-black/60 dark:text-white/60">
+                {tech.category}
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</ContentBlockWrapper>

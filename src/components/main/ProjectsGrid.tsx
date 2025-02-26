@@ -55,7 +55,9 @@ export default function ProjectsGrid({
     // Filter projects based on active tab
     const getFilteredProjects = useCallback((category: string): Project[] => {
         if (category === "All") return allProjects;
-        return allProjects.filter(project => project.category === category);
+        return allProjects.filter(project =>
+            project.category?.toLowerCase() === category.toLowerCase()
+        );
     }, [allProjects]);
 
     // Update visible projects when tab changes or page changes
@@ -68,10 +70,17 @@ export default function ProjectsGrid({
         setHasMore(filtered.length > endIndex);
     }, [activeTab, page, projectsPerPage, getFilteredProjects]);
 
-    // Handle tab change - could be used to update URL in a client-side router
+    // Handle tab change - could update URL in a client-side router
     const handleTabChange = (value: string) => {
         setActiveTab(value);
         setPage(1); // Reset to first page when changing tabs
+
+        // Optional: Navigate to the category page if we're on the main projects page
+        if (currentPath === '/projects/' || currentPath === '/projects') {
+            if (value !== 'All') {
+                window.location.href = `/projects/${value.toLowerCase()}`;
+            }
+        }
     };
 
     // Load more projects
@@ -86,17 +95,6 @@ export default function ProjectsGrid({
 
     // Determine whether to show tabs based on props and current path
     const showTabs = !(hideTabsOnSubPages && isSubPage);
-
-    // Grid animation variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
 
     return (
         <section className="w-full py-24">
@@ -146,7 +144,7 @@ export default function ProjectsGrid({
                                             <ProjectCard
                                                 title={project.title}
                                                 imageUrl={project.image.src}
-                                                href={`/projects/${project.slug}`}
+                                                href={project.slug} // Pass just the slug, not the full path
                                                 category={project.category}
                                                 tags={project.tags || []}
                                                 aspectRatio="square"
@@ -216,7 +214,7 @@ export default function ProjectsGrid({
                                         <ProjectCard
                                             title={project.title}
                                             imageUrl={project.image.src}
-                                            href={`/projects/${project.slug}`}
+                                            href={project.slug} // Pass just the slug, not the full path
                                             category={project.category}
                                             tags={project.tags || []}
                                             aspectRatio="square"

@@ -1,0 +1,45 @@
+---
+import ContentBlockWrapper from "./ContentBlockWrapper.astro";
+import { urlForImage } from "../../lib/sanity";
+
+interface Props {
+    image: {
+        _type: string;
+        asset: {
+            _ref: string;
+        };
+        alt: string;
+        caption?: string;
+    };
+    size?: "standard" | "large" | "fullWidth";
+    showLabel?: boolean;
+}
+
+// In a real implementation, you would use Sanity image URL builder here
+const { image, size = "standard", showLabel = true } = Astro.props;
+
+const imageSrc = image ? urlForImage(image).url() : "";
+---
+
+<ContentBlockWrapper type="Image Block" showLabel={showLabel}>
+    <div class="overflow-hidden rounded-lg">
+        <img
+            src={imageSrc}
+            alt={image.alt}
+            class={`w-full h-auto ${
+                size === "fullWidth"
+                    ? "max-w-none"
+                    : size === "large"
+                      ? "max-w-3xl mx-auto"
+                      : "max-w-2xl mx-auto"
+            }`}
+        />
+    </div>
+    {
+        image.caption && (
+            <div class="text-center mt-3 text-muted-foreground italic">
+                {image.caption}
+            </div>
+        )
+    }
+</ContentBlockWrapper>

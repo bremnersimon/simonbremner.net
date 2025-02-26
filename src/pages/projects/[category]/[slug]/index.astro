@@ -1,0 +1,235 @@
+---
+// src/pages/projects/[category]/[slug].astro
+import Layout from "@/layouts/Layout.astro";
+import { Container } from "@/components/main/Container";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { projects } from "@/data/projects";
+import { client, urlForImage, getPhotographyPostBySlug } from "@/lib/sanity";
+
+// Import the enhanced content resolver
+import EnhancedContentResolver from "@/components/content/ContentBlockResolver.astro";
+
+// Define all possible paths for pre-rendering at build time
+export async function getStaticPaths() {
+  // Generate paths for all projects
+  const projectPaths = projects.map(project => ({
+    params: {
+      category: project.category.toLowerCase(),
+      slug: project.slug
+    },
+    props: { project }
+  }));
+  
+  // Get all photography posts from Sanity
+  const photographyPosts = await client.fetch(`
+    *[_type == "photography"]{
+      "slug": slug.current,
+      _id
+    }
+  `);
+  
+  // Create paths for photography posts
+  const photographyPaths = photographyPosts.map(post => ({
+    params: {
+      category: "photography",
+      slug: post.slug
+    },
+    props: { 
+      project: null, // Set to null to indicate this is not a regular project
+      photographyId: post._id
+    }
+  }));
+  
+  // Combine all paths
+  return [...projectPaths, ...photographyPaths];
+}
+
+// Get parameters and props
+const { category, slug } = Astro.params;
+const { project, photographyId } = Astro.props;
+
+// Fetch the photography post if needed
+const isPhotography = category === "photography" && photographyId;
+const photographyPost = isPhotography 
+  ? await getPhotographyPostBySlug(slug) 
+  : null;
+
+// Content specific variables
+let pageTitle, pageDescription, publishedDate, contentType, contentData, metadataData;
+
+if (isPhotography && photographyPost) {
+  // Format the date for display (photography post)
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+  
+  contentType = "photography";
+  contentData = photographyPost.content;
+  metadataData = {
+    location: photographyPost.location,
+    tags: photographyPost.tags,
+    shootMetadata: photographyPost.shootMetadata,
+    relatedContent: photographyPost.relatedContent
+  };
+  
+  pageTitle = photographyPost.title;
+  pageDescription = photographyPost.excerpt;
+  publishedDate = photographyPost.publishedAt ? formatDate(photographyPost.publishedAt) : '';
+} else {
+  // Handle regular project display
+  contentType = project?.category?.toLowerCase() || category;
+  contentData = project?.content || [];
+  metadataData = {
+    tags: project?.tags || []
+  };
+  
+  pageTitle = project?.title || 'Project Details';
+  pageDescription = project?.description || '';
+}
+
+// 404 handling if content not found
+if (!isPhotography && !project) {
+  return Astro.redirect("/404");
+}
+console.log('mainImage:', photographyPost.mainImage);
+// console.log('AuthorImage:', project.author);
+
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  {isPhotography && photographyPost ? (
+    <!-- Photography Content Display -->
+    <article class="photography-article">
+      <!-- Hero Section -->
+      <div class="relative h-[70vh] mb-16">
+        <div class="absolute inset-0 bg-black">
+            <img 
+  src={urlForImage(photographyPost.mainImage).url()} 
+  alt={photographyPost.mainImage.alt} 
+  class="w-full h-full object-cover opacity-90"
+/>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+        <Container>
+          <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
+            <div class="flex items-center mb-4">
+              <Badge variant="outline" class="bg-white/10 text-white hover:bg-white/20">
+                Photography
+              </Badge>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">{photographyPost.title}</h1>
+            <p class="text-xl opacity-90 max-w-3xl">{photographyPost.mainImage.caption}</p>
+          </div>
+        </Container>
+      </div>
+
+      <Container>
+        <div class="max-w-4xl mx-auto">
+          <!-- Article Header -->
+          <div class="mb-16">
+            <div class="flex items-center mb-6">
+              <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                
+                {/* <img src={urlForImage(photographyPost.author.image).url()} alt="Author" class="w-full h-full object-cover" /> */}
+              </div>
+              <div>
+                <div class="text-sm text-muted-foreground">
+                  By <span class="font-medium">{photographyPost.author.name}</span>
+                </div>
+                <div class="text-sm text-muted-foreground">{publishedDate}</div>
+              </div>
+            </div>
+            
+            <div class="text-xl font-medium italic mb-8 text-muted-foreground border-l-4 pl-4 border-primary">
+              {photographyPost.excerpt}
+            </div>
+          </div>
+
+          <!-- Enhanced Content Resolver handles all blocks and type-specific metadata -->
+          <EnhancedContentResolver 
+            content={contentData}
+            contentType={contentType}
+            metadata={metadataData}
+            showLabels={true}
+          />
+          
+          <!-- Back Button -->
+          <div class="mt-12 mb-24">
+            <a href="/projects/photography">
+              <Button variant="outline" class="gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                  <path d="m12 19-7-7 7-7"></path>
+                  <path d="M19 12H5"></path>
+                </svg>
+                Back to Photography
+              </Button>
+            </a>
+          </div>
+        </div>
+      </Container>
+    </article>
+  ) : (
+    <!-- Regular Project Display -->
+    <Container>
+      <div class="max-w-4xl mx-auto py-20">
+        <div class="mb-8">
+          <Badge variant="outline" class="mb-4">{category}</Badge>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">{project.title}</h1>
+          {project.description && <p class="text-xl text-muted-foreground">{project.description}</p>}
+        </div>
+        
+        <div class="aspect-video rounded-lg overflow-hidden mb-12">
+          <img 
+            src={project.image?.src || "/images/example.png"} 
+            alt={project.title}
+            class="w-full h-full object-cover" 
+          />
+        </div>
+        
+        <!-- Project content using the enhanced content resolver -->
+        {project.content && project.content.length > 0 ? (
+          <EnhancedContentResolver 
+            content={contentData}
+            contentType={contentType}
+            metadata={metadataData}
+            showLabels={true}
+          />
+        ) : (
+          <div class="prose max-w-none mb-16">
+            <p>This is a placeholder for the project content. In a real implementation, you would fetch and display the project details from your data source.</p>
+          </div>
+        )}
+        
+        <!-- If there's no content but there are tags, show them -->
+        {(!project.content || project.content.length === 0) && project.tags && (
+          <div class="mt-8">
+            <h3 class="text-lg font-medium mb-3">Tags</h3>
+            <div class="flex flex-wrap gap-2">
+              {project.tags.map(tag => (
+                <Badge variant="outline">{tag}</Badge>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        <!-- Back Button -->
+        <div class="mt-12">
+          <a href={`/projects/${category.toLowerCase()}`}>
+            <Button variant="outline" class="gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                <path d="m12 19-7-7 7-7"></path>
+                <path d="M19 12H5"></path>
+              </svg>
+              Back to {category.charAt(0).toUpperCase() + category.slice(1)} Projects
+            </Button>
+          </a>
+        </div>
+      </div>
+    </Container>
+  )}
+</Layout>

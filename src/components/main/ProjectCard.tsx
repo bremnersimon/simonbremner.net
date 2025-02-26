@@ -24,15 +24,14 @@ export default function ProjectCard({
 }: ProjectCardProps) {
     const [isHovered, setIsHovered] = useState(false);
 
-    // Extract just the slug from the href
-    const getSlug = (path) => {
-        return path.split('/').filter(Boolean).pop();
-    };
+    // Build the project URL with the correct structure
+    // If the href already contains the full path, extract just the slug
+    const slug = href.includes('/') ? href.split('/').filter(Boolean).pop() : href;
 
-    // Construct the proper URL based on category and extracted slug
+    // Construct the project URL based on category and slug
     const projectUrl = category
-        ? `/projects/${category.toLowerCase()}/${getSlug(href)}`
-        : `/projects/${getSlug(href)}`;
+        ? `/projects/${category.toLowerCase()}/${slug}`
+        : `/projects/${slug}`;
 
     return (
         <div
@@ -44,7 +43,7 @@ export default function ProjectCard({
             <a
                 href={projectUrl}
                 className="block outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
-                aria-label={`View ${title} project`}
+                aria-type={`View ${title} project`}
             >
                 <div
                     className={`relative w-full overflow-hidden rounded-lg ${aspectRatio === "square" ? "aspect-square" : "aspect-video"

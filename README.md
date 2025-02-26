@@ -46,3 +46,21 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+// Component Structure:
+
+// 1. GENERIC CONTENT BLOCKS (for all content types):
+// - TextBlock.astro: For general text content with headings and paragraphs
+// - ImageBlock.astro: For displaying single images with captions
+// - GalleryBlock.astro: For displaying multiple images in a grid or carousel
+// - QuoteBlock.astro: For displaying quotes with attribution
+// - DividerBlock.astro: For visual separation between content sections
+
+// 2. PHOTOGRAPHY-SPECIFIC BLOCKS:
+// - FeaturedImageBlock.astro: Image with technical metadata (camera, settings, etc.)
+// - TechSpecsBlock.astro: For displaying equipment details in a table format
+// - BehindTheScenesBlock.astro: For showing the process with description and images
+// - MetadataFooter.astro: For displaying location, tags, and technical notes
+
+// 3. HELPER COMPONENTS:
+// - ContentBlockWrapper.astro: Wrapper with consistent styling for all blocks

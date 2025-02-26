@@ -1,0 +1,19 @@
+---
+interface Props {
+    type: string;
+    showLabel?: boolean;
+}
+
+const { type, showLabel = true } = Astro.props;
+---
+
+<div class="border border-dashed border-gray-200 p-6 rounded-lg mb-16">
+    {
+        showLabel && (
+            <div class="bg-black text-xs uppercase tracking-wider px-2 py-1 rounded inline-block mb-4">
+                {type}
+            </div>
+        )
+    }
+    <slot />
+</div>

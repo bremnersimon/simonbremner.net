@@ -1,0 +1,88 @@
+---
+import ContentBlockWrapper from "../content/ContentBlockWrapper.astro";
+
+interface ImageMetadata {
+    camera: { _ref: string; _type: string };
+    lens: { _ref: string; _type: string };
+    aperture: string;
+    shutterSpeed: string;
+    iso: number;
+}
+
+interface Props {
+    image: {
+        _type: string;
+        asset: {
+            _ref: string;
+        };
+        alt: string;
+        caption?: string;
+    };
+    size?: "standard" | "large" | "fullWidth";
+    imageMetadata?: ImageMetadata;
+    showMetadata?: boolean;
+    showLabel?: boolean;
+}
+
+const {
+    image,
+    size = "standard",
+    imageMetadata,
+    showMetadata = true,
+    showLabel = true,
+} = Astro.props;
+
+// In a real implementation, you would use Sanity image URL builder here
+const imageSrc = "/images/example.png"; // Placeholder
+
+// In a real implementation, you would resolve references
+const cameraName = imageMetadata?.camera?._ref.replace("camera-", "") || "";
+const lensName = imageMetadata?.lens?._ref.replace("lens-", "") || "";
+---
+
+<ContentBlockWrapper type="Featured Image Block" showLabel={showLabel}>
+    <div class="overflow-hidden rounded-lg">
+        <img
+            src={imageSrc}
+            alt={image.alt}
+            class={`w-full h-auto ${
+                size === "fullWidth"
+                    ? "max-w-none"
+                    : size === "large"
+                      ? "max-w-3xl mx-auto"
+                      : "max-w-2xl mx-auto"
+            }`}
+        />
+    </div>
+
+    {
+        image.caption && (
+            <div class="text-center mt-3 text-muted-foreground italic">
+                {image.caption}
+            </div>
+        )
+    }
+
+    {
+        showMetadata && imageMetadata && (
+            <div class="mt-3 bg-gray-50 p-3 rounded-md flex flex-wrap justify-center gap-6 text-sm">
+                {cameraName && (
+                    <span>
+                        <strong>Camera:</strong> {cameraName}
+                    </span>
+                )}
+                {lensName && (
+                    <span>
+                        <strong>Lens:</strong> {lensName}
+                    </span>
+                )}
+                {imageMetadata.aperture && imageMetadata.shutterSpeed && (
+                    <span>
+                        <strong>Settings:</strong> {imageMetadata.aperture},{" "}
+                        {imageMetadata.shutterSpeed}, ISO {imageMetadata.iso}
+                    </span>
+                )}
+            </div>
+        )
+    }
+</ContentBlockWrapper>
