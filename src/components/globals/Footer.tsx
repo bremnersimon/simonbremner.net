@@ -22,7 +22,7 @@ export default function Footer({
     sections
 }: FooterProps) {
     return (
-        <footer className="w-full py-24 bg-muted/20 relative overflow-hidden">
+        <footer className="w-full py-24 relative overflow-hidden border-t">
             <Container>
 
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

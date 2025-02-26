@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ThemeToggle } from "@/components/globals/ThemeToggle";
 import { cn } from "@/lib/utils";
-import { Menu, X, ChevronRight, Home, User, Briefcase, BookOpen, Camera, Paintbrush, Code, Scissors } from "lucide-react";
+import { Menu, X, ChevronRight, Home, User, Briefcase, Camera, Paintbrush, Code, Scissors, GalleryVerticalEnd } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
@@ -26,6 +26,13 @@ export const Navbar = () => {
             title: "Projects",
             icon: Briefcase,
             children: [
+                {
+                    title: "All Projects",
+                    href: "/projects",
+                    description: "Explore a full list of Photography, Design, Development, and Handcrafted projects.",
+                    icon: GalleryVerticalEnd,
+                    main: true,
+                },
                 {
                     title: "Photography",
                     href: "/projects/photography",
@@ -94,8 +101,8 @@ export const Navbar = () => {
                                         </NavigationMenuTrigger>
                                         <NavigationMenuContent>
                                             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                                                {link.children.map((child, childIndex) => (
-                                                    <li key={child.title + childIndex} className="row-span-1">
+                                                {link.children?.map((child, childIndex) => (
+                                                    <li key={child.title + childIndex} className={child?.main === true ? "col-span-2" : "col-span-1"}>
                                                         <NavigationMenuLink asChild>
                                                             <a
                                                                 href={child.href}
