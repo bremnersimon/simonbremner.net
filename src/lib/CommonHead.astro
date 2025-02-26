@@ -1,0 +1,23 @@
+---
+import { ClientRouter } from "astro:transitions";
+
+// Define the props with default values
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+// Destructure the props with default values
+const { title = "Simon Bremner", description = "I'm a creative, I think..." } =
+    Astro.props;
+---
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+
+<ClientRouter />

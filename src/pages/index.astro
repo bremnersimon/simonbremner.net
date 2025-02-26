@@ -1,11 +1,118 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Footer from "@/components/globals/Footer";
+import Layout from "../layouts/Layout.astro";
+import HomepageHero from "@/components/main/HomepageHero";
+import TabbedPostSlider from "@/components/main/TabbedPostSlider";
+import LargeText from "@/components/main/LargeText";
 ---
 
 <Layout>
-	<Welcome />
+	<HomepageHero
+		title="Crafting Moments, Building Connections"
+		subtitle="Photographer, developer, designer, and maker—bringing ideas to life through multiple creative languages that connect people with what matters most."
+		mediaUrl={{ src: "/images/example.png", alt: "Example", video: false }}
+		primaryCta={{ text: "All Projects", href: "/projects" }}
+		secondaryCta={{ text: "About Me", href: "/about" }}
+	/>
+	<LargeText
+		client:load
+		content={[
+			"This is my creative archive—a personal collection documenting my journey as a photographer, developer, designer, and maker. Here I gather projects spanning multiple disciplines, each representing a spark of curiosity or a challenge that captivated my attention.",
+			"This space serves as both memory and motivation, helping me track my creative evolution across different mediums. While primarily for my own reflection, I'm sharing these documented journeys for anyone who finds inspiration in the intersection of visual storytelling, code, and craftsmanship.",
+		]}
+	/>
+
+	<TabbedPostSlider
+		client:load
+		title="Recent Projects"
+		subtitle="A selection of creative work across multiple disciplines"
+		categories={[
+			"All",
+			"Photography",
+			"Design",
+			"Development",
+			"Handcrafted",
+		]}
+		defaultTab="All"
+		allPosts={[
+			{
+				id: "1",
+				image: { src: "/images/example.png", alt: "Example" },
+				caption: "Example Inc.",
+				title: "Example",
+				slug: "example",
+				category: "Photography",
+			},
+			{
+				id: "2",
+				image: { src: "/images/example.png", alt: "Example" },
+				caption: "Example Inc.",
+				title: "Example",
+				slug: "example",
+				category: "Photography",
+			},
+			{
+				id: "3",
+				image: { src: "/images/example.png", alt: "Example" },
+				caption: "Example Inc.",
+				title: "Example",
+				slug: "example",
+				category: "Photography",
+			},
+			{
+				id: "4",
+				image: { src: "/images/example.png", alt: "Example" },
+				caption: "Example Inc.",
+				title: "Example",
+				slug: "example",
+				category: "Handcrafted",
+			},
+			{
+				id: "5",
+				image: { src: "/images/example.png", alt: "Example" },
+				caption: "Example Inc.",
+				title: "Example",
+				slug: "example",
+				category: "Development",
+			},
+			{
+				id: "6",
+				image: { src: "/images/example.png", alt: "Example" },
+				caption: "Example Inc.",
+				title: "Example",
+				slug: "example",
+				category: "Design",
+			},
+		]}
+	/>
+	<Footer
+		title="Simon Bremner"
+		sections={[
+			{
+				title: "Pages",
+				links: [
+					{ title: "Home", href: "/" },
+					{ title: "About", href: "/about" },
+					{ title: "Contact", href: "/contact" },
+				],
+			},
+			{
+				title: "Projects",
+				links: [
+					{ title: "Photography", href: "/projects/photography" },
+					{ title: "Design", href: "/projects/design" },
+					{ title: "Development", href: "/projects/development" },
+					{ title: "Handcrafted", href: "/projects/handcrafted" },
+				],
+			},
+			{
+				title: "Legal",
+				links: [
+					{ title: "Privacy", href: "/privacy" },
+					{ title: "Terms", href: "/terms" },
+					{ title: "Contact", href: "/contact" },
+				],
+			},
+		]}
+	/>
 </Layout>
