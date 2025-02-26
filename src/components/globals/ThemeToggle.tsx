@@ -3,25 +3,29 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 
 export function ThemeToggle() {
-    // Simplified to just "light" or "dark" (no system option)
+    // Initialize with a default value that will be updated after mount
     const [theme, setTheme] = useState<"light" | "dark">("light")
+    // Add a mounting state to track if we're in the browser
+    const [mounted, setMounted] = useState(false)
 
-    // Initialize theme on mount
+    // This useEffect runs once after component mount
     useEffect(() => {
+        // Once mounted, we can safely access the document
+        setMounted(true)
+
         const storedTheme = localStorage.getItem("theme") as "light" | "dark" | null
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
 
-        // Use stored theme or system preference
-        if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-            setTheme("dark")
-            document.documentElement.classList.add("dark")
-        } else {
-            setTheme("light")
-            document.documentElement.classList.remove("dark")
-        }
+        // Determine the current theme
+        const currentTheme =
+            document.documentElement.classList.contains("dark") ? "dark" :
+                storedTheme === "dark" || (!storedTheme && prefersDark) ? "dark" : "light"
+
+        // Update state to match the current theme
+        setTheme(currentTheme)
     }, [])
 
-    // Simple toggle function
+    // Toggle function that works with client-side routing
     function toggleTheme() {
         const newTheme = theme === "light" ? "dark" : "light"
 
@@ -37,6 +41,20 @@ export function ThemeToggle() {
 
         // Update state
         setTheme(newTheme)
+    }
+
+    // Avoid hydration mismatch by rendering nothing until mounted
+    if (!mounted) {
+        return (
+            <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Loading theme toggle"
+            >
+                {/* Placeholder for pre-hydration */}
+                <div className="h-[1.2rem] w-[1.2rem]" />
+            </Button>
+        )
     }
 
     return (

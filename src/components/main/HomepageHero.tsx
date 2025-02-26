@@ -29,7 +29,7 @@ export default function HomepageHero({
     },
 }: HomepageHeroProps) {
     return (
-        <section className="w-full min-h-screen bg-background py-10 flex flex-col items-center justify-center">
+        <section className="w-full gap-4 bg-background py-10 flex flex-col items-center justify-center">
             <Container className="h-full flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center text-center mb-12 w-full h-full">
                     <div className="inline-flex items-center px-4 py-1 rounded-full border mb-8">

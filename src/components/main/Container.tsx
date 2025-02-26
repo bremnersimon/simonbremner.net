@@ -8,7 +8,7 @@ type ContainerProps = {
 
 export const Container = ({ children, className }: ContainerProps) => {
     return (
-        <div className={cn("container mx-auto", className)}>
+        <div className={cn("container px-4 mx-auto", className)}>
             {children}
         </div>
     )

@@ -4,17 +4,20 @@ interface ImportMetaEnv {
     // Define env variables here if needed
   }
   
-  // Explicitly declare the Astro namespace
   declare namespace Astro {
     interface Globals {
       generator: string;
       site: string;
+      url: URL; // This is necessary to access Astro.url.pathname
+      request: Request;
+      params: Record<string, string>;
+      props: Record<string, any>;
+      response: Response;
+      slots: Record<string, boolean>;
+      redirect(path: string, status?: number): Response;
       // Add other Astro global properties as needed
     }
   }
-  
-  // Make the Astro object available globally in .astro files
-  declare const Astro: Astro.Globals;
   
   declare module '*.svg' {
     const content: {
@@ -33,5 +36,3 @@ interface ImportMetaEnv {
     };
     export default content;
   }
-  
-  

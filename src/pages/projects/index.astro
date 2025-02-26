@@ -1,5 +1,16 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ProjectsGrid from "@components/main/ProjectsGrid";
+import { projects } from "@/data/projects";
+const currentPath = Astro.url.pathname;
 ---
 
-<Layout> /projects </Layout>
+<Layout>
+    <ProjectsGrid
+        title="My Projects"
+        allProjects={projects}
+        currentPath={currentPath}
+        projectsPerPage={9}
+        client:load
+    />
+</Layout>

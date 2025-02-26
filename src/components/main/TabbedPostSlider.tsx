@@ -3,7 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import PostCard from "./PostCard";
+import ProjectCard from "./ProjectCard";
 import { Container } from "./Container";
 
 interface Post {
@@ -65,7 +65,7 @@ const PostCarousel = ({ posts }: { posts: Post[] }) => {
                             key={post.id}
                             className="flex-[0_0_280px] sm:flex-[0_0_350px] md:flex-[0_0_400px] min-w-0"
                         >
-                            <PostCard
+                            <ProjectCard
                                 title={post.title}
                                 imageUrl={post.image.src}
                                 href={`/posts/${post.slug}`}

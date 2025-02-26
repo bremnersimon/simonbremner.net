@@ -4,16 +4,31 @@ import Layout from "../layouts/Layout.astro";
 import HomepageHero from "@/components/main/HomepageHero";
 import TabbedPostSlider from "@/components/main/TabbedPostSlider";
 import LargeText from "@/components/main/LargeText";
+import AnimateOnLoad from "@components/motion/AnimateOnLoad";
 ---
 
 <Layout>
-	<HomepageHero
-		title="Crafting Moments, Building Connections"
-		subtitle="Photographer, developer, designer, and maker—bringing ideas to life through multiple creative languages that connect people with what matters most."
-		mediaUrl={{ src: "/images/example.png", alt: "Example", video: false }}
-		primaryCta={{ text: "All Projects", href: "/projects" }}
-		secondaryCta={{ text: "About Me", href: "/about" }}
-	/>
+	<AnimateOnLoad
+		client:load
+		variants={{
+			hidden: { opacity: 0, y: -20 },
+			visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+		}}
+		tag="section"
+		className="py-20 text-center"
+	>
+		<HomepageHero
+			title="Crafting Moments, Building Connections"
+			subtitle="Photographer, developer, designer, and maker—bringing ideas to life through multiple creative languages that connect people with what matters most."
+			mediaUrl={{
+				src: "/images/example.png",
+				alt: "Example",
+				video: false,
+			}}
+			primaryCta={{ text: "All Projects", href: "/projects" }}
+			secondaryCta={{ text: "About Me", href: "/about" }}
+		/>
+	</AnimateOnLoad>
 	<LargeText
 		client:load
 		content={[
@@ -82,36 +97,6 @@ import LargeText from "@/components/main/LargeText";
 				title: "Example",
 				slug: "example",
 				category: "Design",
-			},
-		]}
-	/>
-	<Footer
-		title="Simon Bremner"
-		sections={[
-			{
-				title: "Pages",
-				links: [
-					{ title: "Home", href: "/" },
-					{ title: "About", href: "/about" },
-					{ title: "Contact", href: "/contact" },
-				],
-			},
-			{
-				title: "Projects",
-				links: [
-					{ title: "Photography", href: "/projects/photography" },
-					{ title: "Design", href: "/projects/design" },
-					{ title: "Development", href: "/projects/development" },
-					{ title: "Handcrafted", href: "/projects/handcrafted" },
-				],
-			},
-			{
-				title: "Legal",
-				links: [
-					{ title: "Privacy", href: "/privacy" },
-					{ title: "Terms", href: "/terms" },
-					{ title: "Contact", href: "/contact" },
-				],
 			},
 		]}
 	/>

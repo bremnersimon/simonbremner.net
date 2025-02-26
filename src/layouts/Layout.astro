@@ -3,12 +3,13 @@ import "@/styles/global.css";
 import { Navbar } from "../components/globals/Navbar";
 import background from "../../assets/background.svg";
 import CommonHead from "../lib/CommonHead.astro";
+import Footer from "@components/globals/Footer";
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charSet="UTF-8" />
+		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<CommonHead
 			title="Simon Bremner"
@@ -17,16 +18,45 @@ import CommonHead from "../lib/CommonHead.astro";
 	</head>
 	<body class="bg-background text-foreground pt-20">
 		<Navbar client:load />
-
 		<main id="container">
 			<!-- <img
 				id="background"
 				src={background.src}
 				alt=""
 				fetchPriority="high"
-			/> -->
+				/> -->
 			<slot />
 		</main>
+		<Footer
+			title="Simon Bremner"
+			sections={[
+				{
+					title: "Pages",
+					links: [
+						{ title: "Home", href: "/" },
+						{ title: "About", href: "/about" },
+						{ title: "Contact", href: "/contact" },
+					],
+				},
+				{
+					title: "Projects",
+					links: [
+						{ title: "Photography", href: "/projects/photography" },
+						{ title: "Design", href: "/projects/design" },
+						{ title: "Development", href: "/projects/development" },
+						{ title: "Handcrafted", href: "/projects/handcrafted" },
+					],
+				},
+				{
+					title: "Legal",
+					links: [
+						{ title: "Privacy", href: "/privacy" },
+						{ title: "Terms", href: "/terms" },
+						{ title: "Contact", href: "/contact" },
+					],
+				},
+			]}
+		/>
 	</body>
 </html>
 
@@ -54,5 +84,6 @@ import CommonHead from "../lib/CommonHead.astro";
 		font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova",
 			"Nimbus Sans", Arial, sans-serif;
 		height: 100%;
+		min-height: 100vh;
 	}
 </style>

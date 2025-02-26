@@ -141,3 +141,25 @@ body {
 .dropdown-center {
     position: relative;
 }
+
+/* Only apply fade transitions to the page content */
+#page-content {
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Style for fading out during navigation */
+#page-content.astro-route-fade-out {
+    opacity: 0;
+}
+
+/* Style for fading in during navigation */
+#page-content.astro-route-fade-in {
+    opacity: 1;
+}
+
+/* Ensure the navbar never fades */
+#persistent-header {
+    /* Make sure this stays on top during transitions */
+    position: relative;
+    z-index: 10;
+}

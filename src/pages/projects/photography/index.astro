@@ -1,5 +1,33 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
+// src/pages/projects/photography.astro
+import Layout from "@/layouts/Layout.astro";
+import ProjectsGrid from "@/components/main/ProjectsGrid";
+import { projects } from "@/data/projects";
+
+// Get current path
+const currentPath = Astro.url.pathname;
+console.log(currentPath);
+
+// Category specific data
+const categoryName = "Photography";
+
+// Filter projects for this category
+const categoryProjects = projects.filter(
+    (project) => project.category === categoryName,
+);
+
+// Page metadata with custom description
+const pageTitle = `${categoryName} Projects`;
+const pageDescription = `Explore our photography portfolio showcasing creative visual storytelling`;
 ---
 
-<Layout> /projects/photography </Layout>
+<Layout title={pageTitle} description={pageDescription}>
+    <ProjectsGrid
+        allProjects={categoryProjects}
+        title="Photography Portfolio"
+        subtitle="Creative visual storytelling through our lens"
+        currentPath={currentPath}
+        hideTabsOnSubPages={true}
+        client:load
+    />
+</Layout>

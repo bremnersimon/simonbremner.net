@@ -1,5 +1,22 @@
 ---
+import AnimateOnLoad from "@components/motion/AnimateOnLoad";
 import Layout from "../../layouts/Layout.astro";
+import LeftRightText from "@/components/main/LeftRightText";
 ---
 
-<Layout> /about </Layout>
+<Layout>
+    <AnimateOnLoad
+        client:load
+        variants={{
+            hidden: { opacity: 0, y: -20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+        }}
+        tag="section"
+        className="py-20 text-center"
+    >
+        <LeftRightText
+            heading="I Like Making Cool Things"
+            description="Description about me and what I do"
+        />
+    </AnimateOnLoad>
+</Layout>
