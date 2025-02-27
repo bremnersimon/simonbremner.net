@@ -36,7 +36,7 @@ export function urlForImage(source: any) {
   
   // Return a fallback to prevent errors
   return builder.image({
-    asset: { _ref: 'placeholder-image' }
+    asset: { _ref: 'image-Tb9Ew8CXIwaY6R1kjMvI0uRR-2000x3000-jpg' }
   });
 }
 

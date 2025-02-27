@@ -65,17 +65,6 @@ const PostCarousel = ({ projects }: { projects: Project[] }) => {
         };
     }, [emblaApi, onSelect]);
 
-    // Function to get the image URL from mainImage
-    const getImageUrl = (mainImage: any) => {
-        // This is a placeholder - you'll need to use your Sanity image URL builder here
-        // For example: return urlFor(mainImage).width(400).height(400).url()
-
-        // Using a placeholder for now
-        return mainImage?.asset?._ref
-            ? `https://cdn.sanity.io/images/${mainImage.asset._ref.replace(/^image-/, '').replace(/-[a-z]+$/, '')}`
-            : '/placeholder-image.jpg';
-    };
-
     return (
         <div className="relative mx-auto">
             <div className="overflow-hidden" ref={emblaRef}>
@@ -88,7 +77,7 @@ const PostCarousel = ({ projects }: { projects: Project[] }) => {
                             <ProjectCard
                                 title={project.title}
                                 imageUrl={urlForImage(project.mainImage).url()}
-                                href={`/projects/${project.slug.current}`}
+                                slug={project.slug.current}
                                 aspectRatio="square"
                                 category={project.category}
                                 tags={project.tags}

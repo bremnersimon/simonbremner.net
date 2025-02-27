@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 interface ProjectCardProps {
     title: string;
     imageUrl: string;
-    href: string;
+    slug: string;
     category?: string;
     tags?: string[];
     aspectRatio?: "square" | "video";
@@ -16,7 +16,7 @@ interface ProjectCardProps {
 export default function ProjectCard({
     title,
     imageUrl,
-    href,
+    slug,
     category,
     tags = [],
     aspectRatio = "square",
@@ -24,14 +24,10 @@ export default function ProjectCard({
 }: ProjectCardProps) {
     const [isHovered, setIsHovered] = useState(false);
 
-    // Build the project URL with the correct structure
-    // If the href already contains the full path, extract just the slug
-    const slug = href
-
     // Construct the project URL based on category and slug
     const projectUrl = category
         ? `/projects/${category.toLowerCase()}/${slug}`
-        : `/projects/${slug}`;
+        : ``;
 
     return (
         <div
