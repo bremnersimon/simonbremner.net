@@ -1,4 +1,4 @@
----
+<!-- ---
 // src/pages/projects/index.astro
 import Layout from "@/layouts/Layout.astro";
 import ProjectsGrid from "@/components/main/ProjectsGrid";
@@ -6,7 +6,9 @@ import { projects } from "@/data/projects";
 
 // Get current path
 const currentPath = Astro.url.pathname;
-
+import { getAllPhotographyPosts } from "@/lib/sanity";
+const posts = await getAllPhotographyPosts();
+console.log("posts:", posts);
 // Get unique categories from projects
 const categories = [
     "All",
@@ -23,10 +25,10 @@ const pageDescription =
     <ProjectsGrid
         title={pageTitle}
         subtitle={pageDescription}
-        allProjects={projects}
+        allProjects={posts}
         categories={categories}
         defaultTab="All"
         currentPath={currentPath}
         client:load
     />
-</Layout>
+</Layout> -->

@@ -40,6 +40,22 @@ export function urlForImage(source: any) {
   });
 }
 
+export async function getHomePageProjects() {
+  return await client.fetch(`{
+    "featuredProjects": *[
+      _type in ["photography", "design", "development", "handcrafted"]
+    ] {
+      _id,
+      title,
+      slug,
+      publishedAt,
+      mainImage,
+      tags,
+      "category": _type
+    } | order(publishedAt desc)[0...24]
+  }`);
+}
+
 // Utility function to fetch all photography posts
 export async function getAllPhotographyPosts() {
   return await client.fetch(`*[_type == "photography"]{
@@ -48,23 +64,7 @@ export async function getAllPhotographyPosts() {
     slug,
     publishedAt,
     mainImage,
-    excerpt,
-    author->{
-      name,
-      image
-    },
-    content,
-    location,
     tags,
-    "shootMetadata": {
-      "camera": camera->{ title, model, brand },
-      "lens": lens->{ title, model, brand }
-    },
-    "relatedContent": relatedContent[]->{ 
-      title, 
-      slug,
-      mainImage
-    }
   }`);
 }
 

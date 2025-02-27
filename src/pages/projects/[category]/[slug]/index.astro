@@ -30,10 +30,10 @@ export async function getStaticPaths() {
   `);
   
   // Create paths for photography posts
-  const photographyPaths = photographyPosts.map(post => ({
+  const photographyPaths = photographyPosts?.map(post => ({
     params: {
       category: "photography",
-      slug: post.slug
+      slug: post?.slug
     },
     props: { 
       project: null, // Set to null to indicate this is not a regular project
@@ -96,9 +96,6 @@ if (isPhotography && photographyPost) {
 if (!isPhotography && !project) {
   return Astro.redirect("/404");
 }
-console.log('mainImage:', photographyPost.mainImage);
-// console.log('AuthorImage:', project.author);
-
 ---
 
 <Layout title={pageTitle} description={pageDescription}>

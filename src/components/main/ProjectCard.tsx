@@ -26,7 +26,7 @@ export default function ProjectCard({
 
     // Build the project URL with the correct structure
     // If the href already contains the full path, extract just the slug
-    const slug = href.includes('/') ? href.split('/').filter(Boolean).pop() : href;
+    const slug = href
 
     // Construct the project URL based on category and slug
     const projectUrl = category
@@ -43,14 +43,13 @@ export default function ProjectCard({
             <a
                 href={projectUrl}
                 className="block outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
-                aria-type={`View ${title} project`}
             >
                 <div
                     className={`relative w-full overflow-hidden rounded-lg ${aspectRatio === "square" ? "aspect-square" : "aspect-video"
                         }`}
                 >
                     <img
-                        src={imageUrl || "/images/placeholder.png"}
+                        src={imageUrl || "/images/example-2.jpg"}
                         alt={title}
                         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                     />

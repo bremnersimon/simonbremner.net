@@ -5,6 +5,9 @@ import HomepageHero from "@/components/main/HomepageHero";
 import TabbedPostSlider from "@/components/main/TabbedPostSlider";
 import LargeText from "@/components/main/LargeText";
 import AnimateOnLoad from "@components/motion/AnimateOnLoad";
+import { getHomePageProjects } from "@/lib/sanity";
+
+const data = await getHomePageProjects();
 ---
 
 <Layout>
@@ -25,8 +28,7 @@ import AnimateOnLoad from "@components/motion/AnimateOnLoad";
 				alt: "Example",
 				video: false,
 			}}
-			primaryCta={{ text: "All Projects", href: "/projects" }}
-			secondaryCta={{ text: "About Me", href: "/about" }}
+			primaryCta={{ text: "About Me", href: "/about" }}
 		/>
 	</AnimateOnLoad>
 	<LargeText
@@ -49,55 +51,6 @@ import AnimateOnLoad from "@components/motion/AnimateOnLoad";
 			"Handcrafted",
 		]}
 		defaultTab="All"
-		allPosts={[
-			{
-				id: "1",
-				image: { src: "/images/example.png", alt: "Example" },
-				caption: "Example Inc.",
-				title: "Example",
-				slug: "example",
-				category: "Photography",
-			},
-			{
-				id: "2",
-				image: { src: "/images/example.png", alt: "Example" },
-				caption: "Example Inc.",
-				title: "Example",
-				slug: "example",
-				category: "Photography",
-			},
-			{
-				id: "3",
-				image: { src: "/images/example.png", alt: "Example" },
-				caption: "Example Inc.",
-				title: "Example",
-				slug: "example",
-				category: "Photography",
-			},
-			{
-				id: "4",
-				image: { src: "/images/example.png", alt: "Example" },
-				caption: "Example Inc.",
-				title: "Example",
-				slug: "example",
-				category: "Handcrafted",
-			},
-			{
-				id: "5",
-				image: { src: "/images/example.png", alt: "Example" },
-				caption: "Example Inc.",
-				title: "Example",
-				slug: "example",
-				category: "Development",
-			},
-			{
-				id: "6",
-				image: { src: "/images/example.png", alt: "Example" },
-				caption: "Example Inc.",
-				title: "Example",
-				slug: "example",
-				category: "Design",
-			},
-		]}
+		featuredProjects={data.featuredProjects}
 	/>
 </Layout>

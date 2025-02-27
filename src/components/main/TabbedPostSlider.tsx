@@ -5,18 +5,27 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProjectCard from "./ProjectCard";
 import { Container } from "./Container";
+import { urlForImage } from "@/lib/sanity";
 
-interface Post {
-    id: string;
-    image: { src: string; alt: string };
-    caption?: string;
+interface Project {
+    _id: string;
     title: string;
-    slug: string;
-    category?: string;
+    slug: {
+        current: string;
+    };
+    publishedAt: string | null;
+    mainImage: {
+        asset: {
+            _ref: string;
+        };
+        alt?: string;
+    };
+    tags: string[];
+    category: string;
 }
 
 interface PostSliderProps {
-    allPosts: Post[];
+    featuredProjects: Project[];
     title?: string;
     subtitle?: string;
     categories?: string[];
@@ -25,7 +34,7 @@ interface PostSliderProps {
 }
 
 // Single carousel component to avoid hook issues
-const PostCarousel = ({ posts }: { posts: Post[] }) => {
+const PostCarousel = ({ projects }: { projects: Project[] }) => {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         align: "start",
         slidesToScroll: 1,
@@ -56,26 +65,39 @@ const PostCarousel = ({ posts }: { posts: Post[] }) => {
         };
     }, [emblaApi, onSelect]);
 
+    // Function to get the image URL from mainImage
+    const getImageUrl = (mainImage: any) => {
+        // This is a placeholder - you'll need to use your Sanity image URL builder here
+        // For example: return urlFor(mainImage).width(400).height(400).url()
+
+        // Using a placeholder for now
+        return mainImage?.asset?._ref
+            ? `https://cdn.sanity.io/images/${mainImage.asset._ref.replace(/^image-/, '').replace(/-[a-z]+$/, '')}`
+            : '/placeholder-image.jpg';
+    };
+
     return (
         <div className="relative mx-auto">
             <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex gap-6">
-                    {posts.map((post) => (
+                    {projects?.map((project) => (
                         <div
-                            key={post.id}
+                            key={project._id}
                             className="flex-[0_0_280px] sm:flex-[0_0_350px] md:flex-[0_0_400px] min-w-0"
                         >
                             <ProjectCard
-                                title={post.title}
-                                imageUrl={post.image.src}
-                                href={`/posts/${post.slug}`}
+                                title={project.title}
+                                imageUrl={urlForImage(project.mainImage).url()}
+                                href={`/projects/${project.slug.current}`}
                                 aspectRatio="square"
+                                category={project.category}
+                                tags={project.tags}
                             />
                         </div>
                     ))}
-                    {posts.length === 0 && (
+                    {projects?.length === 0 && (
                         <div className="flex-1 min-h-[300px] flex items-center justify-center">
-                            <p className="text-muted-foreground">No posts in this category</p>
+                            <p className="text-muted-foreground">No projects in this category</p>
                         </div>
                     )}
                 </div>
@@ -94,30 +116,34 @@ const PostCarousel = ({ posts }: { posts: Post[] }) => {
 };
 
 export default function TabbedPostSlider({
-    allPosts,
+    featuredProjects,
     title = "Reputation is everything.",
     subtitle = "Ours is flawless.",
     categories = ["All", "Photography", "Design", "Development", "Handcrafted"],
     defaultTab = "All",
     lazyLoad = true,
 }: PostSliderProps) {
-    const [activeTab, setActiveTab] = useState(defaultTab);
     const [loadedTabs, setLoadedTabs] = useState<string[]>([defaultTab]);
 
     // Handle tab change
     const handleTabChange = (value: string) => {
-        setActiveTab(value);
-
         // If tab hasn't been loaded and lazyLoad is enabled, add it to loaded tabs
         if (lazyLoad && !loadedTabs.includes(value)) {
             setLoadedTabs(prev => [...prev, value]);
         }
     };
 
-    // Filter posts based on active tab
-    const getFilteredPosts = (category: string): Post[] => {
-        if (category === "All") return allPosts;
-        return allPosts.filter(post => post.category === category);
+    // Filter projects based on active tab
+    const getFilteredProjects = (category: string): Project[] => {
+        if (!featuredProjects) return [];
+
+        if (category === "All") {
+            return featuredProjects;
+        }
+
+        return featuredProjects.filter(project =>
+            project.category.toLowerCase() === category.toLowerCase()
+        );
     };
 
     return (
@@ -140,7 +166,7 @@ export default function TabbedPostSlider({
                     {categories.map(category => (
                         <TabsContent key={category} value={category} className="mt-0">
                             {(!lazyLoad || loadedTabs.includes(category)) && (
-                                <PostCarousel posts={getFilteredPosts(category)} />
+                                <PostCarousel projects={getFilteredProjects(category)} />
                             )}
                         </TabsContent>
                     ))}

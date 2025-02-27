@@ -9,7 +9,7 @@ interface HomepageHeroProps {
         text: string
         href: string
     }
-    secondaryCta: {
+    secondaryCta?: {
         text: string
         href: string
     }
@@ -23,10 +23,7 @@ export default function HomepageHero({
         text: "View Plans & Pricing",
         href: "/pricing",
     },
-    secondaryCta = {
-        text: "Book an Intro",
-        href: "/contact",
-    },
+    secondaryCta
 }: HomepageHeroProps) {
     return (
         <section className="w-full gap-4 bg-background py-10 flex flex-col items-center justify-center">
@@ -45,12 +42,16 @@ export default function HomepageHero({
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">{title}</h1>
                     <p className="text-2xl md:text-3xl lg:text-4xl text-muted-foreground mb-8">{subtitle}</p>
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Button asChild variant="default" size="lg">
-                            <a href={primaryCta.href}>{primaryCta.text}</a>
-                        </Button>
-                        <Button asChild variant="outline" size="lg">
-                            <a href={secondaryCta.href}>{secondaryCta.text}</a>
-                        </Button>
+                        {primaryCta && (
+                            <Button asChild variant="default" size="lg">
+                                <a href={primaryCta.href}>{primaryCta.text}</a>
+                            </Button>
+                        )}
+                        {secondaryCta && (
+                            <Button asChild variant="outline" size="lg">
+                                <a href={secondaryCta.href}>{secondaryCta.text}</a>
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <div className="relative aspect-video w-full max-w-5xl mx-auto rounded-lg overflow-hidden bg-muted">
