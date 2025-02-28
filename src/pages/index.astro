@@ -1,13 +1,15 @@
 ---
 import Footer from "@/components/globals/Footer";
-import Layout from "../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
 import HomepageHero from "@/components/main/HomepageHero";
 import TabbedPostSlider from "@/components/main/TabbedPostSlider";
 import LargeText from "@/components/main/LargeText";
-import AnimateOnLoad from "@components/motion/AnimateOnLoad";
+import AnimateOnLoad from "@/components/motion/AnimateOnLoad";
 import { getHomePageProjects } from "@/lib/sanity";
+import type { ProjectCardProps } from "@/types";
 
-const data = await getHomePageProjects();
+const data: { featuredProjects: ProjectCardProps[] } =
+	await getHomePageProjects();
 ---
 
 <Layout>
@@ -24,7 +26,7 @@ const data = await getHomePageProjects();
 			title="Crafting Moments, Building Connections"
 			subtitle="Photographer, developer, designer, and maker—bringing ideas to life through multiple creative languages that connect people with what matters most."
 			mediaUrl={{
-				src: "/images/example-2.jpg",
+				src: "/images/ravanel-bridge.jpg",
 				alt: "Example",
 				video: false,
 			}}

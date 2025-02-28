@@ -9,3 +9,12 @@ declare module 'react' {
     'client:only'?: string;
   }
 }
+
+  // For Astro JSX
+  declare namespace astroHTML.JSX {
+    interface HTMLAttributes {
+      // Allow both class and className in Astro
+      class?: string;
+      className?: string;
+    }
+  }

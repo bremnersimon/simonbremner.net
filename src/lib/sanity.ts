@@ -1,13 +1,5 @@
 import imageUrlBuilder from '@sanity/image-url';
 import {createClient} from '@sanity/client';
-import type {SanityImageSource} from '@sanity/image-url/lib/types/types';
-
-type SanityImageWithAsset = {
-  asset: {
-    _ref: string;
-    _type: string;
-  }
-} & Record<string, any>;
 
 export const client = createClient({
   projectId: "hzdtear2",
@@ -56,16 +48,17 @@ export async function getHomePageProjects() {
   }`);
 }
 
-// Utility function to fetch all photography posts
-export async function getAllPhotographyPosts() {
-  return await client.fetch(`*[_type == "photography"]{
+// Utility function to fetch all photography post previews
+export async function getAllPostsByType(type: "photography" | "design" | "development" | "handcrafted") {
+  return await client.fetch(`*[_type == $type]{
     _id,
     title,
     slug,
     publishedAt,
     mainImage,
     tags,
-  }`);
+    "category": _type
+  }`, { type });
 }
 
 // Utility function to fetch a single photography post by slug

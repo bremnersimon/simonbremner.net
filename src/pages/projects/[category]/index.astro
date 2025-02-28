@@ -1,15 +1,14 @@
 ---
 // src/pages/projects/[category].astro
 import Layout from "@/layouts/Layout.astro";
-import ProjectsGrid from "@/components/main/ProjectsGrid";
-import { projects } from "@/data/projects";
+import ProjectsGrid from "@/layouts/ProjectsGrid.astro";
+import { getAllPostsByType, urlForImage } from "@/lib/sanity";
+import type { ProjectCardProps } from "@/types";
 
 // Define all possible paths for pre-rendering at build time
 export function getStaticPaths() {
-    // Get all unique categories from projects data
-    const categories = [
-        ...new Set(projects.map((project) => project.category.toLowerCase())),
-    ];
+    // Define all supported categories
+    const categories = ["photography", "design", "development", "handcrafted"];
 
     // Return an array of objects, each with a "params" property
     return categories.map((category) => ({
@@ -20,50 +19,71 @@ export function getStaticPaths() {
 // Get category from URL parameter
 const { category } = Astro.params;
 
+if (!category) {
+    return Astro.redirect("/404");
+}
+
+// Fetch posts based on category
+let posts: ProjectCardProps[] = [];
+if (!!category && category.length > 0) {
+    posts = await getAllPostsByType(
+        category as "photography" | "design" | "development" | "handcrafted",
+    );
+}
+
 // Get current path
 const currentPath = Astro.url.pathname;
 
 // Capitalize first letter for display purposes
 const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
 
-// Category descriptions - you can expand this object with more categories
-const categoryDescriptions = {
+// Category descriptions
+const categorySubtitles: { [key: string]: string } = {
     photography: "Creative visual storytelling through our lens",
     design: "Innovative visual solutions for modern brands",
     development: "Custom software and web solutions",
     handcrafted: "Unique handmade creations with attention to detail",
-    // Add more categories as needed
 };
 
 // Default description if category isn't in our predefined list
-const defaultDescription = "Explore our portfolio of creative work";
+const defaultCategorySubtitle = "Explore our portfolio of creative work";
 
 // Get appropriate subtitle for the category
-const categorySubtitle =
-    categoryDescriptions[category.toLowerCase()] || defaultDescription;
-
-// Filter projects for this category
-const categoryProjects = projects.filter(
-    (project) => project.category.toLowerCase() === category.toLowerCase(),
-);
+const categorySubtitle = categorySubtitles[category] || defaultCategorySubtitle;
 
 // Page metadata
 const pageTitle = `${categoryTitle} Projects`;
-const pageDescription = `Explore our ${category.toLowerCase()} portfolio - ${categorySubtitle}`;
+const pageDescription = `Explore our ${category} portfolio - ${categorySubtitle}`;
 
-// 404 handling - if no projects found for this category (optional)
-if (categoryProjects.length === 0) {
+// Convert Sanity posts to the ProjectsGrid format
+const projects = posts.map((post) => ({
+    _id: post._id,
+    title: post.title,
+    slug: post.slug,
+    mainImage: {
+        src: post.mainImage
+            ? urlForImage(post.mainImage).url()
+            : "/images/placeholder.jpg",
+        alt: post.title,
+    },
+    caption: post.caption,
+    category: category,
+    tags: post.tags || [],
+    publishedAt: post.publishedAt,
+}));
+
+// 404 handling - if no projects found for this category
+if (!projects || projects.length === 0) {
     return Astro.redirect("/404");
 }
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
     <ProjectsGrid
-        allProjects={categoryProjects}
+        transition:persist
+        allProjects={projects}
         title={`${categoryTitle} Portfolio`}
         subtitle={categorySubtitle}
         currentPath={currentPath}
-        hideTabsOnSubPages={true}
-        client:load
     />
 </Layout>

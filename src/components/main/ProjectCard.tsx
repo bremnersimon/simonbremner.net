@@ -2,31 +2,28 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import type { ProjectCardProps } from "@/types";
 
-interface ProjectCardProps {
-    title: string;
-    imageUrl: string;
-    slug: string;
-    category?: string;
-    tags?: string[];
+type CardProps = ProjectCardProps & {
+    id?: string;
     aspectRatio?: "square" | "video";
-    showCategory?: boolean;
 }
 
 export default function ProjectCard({
     title,
-    imageUrl,
+    mainImage,
     slug,
     category,
     tags = [],
     aspectRatio = "square",
     showCategory = true,
-}: ProjectCardProps) {
+    id,
+}: CardProps) {
     const [isHovered, setIsHovered] = useState(false);
 
     // Construct the project URL based on category and slug
     const projectUrl = category
-        ? `/projects/${category.toLowerCase()}/${slug}`
+        ? `/projects/${category.toLowerCase()}/${slug.current}`
         : ``;
 
     return (
@@ -45,7 +42,7 @@ export default function ProjectCard({
                         }`}
                 >
                     <img
-                        src={imageUrl || "/images/example-2.jpg"}
+                        src={mainImage?.src || "/images/example-2.jpg"}
                         alt={title}
                         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                     />

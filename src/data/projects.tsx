@@ -1,19 +1,8 @@
-type Project = {
-    id: string;
-    image: {
-        src: string;
-        alt: string;
-    };
-    caption: string;
-    title: string;
-    slug: string;
-    category: string;
-    tags: string[];
-};
+import type { ProjectCardProps } from "@/types/index";
 
-export const projects: Project[] = [
+export const projects: ProjectCardProps[] = [
     {
-        id: "1",
+        _id: "1",
         image: {
             src: "/images/example.png",
             alt: "Mountain landscape photography",
@@ -25,7 +14,7 @@ export const projects: Project[] = [
         tags: ["Landscape", "Nature", "Alps"],
     },
     {
-        id: "2",
+        _id: "2",
         image: { src: "/images/example.png", alt: "Urban street photography" },
         caption: "Urban Stories",
         title: "City Rhythms",
@@ -34,7 +23,7 @@ export const projects: Project[] = [
         tags: ["Urban", "Street", "Black & White"],
     },
     {
-        id: "3",
+        _id: "3",
         image: { src: "/images/example.png", alt: "Portrait photography" },
         caption: "Character Studies",
         title: "Faces of Humanity",
@@ -43,7 +32,7 @@ export const projects: Project[] = [
         tags: ["Portrait", "People", "Documentary"],
     },
     {
-        id: "4",
+        _id: "4",
         image: {
             src: "/images/example.png",
             alt: "Handcrafted wooden furniture",
@@ -55,7 +44,7 @@ export const projects: Project[] = [
         tags: ["Furniture", "Wood", "Artisan"],
     },
     {
-        id: "5",
+        _id: "5",
         image: {
             src: "/images/example.png",
             alt: "E-commerce website development",
@@ -67,7 +56,7 @@ export const projects: Project[] = [
         tags: ["E-commerce", "Web App", "React"],
     },
     {
-        id: "6",
+        _id: "6",
         image: { src: "/images/example.png", alt: "Brand identity design" },
         caption: "Brand Elevation",
         title: "Corporate Identity Redesign",
@@ -76,7 +65,7 @@ export const projects: Project[] = [
         tags: ["Branding", "Identity", "Corporate"],
     },
     {
-        id: "7",
+        _id: "7",
         image: { src: "/images/example.png", alt: "Minimalist logo design" },
         caption: "Minimal Design Co.",
         title: "Logo Collection 2025",
@@ -85,7 +74,7 @@ export const projects: Project[] = [
         tags: ["Logo", "Minimalist", "Collection"],
     },
     {
-        id: "8",
+        _id: "8",
         image: { src: "/images/example.png", alt: "Mobile app interface" },
         caption: "AppTech Solutions",
         title: "Fitness Tracker App",
@@ -94,7 +83,7 @@ export const projects: Project[] = [
         tags: ["Mobile", "UI/UX", "Health Tech"],
     },
     {
-        id: "9",
+        _id: "9",
         image: {
             src: "/images/example.png",
             alt: "Handcrafted ceramic pottery",
@@ -106,7 +95,7 @@ export const projects: Project[] = [
         tags: ["Ceramic", "Pottery", "Handmade"],
     },
     {
-        id: "10",
+        _id: "10",
         image: { src: "/images/example.png", alt: "Wildlife photography" },
         caption: "Wild Encounters",
         title: "Safari Documentation",
@@ -115,7 +104,7 @@ export const projects: Project[] = [
         tags: ["Wildlife", "Safari", "Documentary"],
     },
     {
-        id: "11",
+        _id: "11",
         image: { src: "/images/example.png", alt: "Web application dashboard" },
         caption: "DataViz Inc.",
         title: "Analytics Dashboard",
@@ -124,7 +113,7 @@ export const projects: Project[] = [
         tags: ["Dashboard", "Data Viz", "SaaS"],
     },
     {
-        id: "12",
+        _id: "12",
         image: { src: "/images/example.png", alt: "Handcrafted jewelry" },
         caption: "Silver & Stone",
         title: "Artisan Jewelry Line",
@@ -133,7 +122,7 @@ export const projects: Project[] = [
         tags: ["Jewelry", "Silver", "Gems"],
     },
     {
-        id: "13",
+        _id: "13",
         image: { src: "/images/example.png", alt: "Magazine layout design" },
         caption: "Print Masters",
         title: "Editorial Design",
@@ -142,7 +131,7 @@ export const projects: Project[] = [
         tags: ["Editorial", "Print", "Layout"],
     },
     {
-        id: "14",
+        _id: "14",
         image: { src: "/images/example.png", alt: "Night sky photography" },
         caption: "Astral Images",
         title: "Milky Way Exposures",
@@ -151,7 +140,7 @@ export const projects: Project[] = [
         tags: ["Astrophotography", "Night Sky", "Long Exposure"],
     },
     {
-        id: "15",
+        _id: "15",
         image: { src: "/images/example.png", alt: "Social media app" },
         caption: "ConnectTech",
         title: "Social Platform Redesign",
@@ -160,7 +149,7 @@ export const projects: Project[] = [
         tags: ["Social Media", "UX Design", "Mobile"],
     },
     {
-        id: "16",
+        _id: "16",
         image: { src: "/images/example.png", alt: "Packaging design" },
         caption: "PackRight Studios",
         title: "Sustainable Packaging",
@@ -169,7 +158,7 @@ export const projects: Project[] = [
         tags: ["Packaging", "Eco-friendly", "Product Design"],
     },
     {
-        id: "17",
+        _id: "17",
         image: { src: "/images/example.png", alt: "Handcrafted wooden toys" },
         caption: "Timber Toys",
         title: "Children's Wood Collection",
@@ -178,7 +167,7 @@ export const projects: Project[] = [
         tags: ["Toys", "Children", "Sustainable"],
     },
     {
-        id: "18",
+        _id: "18",
         image: { src: "/images/example.png", alt: "Wedding photography" },
         caption: "Eternal Moments",
         title: "Wedding Portfolio",

@@ -5,7 +5,6 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { ThemeToggle } from "@/components/globals/ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -14,9 +13,26 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 
+type NavBarItemProps = {
+    title: string;
+    href: string;
+    description?: string;
+    icon: any;
+    main?: boolean;
+}
+
+type NavbarProps = {
+    title: string;
+    icon: any;
+    href?: string;
+    description?: string;
+    main?: boolean;
+    children?: NavbarProps[];
+}
+
 export const Navbar = () => {
     // Define navigation links in a structured format
-    const navigationLinks = [
+    const navigationLinks: NavbarProps[] = [
         {
             title: "Home",
             href: "/",

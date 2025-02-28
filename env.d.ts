@@ -12,7 +12,7 @@ declare namespace Astro {
     url: URL;
     request: Request;
     params: { 
-      category?: string;  // Category parameter for /projects/[category]
+      category?: "photography" | "design" | "development" | "handcrafted";  // Category parameter for /projects/[category]
       slug?: string;      // Slug parameter for /projects/[category]/[slug]
     };
     response: Response;

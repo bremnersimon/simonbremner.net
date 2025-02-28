@@ -1,6 +1,7 @@
 ---
 import ContentBlockWrapper from "./ContentBlockWrapper.astro";
 import { urlForImage } from "../../lib/sanity";
+import { Image } from "astro:assets";
 
 interface ImageType {
     _type: string;
@@ -41,7 +42,9 @@ const { title, images, layout = "grid", showLabel = true } = Astro.props;
         ${layout === "carousel" ? "min-w-[300px] flex-shrink-0 snap-center" : ""}
       `}
                       >
-                          <img
+                          <Image
+                              width={500}
+                              height={500}
                               src={urlForImage(image).url()}
                               alt={image.alt}
                               class="w-full h-auto"

@@ -5,27 +5,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProjectCard from "./ProjectCard";
 import { Container } from "./Container";
+import type { ProjectCardProps } from "@/types";
 import { urlForImage } from "@/lib/sanity";
 
-interface Project {
-    _id: string;
-    title: string;
-    slug: {
-        current: string;
-    };
-    publishedAt: string | null;
-    mainImage: {
-        asset: {
-            _ref: string;
-        };
-        alt?: string;
-    };
-    tags: string[];
-    category: string;
-}
-
 interface PostSliderProps {
-    featuredProjects: Project[];
+    featuredProjects: ProjectCardProps[];
     title?: string;
     subtitle?: string;
     categories?: string[];
@@ -34,7 +18,7 @@ interface PostSliderProps {
 }
 
 // Single carousel component to avoid hook issues
-const PostCarousel = ({ projects }: { projects: Project[] }) => {
+const PostCarousel = ({ projects }: { projects: ProjectCardProps[] }) => {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         align: "start",
         slidesToScroll: 1,
@@ -65,22 +49,40 @@ const PostCarousel = ({ projects }: { projects: Project[] }) => {
         };
     }, [emblaApi, onSelect]);
 
+    // Convert Sanity posts to the ProjectsGrid format
+    const convertedProjects = projects.map((post) => ({
+        _id: post._id,
+        title: post.title,
+        slug: post.slug,
+        mainImage: {
+            src: post.mainImage
+                ? urlForImage(post.mainImage).url()
+                : "/images/placeholder.jpg",
+            alt: post.title,
+        },
+        category: post.category,
+        caption: post.caption,
+        tags: post.tags || [],
+        publishedAt: post.publishedAt,
+    }));
+
     return (
         <div className="relative mx-auto">
             <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex gap-6">
-                    {projects?.map((project) => (
+                    {convertedProjects?.map((project) => (
                         <div
                             key={project._id}
                             className="flex-[0_0_280px] sm:flex-[0_0_350px] md:flex-[0_0_400px] min-w-0"
                         >
                             <ProjectCard
+                                _id={project._id}
                                 title={project.title}
-                                imageUrl={urlForImage(project.mainImage).url()}
-                                slug={project.slug.current}
-                                aspectRatio="square"
+                                mainImage={project.mainImage}
+                                slug={project.slug}
                                 category={project.category}
                                 tags={project.tags}
+                                aspectRatio="square"
                             />
                         </div>
                     ))}
@@ -123,7 +125,7 @@ export default function TabbedPostSlider({
     };
 
     // Filter projects based on active tab
-    const getFilteredProjects = (category: string): Project[] => {
+    const getFilteredProjects = (category: string): ProjectCardProps[] => {
         if (!featuredProjects) return [];
 
         if (category === "All") {
@@ -131,7 +133,7 @@ export default function TabbedPostSlider({
         }
 
         return featuredProjects.filter(project =>
-            project.category.toLowerCase() === category.toLowerCase()
+            project.category && project.category.toLowerCase() === category.toLowerCase()
         );
     };
 
