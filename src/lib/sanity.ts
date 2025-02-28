@@ -10,26 +10,22 @@ export const client = createClient({
 
 const builder = imageUrlBuilder(client);
 
-export function urlForImage(source: any) {
-  console.log('Image source:', source);
-
-  // Check for Sanity image structure
-  if (
-    source && 
-    source._type === 'image' && 
-    source.asset && 
-    source.asset._type === 'reference' && 
-    source.asset._ref
-  ) {
-    return builder.image(source);
+// Helper function to build image URLs
+export function urlForImage(source) {
+  // Handle cases where source might be null or undefined
+  if (!source || !source.asset) {
+    return {
+      url: () => '',
+      width: () => urlForImage(source),
+      height: () => urlForImage(source),
+      fit: () => urlForImage(source),
+      auto: () => urlForImage(source),
+      crop: () => urlForImage(source),
+      format: () => urlForImage(source),
+    };
   }
   
-  console.error('Invalid Sanity image source:', source);
-  
-  // Return a fallback to prevent errors
-  return builder.image({
-    asset: { _ref: 'image-Tb9Ew8CXIwaY6R1kjMvI0uRR-2000x3000-jpg' }
-  });
+  return builder.image(source);
 }
 
 export async function getHomePageProjects() {
@@ -61,47 +57,323 @@ export async function getAllPostsByType(type: "photography" | "design" | "develo
   }`, { type });
 }
 
-// Utility function to fetch a single photography post by slug
-export async function getPhotographyPostBySlug(slug: string) {
-  const data = await client.fetch(`*[_type == "photography" && slug.current == $slug][0]{
-    _id,
-    title,
-    slug,
-    publishedAt,
-    mainImage,
-    excerpt,
-    author->{
-      name,
-      image
-    },
-    content,
-    location,
-    tags,
-    "shootMetadata": {
-      "camera": camera->{ title, model, brand },
-      "lens": lens->{ title, model, brand }
-    },
-    "relatedContent": relatedContent[]->{ 
-      title, 
+// Define project type constants
+export const PROJECT_TYPES = {
+  PHOTOGRAPHY: 'photography',
+  DESIGN: 'design',
+  DEVELOPMENT: 'development',
+  HANDCRAFTED: 'handcrafted'
+};
+
+/**
+ * Fetch project data by type and slug
+ * 
+ * @param projectType - The type of project (photography, design, development, handcrafted)
+ * @param slug - The slug of the project to fetch
+ * @returns The project data with all referenced blocks expanded
+ */
+export async function fetchProjectById(projectType: string, slug: string) {
+  if (!projectType || !slug) {
+    throw new Error('Project type and slug are required');
+  }
+
+  // Base query structure
+  const baseQuery = `
+    *[_type == $projectType && slug.current == $slug][0]{
+      _id,
+      title,
       slug,
-      mainImage
+      publishedAt,
+      excerpt,
+      mainImage{
+        ...,
+        asset->
+      },
+      author->{
+        name,
+        image{
+          ...,
+          asset->
+        }
+      },
+      
+      // Common fields for all project types
+      tags,
+      
+      // Type-specific fields
+      ${projectType === PROJECT_TYPES.PHOTOGRAPHY ? `
+        location,
+        shootMetadata{
+          theme,
+          equipment{
+            cameras[]->{
+              _id,
+              name,
+              brand,
+              modelNumber,
+              type
+            },
+            lenses[]->{
+              _id,
+              name,
+              brand,
+              focalLength,
+              maxAperture
+            }
+          },
+          technicalNotes
+        },
+      ` : ''}
+      
+      ${projectType === PROJECT_TYPES.DESIGN ? `
+        designTeam[]->{
+          name,
+          image{
+            ...,
+            asset->
+          }
+        },
+        projectStatus,
+        projectDuration,
+        client,
+        category,
+        tools[]->{
+          _id,
+          name,
+          description,
+          icon{
+            ...,
+            asset->
+          }
+        },
+        caseStudy,
+        gallery[]{
+          ...,
+          asset->
+        },
+        process[]{
+          ...,
+          artifacts[]{
+            ...,
+            media{
+              ...,
+              asset->
+            }
+          }
+        },
+        designSystem{
+          colors,
+          typography,
+          logos[]{
+            ...,
+            image{
+              ...,
+              asset->
+            }
+          }
+        },
+      ` : ''}
+      
+      ${projectType === PROJECT_TYPES.DEVELOPMENT ? `
+        projectStatus,
+        projectDuration,
+        clientName,
+        projectLink,
+        projectType,
+        techStack{
+          frontend[]-> {_id, name, description, icon{..., asset->}},
+          backend[]-> {_id, name, description, icon{..., asset->}},
+          database[]-> {_id, name, description, icon{..., asset->}},
+          devOps[]-> {_id, name, description, icon{..., asset->}}
+        },
+        frameworks[]-> {_id, name, description, icon{..., asset->}},
+        libraries[]-> {_id, name, description, icon{..., asset->}},
+        hostingPlatform-> {_id, name, description, icon{..., asset->}},
+      ` : ''}
+      
+      ${projectType === PROJECT_TYPES.HANDCRAFTED ? `
+        craftMeta{
+          materials,
+          dimensions,
+          techniques,
+          timeToComplete
+        },
+      ` : ''}
+      
+      // Content blocks - common for all project types with project-specific variations
+      content[]{
+        ...,
+        _type == "stackBlock" => {
+          ...,
+          "technologies": technologies[]-> {
+            _id,
+            name,
+            description,
+            icon{
+              ...,
+              asset->
+            }
+          }
+        },
+        _type == "featuredImageBlock" => {
+          ...,
+          "cameraData": imageMetadata.camera->,
+          "lensData": imageMetadata.lens->,
+          image{
+            ...,
+            asset->
+          }
+        },
+        _type == "behindTheScenesBlock" => {
+          ...,
+          images[]{
+            ...,
+            asset->
+          }
+        },
+        _type == "galleryBlock" => {
+          ...,
+          images[]{
+            ...,
+            asset->
+          }
+        },
+        _type == "imageBlock" => {
+          ...,
+          image{
+            ...,
+            asset->
+          }
+        },
+        _type == "demoBlock" => {
+          ...,
+          demoContent[]{
+            ...,
+            _type == "image" => {
+              ...,
+              asset->
+            },
+            _type == "file" => {
+              ...,
+              asset->
+            }
+          }
+        },
+        _type == "processBlock" => {
+          ...,
+          phases[]{
+            ...,
+            description[]
+          }
+        },
+        _type == "challengeBlock" => {
+          ...,
+          challenges[]{
+            ...,
+            solution[]
+          }
+        },
+        _type == "techSpecsBlock" => {
+          ...,
+          specs[]
+        },
+        _type == "codeBlock" => {
+          ...,
+          code,
+          language
+        },
+        _type == "quoteBlock" => {
+          ...,
+          quote,
+          attribution,
+          style
+        },
+        _type == "textBlock" => {
+          ...,
+          content[]
+        },
+        _type == "headlineBlock" => {
+          ...,
+          headline,
+          size,
+          alignment,
+          width
+        },
+        _type == "dividerBlock" => {
+          ...,
+          style
+        },
+        // Design-specific blocks
+        _type == "beforeAfterBlock" => {
+          ...,
+          beforeImage{
+            ...,
+            asset->
+          },
+          afterImage{
+            ...,
+            asset->
+          }
+        },
+        _type == "testimonialBlock" => {
+          ...,
+          avatar{
+            ...,
+            asset->
+          }
+        },
+        _type == "responsiveDesignBlock" => {
+          ...,
+          devices[]{
+            ...,
+            image{
+              ...,
+              asset->
+            }
+          }
+        },
+        _type == "iterationBlock" => {
+          ...,
+          iterations[]{
+            ...,
+            image{
+              ...,
+              asset->
+            }
+          }
+        },
+        _type == "repoLinkBlock" => {
+          ...,
+          repository,
+          liveUrl
+        }
+      }
     }
-  }`, {slug});
-  
-  // Add extensive logging
-  console.log('Fetched Photography Post:', JSON.stringify({
-    mainImage: data.mainImage,
-    contentImages: data.content
-      ?.filter((block: any) => 
-        block._type === 'imageBlock' || 
-        block._type === 'galleryBlock' || 
-        block._type === 'featuredImageBlock'
-      )
-      .map((block: any) => ({
-        type: block._type,
-        images: block.images || block.image
-      })),
-  }, null, 2));
-  
-  return data;
+  `;
+
+  try {
+    return await client.fetch(baseQuery, {
+      projectType,
+      slug
+    });
+  } catch (error) {
+    console.error(`Error fetching ${projectType} project:`, error);
+    throw error;
+  }
 }
+
+/**
+ * Example usage:
+ * 
+ * // For photography
+ * const photographyProject = await fetchProjectById(PROJECT_TYPES.PHOTOGRAPHY, 'photography-id');
+ * 
+ * // For design
+ * const designProject = await fetchProjectById(PROJECT_TYPES.DESIGN, 'design-id');
+ * 
+ * // For development
+ * const developmentProject = await fetchProjectById(PROJECT_TYPES.DEVELOPMENT, 'dev-id');
+ * 
+ * // For handcrafted
+ * const handcraftedProject = await fetchProjectById(PROJECT_TYPES.HANDCRAFTED, 'craft-id');
+ */

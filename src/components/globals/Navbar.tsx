@@ -9,7 +9,7 @@ import {
 import { ThemeToggle } from "@/components/globals/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { Menu, X, ChevronRight, Home, User, Briefcase, Camera, Paintbrush, Code, Scissors, GalleryVerticalEnd } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 
@@ -85,6 +85,28 @@ export const Navbar = () => {
     // State to track which mobile dropdowns are open
     const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
+    // State to track if user has scrolled
+    const [hasScrolled, setHasScrolled] = useState(false);
+
+    // Effect to add scroll event listener
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            setHasScrolled(scrollTop > 0);
+        };
+
+        // Add event listener
+        window.addEventListener('scroll', handleScroll);
+
+        // Initial check
+        handleScroll();
+
+        // Clean up
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     // Toggle dropdown state for mobile
     const toggleDropdown = (title: string) => {
         setOpenDropdowns(prev => ({
@@ -95,7 +117,8 @@ export const Navbar = () => {
 
     return (
         <header
-            className="w-full px-4 lg:px-6 h-14 flex items-center justify-between fixed top-0 right-0 left-0 z-50 bg-background/10 border-b shadow-sm backdrop-blur-sm"
+            className={`w-full px-4 lg:px-6 h-14 flex items-center justify-between fixed top-0 right-0 left-0 z-50 border-b shadow-sm transition-colors duration-200 ${hasScrolled ? 'bg-background/60 backdrop-blur-sm hover:bg-background' : 'bg-background'
+                }`}
         >
             {/* Logo always visible */}
             <div className="flex items-center">

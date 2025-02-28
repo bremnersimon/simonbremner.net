@@ -1,232 +1,294 @@
 ---
-// src/pages/projects/[category]/[slug].astro
+// src/pages/photography/[slug].astro
 import Layout from "@/layouts/Layout.astro";
 import { Container } from "@/components/main/Container";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { projects } from "@/data/projects";
-import { client, urlForImage, getPhotographyPostBySlug } from "@/lib/sanity";
+import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
 
-// Import the enhanced content resolver
-import EnhancedContentResolver from "@/components/content/ContentBlockResolver.astro";
+// Import the content blocks
+import ContentRenderer from "@/components/blocks/ContentRenderer";
 
 // Define all possible paths for pre-rendering at build time
 export async function getStaticPaths() {
-  // Generate paths for all projects
-  const projectPaths = projects.map(project => ({
-    params: {
-      category: project.category.toLowerCase(),
-      slug: project.slug
-    },
-    props: { project }
-  }));
-  
   // Get all photography posts from Sanity
-  const photographyPosts = await client.fetch(`
-    *[_type == "photography"]{
+  const postCategories = await client.fetch(`
+    *[_type in ["photography", "design", "development", "handcrafted"]]{
       "slug": slug.current,
+      "category": _type,
       _id
     }
   `);
-  
+  console.log(postCategories);
+
   // Create paths for photography posts
-  const photographyPaths = photographyPosts?.map(post => ({
+  return postCategories?.map((post) => ({
     params: {
-      category: "photography",
-      slug: post?.slug
+      category: post?.category,
+      slug: post?.slug,
     },
-    props: { 
-      project: null, // Set to null to indicate this is not a regular project
-      photographyId: post._id
-    }
+    props: {
+      category: post?.category,
+    },
   }));
-  
-  // Combine all paths
-  return [...projectPaths, ...photographyPaths];
 }
 
-// Get parameters and props
-const { category, slug } = Astro.params;
-const { project, photographyId } = Astro.props;
+// Get the slug from the URL
+const { slug } = Astro.params;
+const { category } = Astro.props;
+console.log(category, slug);
 
-// Fetch the photography post if needed
-const isPhotography = category === "photography" && photographyId;
-const photographyPost = isPhotography 
-  ? await getPhotographyPostBySlug(slug) 
-  : null;
+// Fetch the complete photography post by ID with expanded references
+const postData = await fetchProjectById(category, slug);
 
-// Content specific variables
-let pageTitle, pageDescription, publishedDate, contentType, contentData, metadataData;
+// Format the date for display
+const formatDate = (dateString) => {
+  if (!dateString) return "";
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
 
-if (isPhotography && photographyPost) {
-  // Format the date for display (photography post)
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-  
-  contentType = "photography";
-  contentData = photographyPost.content;
-  metadataData = {
-    location: photographyPost.location,
-    tags: photographyPost.tags,
-    shootMetadata: photographyPost.shootMetadata,
-    relatedContent: photographyPost.relatedContent
-  };
-  
-  pageTitle = photographyPost.title;
-  pageDescription = photographyPost.excerpt;
-  publishedDate = photographyPost.publishedAt ? formatDate(photographyPost.publishedAt) : '';
-} else {
-  // Handle regular project display
-  contentType = project?.category?.toLowerCase() || category;
-  contentData = project?.content || [];
-  metadataData = {
-    tags: project?.tags || []
-  };
-  
-  pageTitle = project?.title || 'Project Details';
-  pageDescription = project?.description || '';
-}
+const publishedDate = formatDate(postData?.publishedAt);
 
 // 404 handling if content not found
-if (!isPhotography && !project) {
-  return Astro.redirect("/404");
-}
+// if (!postData) {
+//   return Astro.redirect("/404");
+// }
+console.log(postData);
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
-  {isPhotography && photographyPost ? (
-    <!-- Photography Content Display -->
-    <article class="photography-article">
-      <!-- Hero Section -->
-      <div class="relative h-[70vh] mb-16">
-        <div class="absolute inset-0 bg-black">
-            <img 
-  src={urlForImage(photographyPost.mainImage).url()} 
-  alt={photographyPost.mainImage.alt} 
-  class="w-full h-full object-cover opacity-90"
-/>
+<Layout title={postData.title} description={postData.excerpt}>
+  <article class="photography-article">
+    <!-- Hero Section -->
+    <div class="relative h-[70vh] mb-16">
+      {/* Background image */}
+      <div class="absolute inset-0">
+        {
+          postData.mainImage && (
+            <img
+              src={urlForImage(postData.mainImage).url()}
+              alt={postData.mainImage.alt || postData.title}
+              class="w-full h-full object-cover opacity-90"
+            />
+          )
+        }
+        {/* Dark gradient overlay for text visibility */}
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"
+        >
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-        <Container>
-          <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
-            <div class="flex items-center mb-4">
-              <Badge variant="outline" class="bg-white/10 text-white hover:bg-white/20">
-                Photography
-              </Badge>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">{photographyPost.title}</h1>
-            <p class="text-xl opacity-90 max-w-3xl">{photographyPost.mainImage.caption}</p>
-          </div>
-        </Container>
       </div>
 
-      <Container>
-        <div class="max-w-4xl mx-auto">
-          <!-- Article Header -->
-          <div class="mb-16">
-            <div class="flex items-center mb-6">
-              <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
-                
-                {/* <img src={urlForImage(photographyPost.author.image).url()} alt="Author" class="w-full h-full object-cover" /> */}
-              </div>
-              <div>
-                <div class="text-sm text-muted-foreground">
-                  By <span class="font-medium">{photographyPost.author.name}</span>
-                </div>
-                <div class="text-sm text-muted-foreground">{publishedDate}</div>
-              </div>
-            </div>
-            
-            <div class="text-xl font-medium italic mb-8 text-muted-foreground border-l-4 pl-4 border-primary">
-              {photographyPost.excerpt}
-            </div>
+      {/* Text container - explicitly positioned at bottom */}
+      <div class="absolute inset-x-0 bottom-0 pb-8 pt-16">
+        <div class="container max-w-5xl mx-auto px-4">
+          <div class="flex items-center mb-4">
+            <!-- <Badge
+              variant="outline"
+              className="bg-primary/80 text-white border-primary/30 hover:bg-primary/90"
+            >
+              Photography
+            </Badge> -->
+            {
+              postData.shootMetadata?.theme && (
+                <Badge
+                  variant="outline"
+                  className="bg-primary/80 text-white border-primary/30 hover:bg-primary/90 ml-2"
+                >
+                  {postData.shootMetadata.theme}
+                </Badge>
+              )
+            }
           </div>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white">
+            {postData.title}
+          </h1>
+          {
+            postData.mainImage?.caption && (
+              <p class="text-xl text-white/90 max-w-3xl">
+                {postData.mainImage.caption}
+              </p>
+            )
+          }
+        </div>
+      </div>
+    </div>
 
-          <!-- Enhanced Content Resolver handles all blocks and type-specific metadata -->
-          <EnhancedContentResolver 
-            content={contentData}
-            contentType={contentType}
-            metadata={metadataData}
-            showLabels={true}
-          />
-          
-          <!-- Back Button -->
-          <div class="mt-12 mb-24">
-            <a href="/projects/photography">
-              <Button variant="outline" class="gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
-                  <path d="m12 19-7-7 7-7"></path>
-                  <path d="M19 12H5"></path>
-                </svg>
-                Back to Photography
-              </Button>
-            </a>
-          </div>
-        </div>
-      </Container>
-    </article>
-  ) : (
-    <!-- Regular Project Display -->
     <Container>
-      <div class="max-w-4xl mx-auto py-20">
-        <div class="mb-8">
-          <Badge variant="outline" class="mb-4">{category}</Badge>
-          <h1 class="text-4xl md:text-5xl font-bold mb-4">{project.title}</h1>
-          {project.description && <p class="text-xl text-muted-foreground">{project.description}</p>}
+      <div class="max-w-4xl mx-auto">
+        <!-- Article Header -->
+        <div class="mb-16">
+          {
+            postData.author && (
+              <div class="flex items-center mb-6">
+                {postData.author.image && (
+                  <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                    <img
+                      src={urlForImage(postData.author.image)
+                        .width(80)
+                        .height(80)
+                        .url()}
+                      alt={postData.author.name}
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <div>
+                  <div class="text-sm text-muted-foreground">
+                    By <span class="font-medium">{postData.author.name}</span>
+                  </div>
+                  <div class="text-sm text-muted-foreground">
+                    {publishedDate}
+                  </div>
+                </div>
+              </div>
+            )
+          }
+
+          {
+            postData.excerpt && (
+              <div class="text-xl font-medium italic mb-8 text-muted-foreground border-l-4 pl-4 border-primary">
+                {postData.excerpt}
+              </div>
+            )
+          }
         </div>
-        
-        <div class="aspect-video rounded-lg overflow-hidden mb-12">
-          <img 
-            src={project.image?.src || "/images/example.png"} 
-            alt={project.title}
-            class="w-full h-full object-cover" 
-          />
+
+        <!-- Photography Metadata -->
+        <div class="mb-12 space-y-6">
+          <!-- Location if available -->
+          {
+            postData.location && (
+              <div class="bg-muted p-4 rounded-lg">
+                <h3 class="text-lg font-semibold mb-2">Location</h3>
+                <p>
+                  {[
+                    postData.location.name,
+                    postData.location.city,
+                    postData.location.country,
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}
+                </p>
+              </div>
+            )
+          }
+
+          <!-- Equipment used -->
+          {
+            (postData.shootMetadata?.equipment?.cameras?.length > 0 ||
+              postData.shootMetadata?.equipment?.lenses?.length > 0) && (
+              <div class="bg-muted p-4 rounded-lg">
+                <h3 class="text-lg font-semibold mb-3">Equipment Used</h3>
+
+                {postData.shootMetadata.equipment.cameras?.length > 0 && (
+                  <div class="mb-4">
+                    <h4 class="font-medium mb-2">Cameras</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                      {postData.shootMetadata.equipment.cameras.map(
+                        (camera) => (
+                          <li>
+                            {camera.brand} {camera.name}
+                            {camera.type && (
+                              <span class="text-muted-foreground">
+                                {" "}
+                                ({camera.type})
+                              </span>
+                            )}
+                          </li>
+                        ),
+                      )}
+                    </ul>
+                  </div>
+                )}
+
+                {postData.shootMetadata.equipment.lenses?.length > 0 && (
+                  <div>
+                    <h4 class="font-medium mb-2">Lenses</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                      {postData.shootMetadata.equipment.lenses.map((lens) => (
+                        <li>
+                          {lens.brand} {lens.name}
+                          {lens.focalLength && (
+                            <span class="text-muted-foreground">
+                              {" "}
+                              (
+                              {lens.focalLength.min === lens.focalLength.max
+                                ? `${lens.focalLength.min}mm`
+                                : `${lens.focalLength.min}-${lens.focalLength.max}mm`}
+                              )
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )
+          }
+
+          <!-- Technical notes if available -->
+          {
+            postData.shootMetadata?.technicalNotes && (
+              <div class="bg-muted p-4 rounded-lg">
+                <h3 class="text-lg font-semibold mb-2">Technical Notes</h3>
+                <p>{postData.shootMetadata.technicalNotes}</p>
+              </div>
+            )
+          }
         </div>
-        
-        <!-- Project content using the enhanced content resolver -->
-        {project.content && project.content.length > 0 ? (
-          <EnhancedContentResolver 
-            content={contentData}
-            contentType={contentType}
-            metadata={metadataData}
-            showLabels={true}
-          />
-        ) : (
-          <div class="prose max-w-none mb-16">
-            <p>This is a placeholder for the project content. In a real implementation, you would fetch and display the project details from your data source.</p>
-          </div>
-        )}
-        
-        <!-- If there's no content but there are tags, show them -->
-        {(!project.content || project.content.length === 0) && project.tags && (
-          <div class="mt-8">
-            <h3 class="text-lg font-medium mb-3">Tags</h3>
-            <div class="flex flex-wrap gap-2">
-              {project.tags.map(tag => (
-                <Badge variant="outline">{tag}</Badge>
-              ))}
+
+        <!-- Content Blocks rendered using our ContentRenderer component -->
+        {
+          postData.content && postData.content.length > 0 && (
+            <div class="mb-16">
+              <ContentRenderer client:load blocks={postData.content} />
             </div>
-          </div>
-        )}
-        
+          )
+        }
+
+        <!-- Tags -->
+        {
+          postData.tags && postData.tags.length > 0 && (
+            <div class="mb-12">
+              <h3 class="text-lg font-medium mb-3">Tags</h3>
+              <div class="flex flex-wrap gap-2">
+                {postData.tags.map((tag) => (
+                  <Badge variant="outline">{tag}</Badge>
+                ))}
+              </div>
+            </div>
+          )
+        }
+
         <!-- Back Button -->
-        <div class="mt-12">
-          <a href={`/projects/${category.toLowerCase()}`}>
-            <Button variant="outline" class="gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+        <div class="mt-12 mb-24">
+          <a href={`/projects/${category}`}>
+            <Button variant="outline" className="gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="mr-1"
+              >
                 <path d="m12 19-7-7 7-7"></path>
                 <path d="M19 12H5"></path>
               </svg>
-              Back to {category.charAt(0).toUpperCase() + category.slice(1)} Projects
+              Back to {category}
             </Button>
           </a>
         </div>
       </div>
     </Container>
-  )}
+  </article>
 </Layout>
