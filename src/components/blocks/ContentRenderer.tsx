@@ -64,7 +64,7 @@ const ContentRenderer = ({ blocks = [] }) => {
                                 <p className="text-sm text-gray-500 dark:text-gray-400">
                                     Unknown block type: {block._type}
                                 </p>
-                                <pre className="mt-2 text-xs overflow-x-auto p-2 bg-gray-100 dark:bg-gray-900 rounded max-h-40">
+                                <pre className="mt-2 text-xs overflow-x-auto p-2 bg-gray-100 dark:bg-muted rounded max-h-40">
                                     {JSON.stringify(block, null, 2)}
                                 </pre>
                             </div>

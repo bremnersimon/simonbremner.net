@@ -64,7 +64,7 @@ const TechSpecsBlock: React.FC<TechSpecsBlockProps> = ({
                                 <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
                                     {spec.label}
                                 </dt>
-                                <dd className="mt-1 text-gray-900 dark:text-gray-100">
+                                <dd className="mt-1 text-muted dark:text-gray-100">
                                     {spec.value}
                                 </dd>
                             </div>

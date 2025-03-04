@@ -123,7 +123,7 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
 
         // Default fallback
         return (
-            <div className="p-4 border rounded bg-gray-50 dark:bg-gray-900">
+            <div className="p-4 border rounded bg-gray-50 dark:bg-muted">
                 <a
                     href={url}
                     target="_blank"
@@ -230,7 +230,7 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
                     </Tabs>
                 ) : (
                     // Fallback if no visual content
-                    <div className="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-md">
+                    <div className="text-center p-4 bg-gray-50 dark:bg-muted rounded-md">
                         <p>No demo content available.</p>
                     </div>
                 )}

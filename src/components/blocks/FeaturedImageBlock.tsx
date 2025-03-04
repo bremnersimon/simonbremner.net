@@ -102,8 +102,8 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
 
     return (
         <div className={cn(sizeClasses[size])}>
-            <Card className="overflow-hidden border-0 shadow-lg rounded-lg">
-                <CardContent className="p-0">
+            <Card className="overflow-hidden border-0 shadow-lg rounded-lg gap-0 p-0 m-0 space-y-0">
+                <CardContent className="p-0 m-0">
                     <img
                         src={imageUrl}
                         alt={imageAlt}
@@ -115,7 +115,7 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
                 </CardContent>
 
                 {(imageCaption || (showMetadata && imageMetadata)) && (
-                    <CardFooter className="flex flex-col sm:flex-row sm:justify-between items-start gap-2 p-4 bg-gray-50 dark:bg-gray-900">
+                    <CardFooter className="flex flex-col sm:flex-row sm:justify-between items-start gap-2 p-4 bg-muted dark:bg-muted">
                         {imageCaption && (
                             <p className="text-sm text-gray-600 dark:text-gray-300">
                                 {imageCaption}

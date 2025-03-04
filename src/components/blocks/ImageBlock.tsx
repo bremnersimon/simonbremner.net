@@ -40,7 +40,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 
     return (
         <div className={cn(widthClasses[width])}>
-            <Card className="overflow-hidden border-0 shadow-md">
+            <Card className="overflow-hidden border-0 shadow-md p-0">
                 <CardContent className="p-0">
                     <img
                         src={imageUrl}
