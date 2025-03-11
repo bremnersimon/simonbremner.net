@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, type ReactNode, type ElementType } from 'react';
-import { motion, useAnimation, useInView, type Variants, type HTMLMotionProps } from 'framer-motion';
+import { motion, useAnimation, useInView, type Variants, type HTMLMotionProps } from 'motion/react';
 
 interface AnimateOnScrollProps {
     children: ReactNode;
