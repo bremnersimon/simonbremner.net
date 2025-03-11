@@ -41,7 +41,7 @@ const StackBlock: React.FC<StackBlockProps> = ({
     if (!technologies || technologies.length === 0) return null;
 
     // Helper function to safely get image URL
-    const getImageUrl = (tech) => {
+    const getImageUrl = (tech: Technology) => {
         try {
             // Check if icon exists
             if (!tech || !tech.icon) {

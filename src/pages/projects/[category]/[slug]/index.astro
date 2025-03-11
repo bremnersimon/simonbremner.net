@@ -19,10 +19,9 @@ export async function getStaticPaths() {
       _id
     }
   `);
-  console.log(postCategories);
 
   // Create paths for photography posts
-  return postCategories?.map((post) => ({
+  return postCategories?.map((post: { category: string; slug: string }) => ({
     params: {
       category: post?.category,
       slug: post?.slug,
@@ -36,13 +35,12 @@ export async function getStaticPaths() {
 // Get the slug from the URL
 const { slug } = Astro.params;
 const { category } = Astro.props;
-console.log(category, slug);
 
 // Fetch the complete photography post by ID with expanded references
 const postData = await fetchProjectById(category, slug);
 
 // Format the date for display
-const formatDate = (dateString) => {
+const formatDate = (dateString: string) => {
   if (!dateString) return "";
   return new Date(dateString).toLocaleDateString("en-US", {
     year: "numeric",
@@ -57,7 +55,7 @@ const publishedDate = formatDate(postData?.publishedAt);
 // if (!postData) {
 //   return Astro.redirect("/404");
 // }
-console.log(postData);
+// console.log(postData);
 ---
 
 <Layout title={postData.title} description={postData.excerpt}>
@@ -188,8 +186,8 @@ console.log(postData);
                   <div class="mb-4">
                     <h4 class="font-medium mb-2">Cameras</h4>
                     <ul class="list-disc pl-5 space-y-1">
-                      {postData.shootMetadata.equipment.cameras.map(
-                        (camera) => (
+                      {postData.shootMetadata.equipment.cameras?.map(
+                        (camera: { brand: string; name: string; type?: string }) => (
                           <li>
                             {camera.brand} {camera.name}
                             {camera.type && (
@@ -209,7 +207,7 @@ console.log(postData);
                   <div>
                     <h4 class="font-medium mb-2">Lenses</h4>
                     <ul class="list-disc pl-5 space-y-1">
-                      {postData.shootMetadata.equipment.lenses.map((lens) => (
+                      {postData.shootMetadata.equipment.lenses?.map((lens: { brand: string; name: string; focalLength?: { min: number; max: number } }) => (
                         <li>
                           {lens.brand} {lens.name}
                           {lens.focalLength && (
@@ -257,7 +255,7 @@ console.log(postData);
             <div class="mb-12">
               <h3 class="text-lg font-medium mb-3">Tags</h3>
               <div class="flex flex-wrap gap-2">
-                {postData.tags.map((tag) => (
+                {postData.tags.map((tag: string) => (
                   <Badge variant="outline">{tag}</Badge>
                 ))}
               </div>
