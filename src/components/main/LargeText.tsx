@@ -5,13 +5,22 @@ import { Container } from "./Container"
 interface LargeTextProps {
     content: string[]
     textSize?: "default" | "large"
+    // New prop to allow highlighting specific words
+    highlightedWords?: {
+        // Map section index to array of word indices to highlight
+        [sectionIndex: number]: number[]
+    }
+    // Optional prop for customizing highlight style
+    highlightStyle?: string
 }
 
 // Component for a single text section with its own scroll animation
-const TextSection = ({ text, index, textSize }: {
+const TextSection = ({ text, index, textSize, highlightedWords, highlightStyle }: {
     text: string,
     index: number,
-    textSize: "default" | "large"
+    textSize: "default" | "large",
+    highlightedWords?: number[],
+    highlightStyle?: string
 }) => {
     const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -44,6 +53,8 @@ const TextSection = ({ text, index, textSize }: {
                         wordIndex={wordIndex}
                         totalWords={words.length}
                         scrollYProgress={scrollYProgress}
+                        isHighlighted={highlightedWords?.includes(wordIndex)}
+                        highlightStyle={highlightStyle}
                     />
                 ))}
             </div>
@@ -56,12 +67,16 @@ const WordAnimation = ({
     word,
     wordIndex,
     totalWords,
-    scrollYProgress
+    scrollYProgress,
+    isHighlighted,
+    highlightStyle
 }: {
     word: string,
     wordIndex: number,
     totalWords: number,
-    scrollYProgress: any
+    scrollYProgress: any,
+    isHighlighted?: boolean,
+    highlightStyle?: string
 }) => {
     // Calculate when this word should appear
     // Spread words evenly across the first 75% of scroll progress
@@ -80,6 +95,12 @@ const WordAnimation = ({
         [20, 0]
     );
 
+    // Default highlight style if none provided
+    const defaultHighlightStyle = "bg-primary/20 px-1 rounded text-primary font-semibold";
+
+    // Apply highlight class if word is highlighted
+    const highlightClass = isHighlighted ? (highlightStyle || defaultHighlightStyle) : "";
+
     return (
         <motion.div
             style={{
@@ -90,14 +111,14 @@ const WordAnimation = ({
                 display: "inline-block",
                 position: "relative",
             }}
-            className="text-foreground font-normal"
+            className={`text-foreground font-normal ${highlightClass}`}
         >
             {word}
         </motion.div>
     );
 };
 
-export default function LargeText({ content, textSize = "large" }: LargeTextProps) {
+export default function LargeText({ content, textSize = "large", highlightedWords, highlightStyle }: LargeTextProps) {
     return (
         <section id="aboutMe" className="w-full py-24 relative">
             <Container className="relative">
@@ -108,6 +129,8 @@ export default function LargeText({ content, textSize = "large" }: LargeTextProp
                             text={text}
                             index={idx}
                             textSize={textSize}
+                            highlightedWords={highlightedWords?.[idx]}
+                            highlightStyle={highlightStyle}
                         />
                     ))}
                 </div>
