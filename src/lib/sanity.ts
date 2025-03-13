@@ -1,5 +1,6 @@
 import imageUrlBuilder from '@sanity/image-url';
-import {createClient} from '@sanity/client';
+import { createClient } from '@sanity/client';
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
 export const client = createClient({
   projectId: "hzdtear2",
@@ -11,7 +12,7 @@ export const client = createClient({
 const builder = imageUrlBuilder(client);
 
 // Helper function to build image URLs
-export function urlForImage(source) {
+export function urlForImage(source: any) {
   // Handle cases where source might be null or undefined
   if (!source || !source.asset) {
     return {
@@ -24,7 +25,7 @@ export function urlForImage(source) {
       format: () => urlForImage(source),
     };
   }
-  
+
   return builder.image(source);
 }
 
@@ -54,7 +55,7 @@ export async function getAllPostsByType(type: "photography" | "design" | "develo
     mainImage,
     tags,
     "category": _type
-  }`, { type });
+  } | order(publishedAt desc)[0...24]`, { type });
 }
 
 // Define project type constants

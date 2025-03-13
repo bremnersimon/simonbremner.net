@@ -1,5 +1,4 @@
 ---
-import Footer from "@/components/globals/Footer";
 import Layout from "@/layouts/Layout.astro";
 import HomepageHero from "@/components/main/HomepageHero";
 import TabbedPostSlider from "@/components/main/TabbedPostSlider";
@@ -7,51 +6,50 @@ import LargeText from "@/components/main/LargeText";
 import AnimateOnLoad from "@/components/motion/AnimateOnLoad";
 import { getHomePageProjects } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
-
+import ravanelBridge from "@/assets/ravanel-bridge.jpg";
+import { Image } from "astro:assets";
 const data: { featuredProjects: ProjectCardProps[] } =
-	await getHomePageProjects();
+  await getHomePageProjects();
 ---
 
 <Layout>
-	<AnimateOnLoad
-		client:load
-		variants={{
-			hidden: { opacity: 0, y: -20 },
-			visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-		}}
-		tag="section"
-		className="py-20 text-center"
-	>
-		<HomepageHero
-			title="Crafting Moments, Building Connections"
-			subtitle="Photographer, developer, designer, and maker—bringing ideas to life through multiple creative languages that connect people with what matters most."
-			mediaUrl={{
-				src: "/images/ravanel-bridge.jpg",
-				alt: "Example",
-				video: false,
-			}}
-			primaryCta={{ text: "About Me", href: "/about" }}
-		/>
-	</AnimateOnLoad>
-	<LargeText
-		client:load
-		content={[
-			"Welcome to my portfolio—a site documenting my creative journey and professional evolution. Browse through these visual stories and technical experiments, shared for fellow enthusiasts and anyone seeking inspiration on their creative journey.",
-		]}
-	/>
-
-	<TabbedPostSlider
-		client:load
-		title="Recent Projects"
-		subtitle="A few of my projects across all my interests"
-		categories={[
-			"All",
-			"Photography",
-			"Design",
-			"Development",
-			"Handcrafted",
-		]}
-		defaultTab="All"
-		featuredProjects={data.featuredProjects}
-	/>
+  <AnimateOnLoad
+    client:load
+    variants={{
+      hidden: { opacity: 0, y: -20 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    }}
+    tag="section">
+    <HomepageHero
+      title="Crafting Moments, Building Connections"
+      subtitle="Photographer, developer, designer, and maker—bringing ideas to life through multiple creative languages that connect people with what matters most."
+      primaryCta={{
+        text: "About Me",
+        href: "/about",
+        icon: "user",
+      }}>
+      <Image priority src={ravanelBridge} alt="Ravanel Bridge" />
+    </HomepageHero>
+  </AnimateOnLoad>
+  <LargeText
+    className="py-24"
+    client:load
+    content={"Welcome to my portfolio—a site documenting my creative journey and professional evolution. Browse through these visual stories and technical experiments, shared for fellow enthusiasts and anyone seeking inspiration for their next expedition."}
+  />
+  <div id="projects">
+    <TabbedPostSlider
+      client:load
+      title="Recent Projects"
+      subtitle="A few of my projects across all my interests"
+      categories={[
+        "All",
+        "Photography",
+        "Design",
+        "Development",
+        "Handcrafted",
+      ]}
+      defaultTab="All"
+      featuredProjects={data.featuredProjects}
+    />
+  </div>
 </Layout>

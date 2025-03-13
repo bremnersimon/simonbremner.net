@@ -1,5 +1,5 @@
 import React, { type ReactNode } from 'react';
-import { motion, type Variants, type HTMLMotionProps } from 'framer-motion';
+import { motion, type Variants, type HTMLMotionProps } from 'motion/react';
 
 interface StaggerContainerProps {
     children: ReactNode;
