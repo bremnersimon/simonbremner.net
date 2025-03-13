@@ -14,11 +14,13 @@ interface FooterSection {
 interface FooterProps {
     title: string
     sections: FooterSection[]
+    year: number
 }
 
 export default function Footer({
     title = "Simon Bremner",
-    sections
+    sections,
+    year = 2025
 }: FooterProps) {
     return (
         <footer className="w-full py-24 relative overflow-hidden border-t">
@@ -49,7 +51,7 @@ export default function Footer({
                             ))}
                         </div>
                         <div className="border-t pt-8">
-                            <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} simonbremner.net. All rights reserved.</p>
+                            <p className="text-sm text-muted-foreground">© {year} simonbremner.net. All rights reserved.</p>
                         </div>
                     </div>
                 </div>
