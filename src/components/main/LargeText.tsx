@@ -1,37 +1,36 @@
 import { motion, useScroll, useTransform } from "motion/react"
 import { useRef } from "react"
 import { Container } from "./Container"
+import { cn } from "@/lib/utils"
 
 interface LargeTextProps {
-    content: string[]
+    index: number;
+    className?: string
+    content: string
     textSize?: "default" | "large"
-    // New prop to allow highlighting specific words
-    highlightedWords?: {
-        // Map section index to array of word indices to highlight
-        [sectionIndex: number]: number[]
-    }
+    // Updated prop to allow highlighting specific words in a single string
+    highlightedWords?: number[]
     // Optional prop for customizing highlight style
     highlightStyle?: string
 }
 
-// Component for a single text section with its own scroll animation
-const TextSection = ({ text, index, textSize, highlightedWords, highlightStyle }: {
+// Component for text section with scroll animation
+const TextSection = ({ text, textSize, highlightedWords, highlightStyle }: {
     text: string,
-    index: number,
     textSize: "default" | "large",
     highlightedWords?: number[],
     highlightStyle?: string
 }) => {
     const sectionRef = useRef<HTMLDivElement>(null);
 
-    // Each section has its own scroll progress tracker
+    // Section scroll progress tracker
     const { scrollYProgress } = useScroll({
         target: sectionRef,
         offset: ["start end", "center center"],
         layoutEffect: false,
     });
 
-    // Split text into words and characters for animation
+    // Split text into words for animation
     const words = text.split(' ').filter(word => word.length > 0);
 
     return (
@@ -48,7 +47,7 @@ const TextSection = ({ text, index, textSize, highlightedWords, highlightStyle }
             <div className="flex flex-wrap" style={{ position: "relative", }}>
                 {words.map((word, wordIndex) => (
                     <WordAnimation
-                        key={`word-${index}-${wordIndex}`}
+                        key={`word-${wordIndex}`}
                         word={word}
                         wordIndex={wordIndex}
                         totalWords={words.length}
@@ -118,21 +117,17 @@ const WordAnimation = ({
     );
 };
 
-export default function LargeText({ content, textSize = "large", highlightedWords, highlightStyle }: LargeTextProps) {
+export default function LargeText({ className, content, textSize = "large", highlightedWords, highlightStyle, index }: LargeTextProps) {
     return (
-        <section id="aboutMe" className="w-full py-24 relative">
+        <section id="aboutMe" key={index + content} className={cn("w-full relative", className)}>
             <Container className="relative">
                 <div className="space-y-20 relative">
-                    {content.map((text, idx) => (
-                        <TextSection
-                            key={`section-${idx}`}
-                            text={text}
-                            index={idx}
-                            textSize={textSize}
-                            highlightedWords={highlightedWords?.[idx]}
-                            highlightStyle={highlightStyle}
-                        />
-                    ))}
+                    <TextSection
+                        text={content}
+                        textSize={textSize}
+                        highlightedWords={highlightedWords}
+                        highlightStyle={highlightStyle}
+                    />
                 </div>
             </Container>
         </section>

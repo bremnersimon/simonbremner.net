@@ -4,7 +4,7 @@ export const projects: ProjectCardProps[] = [
     {
         _id: "1",
         image: {
-            src: "/images/example.png",
+            src: "/images/chs-waterfront.jpg",
             alt: "Mountain landscape photography",
         },
         caption: "Alpine Vistas",
@@ -15,7 +15,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "2",
-        image: { src: "/images/example.png", alt: "Urban street photography" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Urban street photography" },
         caption: "Urban Stories",
         title: "City Rhythms",
         slug: "city-rhythms",
@@ -24,7 +24,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "3",
-        image: { src: "/images/example.png", alt: "Portrait photography" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Portrait photography" },
         caption: "Character Studies",
         title: "Faces of Humanity",
         slug: "faces-humanity",
@@ -34,7 +34,7 @@ export const projects: ProjectCardProps[] = [
     {
         _id: "4",
         image: {
-            src: "/images/example.png",
+            src: "/images/chs-waterfront.jpg",
             alt: "Handcrafted wooden furniture",
         },
         caption: "Oakwood Designs",
@@ -46,7 +46,7 @@ export const projects: ProjectCardProps[] = [
     {
         _id: "5",
         image: {
-            src: "/images/example.png",
+            src: "/images/chs-waterfront.jpg",
             alt: "E-commerce website development",
         },
         caption: "Digital Solutions",
@@ -57,7 +57,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "6",
-        image: { src: "/images/example.png", alt: "Brand identity design" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Brand identity design" },
         caption: "Brand Elevation",
         title: "Corporate Identity Redesign",
         slug: "corporate-identity",
@@ -66,7 +66,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "7",
-        image: { src: "/images/example.png", alt: "Minimalist logo design" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Minimalist logo design" },
         caption: "Minimal Design Co.",
         title: "Logo Collection 2025",
         slug: "logo-collection-2025",
@@ -75,7 +75,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "8",
-        image: { src: "/images/example.png", alt: "Mobile app interface" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Mobile app interface" },
         caption: "AppTech Solutions",
         title: "Fitness Tracker App",
         slug: "fitness-tracker-app",
@@ -85,7 +85,7 @@ export const projects: ProjectCardProps[] = [
     {
         _id: "9",
         image: {
-            src: "/images/example.png",
+            src: "/images/chs-waterfront.jpg",
             alt: "Handcrafted ceramic pottery",
         },
         caption: "Clay Artisans",
@@ -96,7 +96,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "10",
-        image: { src: "/images/example.png", alt: "Wildlife photography" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Wildlife photography" },
         caption: "Wild Encounters",
         title: "Safari Documentation",
         slug: "safari-documentation",
@@ -105,7 +105,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "11",
-        image: { src: "/images/example.png", alt: "Web application dashboard" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Web application dashboard" },
         caption: "DataViz Inc.",
         title: "Analytics Dashboard",
         slug: "analytics-dashboard",
@@ -114,7 +114,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "12",
-        image: { src: "/images/example.png", alt: "Handcrafted jewelry" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Handcrafted jewelry" },
         caption: "Silver & Stone",
         title: "Artisan Jewelry Line",
         slug: "artisan-jewelry",
@@ -123,7 +123,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "13",
-        image: { src: "/images/example.png", alt: "Magazine layout design" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Magazine layout design" },
         caption: "Print Masters",
         title: "Editorial Design",
         slug: "editorial-design",
@@ -132,7 +132,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "14",
-        image: { src: "/images/example.png", alt: "Night sky photography" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Night sky photography" },
         caption: "Astral Images",
         title: "Milky Way Exposures",
         slug: "milky-way-exposures",
@@ -141,7 +141,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "15",
-        image: { src: "/images/example.png", alt: "Social media app" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Social media app" },
         caption: "ConnectTech",
         title: "Social Platform Redesign",
         slug: "social-platform-redesign",
@@ -150,7 +150,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "16",
-        image: { src: "/images/example.png", alt: "Packaging design" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Packaging design" },
         caption: "PackRight Studios",
         title: "Sustainable Packaging",
         slug: "sustainable-packaging",
@@ -159,7 +159,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "17",
-        image: { src: "/images/example.png", alt: "Handcrafted wooden toys" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Handcrafted wooden toys" },
         caption: "Timber Toys",
         title: "Children's Wood Collection",
         slug: "childrens-wood-collection",
@@ -168,7 +168,7 @@ export const projects: ProjectCardProps[] = [
     },
     {
         _id: "18",
-        image: { src: "/images/example.png", alt: "Wedding photography" },
+        image: { src: "/images/chs-waterfront.jpg", alt: "Wedding photography" },
         caption: "Eternal Moments",
         title: "Wedding Portfolio",
         slug: "wedding-portfolio",

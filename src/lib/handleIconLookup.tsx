@@ -1,4 +1,4 @@
-import { Camera, Code, Dot, ExternalLink, Hammer, Link, Pencil } from "lucide-react";
+import { Camera, Code, Dot, ExternalLink, Hammer, Link, Pencil, User } from "lucide-react";
 const handleIcon = (icon: string) => {
     switch (icon) {
         case "camera":
@@ -15,6 +15,8 @@ const handleIcon = (icon: string) => {
             return <Dot />;
         case "link":
             return <Link />;
+        case "user":
+            return <User />;
         default:
             return null;
     }

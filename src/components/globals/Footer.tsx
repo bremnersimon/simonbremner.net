@@ -49,7 +49,6 @@ export default function Footer({
                                 </div>
                             ))}
                         </div>
-
                         <div className="border-t pt-8">
                             <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} simonbremner.net. All rights reserved.</p>
                         </div>
