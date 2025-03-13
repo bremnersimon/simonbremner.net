@@ -81,11 +81,11 @@ const BehindTheScenesBlock: React.FC<BehindTheScenesBlockProps> = ({
     };
 
     return (
-        <Card className="max-w-4xl mx-auto my-8">
-            <CardHeader>
-                <CardTitle>{title}</CardTitle>
+        <Card className="max-w-4xl mx-auto my-8 border-0 p-0">
+            <CardHeader className="p-0">
+                <CardTitle className="text-2xl">{title}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
                 {description && description.length > 0 && (
                     <div className="prose prose-sm dark:prose-invert max-w-none mb-6">
                         <PortableText
