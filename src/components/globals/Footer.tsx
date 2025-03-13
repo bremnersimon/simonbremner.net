@@ -14,7 +14,7 @@ interface FooterSection {
 interface FooterProps {
     title: string
     sections: FooterSection[]
-    year: number
+    year?: number
 }
 
 export default function Footer({
