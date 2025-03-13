@@ -24,7 +24,7 @@ const ContentRenderer = ({ blocks = [] }) => {
 
     return (
         <div className="content-blocks space-y-8">
-            {blocks.map((block) => {
+            {blocks.map((block: any) => {
                 // Use the _type to determine which component to render
                 switch (block._type) {
                     case 'headlineBlock':

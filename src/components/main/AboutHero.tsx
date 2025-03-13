@@ -23,7 +23,7 @@ export default function AboutHero({ children, content }: AboutHeroProps) {
                         visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
                     }}
                 >
-                    <div className="rounded-lg relative">
+                    <div className="relative">
                         <div className="absolute bottom-[-30px] left-10 font-bold text-primary text-7xl">| Simon Bremner</div>
                         {children}
                     </div>

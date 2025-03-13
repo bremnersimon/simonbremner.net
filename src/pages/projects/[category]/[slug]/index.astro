@@ -9,6 +9,9 @@ import ScrollIndicator from "@/components/motion/ScrollIndicator";
 
 // Import the content blocks
 import ContentRenderer from "@/components/blocks/ContentRenderer";
+import HeroSection from "@/components/blocks/HeroSection";
+import AuthorSection from "@/components/blocks/AuthorSection";
+import PhotographyMetadata from "@/components/blocks/PhotographyMetadata";
 
 // Define all possible paths for pre-rendering at build time
 export async function getStaticPaths() {
@@ -52,206 +55,41 @@ const formatDate = (dateString: string) => {
 
 const publishedDate = formatDate(postData?.publishedAt);
 
-// 404 handling if content not found
-// if (!postData) {
-//   return Astro.redirect("/404");
-// }
-// console.log(postData);
+if (!postData) {
+  return Astro.redirect("/404");
+}
+console.log(postData);
 ---
 
-<Layout title={postData.title} description={postData.excerpt}>
+<Layout>
   <ScrollIndicator client:load>
     <>
-      <article class="photography-article">
-        <!-- Hero Section -->
-        <div class="relative h-[70vh] mb-16">
-          {/* Background image */}
-          <div class="absolute inset-0">
-            {
-              postData.mainImage && (
-                <img
-                  src={urlForImage(postData.mainImage).url()}
-                  alt={postData.mainImage.alt || postData.title}
-                  class="w-full h-full object-cover opacity-90"
-                />
-              )
-            }
-            {/* Dark gradient overlay for text visibility */}
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-            </div>
-          </div>
-
-          {/* Text container - explicitly positioned at bottom */}
-          <div class="absolute inset-x-0 bottom-0 pb-8 pt-16">
-            <div class="container max-w-5xl mx-auto px-4">
-              <div class="flex items-center mb-4">
-                <!-- <Badge
-              variant="outline"
-              className="bg-primary/80 text-white border-primary/30 hover:bg-primary/90"
-            >
-              Photography
-            </Badge> -->
-                {
-                  postData.shootMetadata?.theme && (
-                    <Badge
-                      variant="outline"
-                      className="bg-primary/80 text-white border-primary/30 hover:bg-primary/90 ml-2">
-                      {postData.shootMetadata.theme}
-                    </Badge>
-                  )
-                }
-              </div>
-              <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white">
-                {postData.title}
-              </h1>
-              {
-                postData.mainImage?.caption && (
-                  <p class="text-xl text-white/90 max-w-3xl">
-                    {postData.mainImage.caption}
-                  </p>
-                )
-              }
-            </div>
-          </div>
-        </div>
+      <article>
+        <HeroSection
+          title={postData.title}
+          mainImage={postData.mainImage}
+          shootMetadata={postData.shootMetadata}
+          urlForImage={urlForImage}
+        />
 
         <Container>
           <div class="max-w-4xl mx-auto">
-            <!-- Article Header -->
-            <div class="mb-16">
-              {
-                postData.author && (
-                  <div class="flex items-center mb-6">
-                    {postData.author.image && (
-                      <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
-                        <img
-                          src={urlForImage(postData.author.image)
-                            .width(80)
-                            .height(80)
-                            .url()}
-                          alt={postData.author.name}
-                          class="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <div>
-                      <div class="text-sm text-muted-foreground">
-                        By{" "}
-                        <span class="font-medium">{postData.author.name}</span>
-                      </div>
-                      <div class="text-sm text-muted-foreground">
-                        {publishedDate}
-                      </div>
-                    </div>
-                  </div>
-                )
-              }
+            {
+              category === "photography" && (
+                <PhotographyMetadata
+                  location={postData.location}
+                  shootMetadata={postData.shootMetadata}
+                  isPhotographyPost={category === "photography"}
+                />
+              )
+            }
 
-              {
-                postData.excerpt && (
-                  <div class="text-xl font-medium italic mb-8 text-muted-foreground border-l-4 pl-4 border-primary">
-                    {postData.excerpt}
-                  </div>
-                )
-              }
-            </div>
-
-            <!-- Photography Metadata -->
-            <div class="mb-12 space-y-6">
-              <!-- Location if available -->
-              {
-                postData.location && (
-                  <div class="bg-muted p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-2">Location</h3>
-                    <p>
-                      {[
-                        postData.location.name,
-                        postData.location.city,
-                        postData.location.country,
-                      ]
-                        .filter(Boolean)
-                        .join(", ")}
-                    </p>
-                  </div>
-                )
-              }
-
-              <!-- Equipment used -->
-              {
-                (postData.shootMetadata?.equipment?.cameras?.length > 0 ||
-                  postData.shootMetadata?.equipment?.lenses?.length > 0) && (
-                  <div class="bg-muted p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-3">Equipment Used</h3>
-
-                    {postData.shootMetadata.equipment.cameras?.length > 0 && (
-                      <div class="mb-4">
-                        <h4 class="font-medium mb-2">Cameras</h4>
-                        <ul class="list-disc pl-5 space-y-1">
-                          {postData.shootMetadata.equipment.cameras?.map(
-                            (camera: {
-                              brand: string;
-                              name: string;
-                              type?: string;
-                            }) => (
-                              <li>
-                                {camera.brand} {camera.name}
-                                {camera.type && (
-                                  <span class="text-muted-foreground">
-                                    {" "}
-                                    ({camera.type})
-                                  </span>
-                                )}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                    )}
-
-                    {postData.shootMetadata.equipment.lenses?.length > 0 && (
-                      <div>
-                        <h4 class="font-medium mb-2">Lenses</h4>
-                        <ul class="list-disc pl-5 space-y-1">
-                          {postData.shootMetadata.equipment.lenses?.map(
-                            (lens: {
-                              brand: string;
-                              name: string;
-                              focalLength?: { min: number; max: number };
-                            }) => (
-                              <li>
-                                {lens.brand} {lens.name}
-                                {lens.focalLength && (
-                                  <span class="text-muted-foreground">
-                                    {" "}
-                                    (
-                                    {lens.focalLength.min ===
-                                    lens.focalLength.max
-                                      ? `${lens.focalLength.min}mm`
-                                      : `${lens.focalLength.min}-${lens.focalLength.max}mm`}
-                                    )
-                                  </span>
-                                )}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                )
-              }
-
-              <!-- Technical notes if available -->
-              {
-                postData.shootMetadata?.technicalNotes && (
-                  <div class="bg-muted p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-2">Technical Notes</h3>
-                    <p>{postData.shootMetadata.technicalNotes}</p>
-                  </div>
-                )
-              }
-            </div>
+            <AuthorSection
+              author={postData.author}
+              publishedDate={publishedDate}
+              excerpt={postData.excerpt}
+              urlForImage={urlForImage}
+            />
 
             <!-- Content Blocks rendered using our ContentRenderer component -->
             {

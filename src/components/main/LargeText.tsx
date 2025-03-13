@@ -4,7 +4,7 @@ import { Container } from "./Container"
 import { cn } from "@/lib/utils"
 
 interface LargeTextProps {
-    index: number;
+    index?: number;
     className?: string
     content: string
     textSize?: "default" | "large"

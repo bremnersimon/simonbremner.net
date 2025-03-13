@@ -55,7 +55,7 @@ export async function getAllPostsByType(type: "photography" | "design" | "develo
     mainImage,
     tags,
     "category": _type
-  }`, { type });
+  } | order(publishedAt desc)[0...24]`, { type });
 }
 
 // Define project type constants

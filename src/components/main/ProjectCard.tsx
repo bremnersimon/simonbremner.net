@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
 import type { ProjectCardProps } from "@/types";
+import { ArrowRight } from "lucide-react";
 
 type CardProps = ProjectCardProps & {
     id?: string;
@@ -85,21 +86,7 @@ export default function ProjectCard({
                             className="pointer-events-none"
                         >
                             <div className="flex items-center justify-center h-8 w-8">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M5 12h14"></path>
-                                    <path d="m12 5 7 7-7 7"></path>
-                                </svg>
+                                <ArrowRight className="text-muted-foreground group-hover:text-primary" size={16} />
                             </div>
                         </motion.div>
                     </div>

@@ -102,8 +102,8 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
 
     return (
         <div className={cn(sizeClasses[size])}>
-            <Card className="overflow-hidden border-0 shadow-lg rounded-lg gap-0 p-0 m-0 space-y-0">
-                <CardContent className="p-0 m-0">
+            <Card className="overflow-hidden border-0 shadow-lg rounded-lg gap-0 p-0 m-0 space-y-0  hover:[&_div]:opacity-100">
+                <CardContent className="p-0 m-0 relative">
                     <img
                         src={imageUrl}
                         alt={imageAlt}
@@ -112,51 +112,52 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
                             heightClasses[size]
                         )}
                     />
+                    {(imageCaption || (showMetadata && imageMetadata)) && (
+                        <div className="flex flex-col sm:flex-row sm:justify-between items-start gap-2 p-4 bg-muted dark:bg-muted absolute bottom-0 left-0 w-full opacity-0 transition-opacity duration-300">
+                            {imageCaption && (
+                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                    {imageCaption}
+                                </p>
+                            )}
+
+                            {showMetadata && imageMetadata && (
+                                <div className="flex flex-wrap gap-2">
+                                    {cameraData && (
+                                        <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                            {cameraData.brand} {cameraData.name}
+                                        </Badge>
+                                    )}
+
+                                    {lensData && (
+                                        <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                            {lensData.brand} {lensData.name}
+                                        </Badge>
+                                    )}
+
+                                    {imageMetadata.aperture && (
+                                        <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                            f/{imageMetadata.aperture}
+                                        </Badge>
+                                    )}
+
+                                    {imageMetadata.shutterSpeed && (
+                                        <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                            {imageMetadata.shutterSpeed}s
+                                        </Badge>
+                                    )}
+
+                                    {imageMetadata.iso && (
+                                        <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                            ISO {imageMetadata.iso}
+                                        </Badge>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </CardContent>
 
-                {(imageCaption || (showMetadata && imageMetadata)) && (
-                    <CardFooter className="flex flex-col sm:flex-row sm:justify-between items-start gap-2 p-4 bg-muted dark:bg-muted">
-                        {imageCaption && (
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                                {imageCaption}
-                            </p>
-                        )}
 
-                        {showMetadata && imageMetadata && (
-                            <div className="flex flex-wrap gap-2">
-                                {cameraData && (
-                                    <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                        {cameraData.brand} {cameraData.name}
-                                    </Badge>
-                                )}
-
-                                {lensData && (
-                                    <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                        {lensData.brand} {lensData.name}
-                                    </Badge>
-                                )}
-
-                                {imageMetadata.aperture && (
-                                    <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                        f/{imageMetadata.aperture}
-                                    </Badge>
-                                )}
-
-                                {imageMetadata.shutterSpeed && (
-                                    <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                        {imageMetadata.shutterSpeed}s
-                                    </Badge>
-                                )}
-
-                                {imageMetadata.iso && (
-                                    <Badge variant="secondary" className="bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
-                                        ISO {imageMetadata.iso}
-                                    </Badge>
-                                )}
-                            </div>
-                        )}
-                    </CardFooter>
-                )}
             </Card>
         </div>
     );

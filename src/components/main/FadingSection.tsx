@@ -8,6 +8,7 @@ import sbCode from "@/assets/sb-code.jpg"
 import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';
 import { handleIcon } from '@/lib/handleIconLookup';
+import { cn } from '@/lib/utils';
 
 type SectionProps = {
     id: number;
@@ -136,7 +137,10 @@ const ContentSection = ({ content }: { content: SectionProps }) => {
                         x: imageX
                     }}
                 >
-                    <div className="overflow-hidden rounded-lg shadow-xl relative">
+                    <div className=" rounded-lg shadow-xl relative">
+                        <div className={cn("absolute top-[-50px] md:top-[50px] w-[100px] h-[100px] rounded-lg bg-primary flex items-center justify-center z-10 shadow-md text-white", content.imagePosition === "right" ? "right-[50%] translate-x-1/2 md:translate-x-0 md:right-[-50px]" : "translate-x-1/2 md:translate-x-0 right-[50%] md:left-[-50px]")}>
+                            {handleIcon(content.button.icon ? content.button.icon : "")}
+                        </div>
                         <img
                             src={content.image.src}
                             alt={content.title}

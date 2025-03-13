@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="e" data-name="Layer 2 copy 4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" style="fill: #ededed;"/>
+  <g>
+    <line x1="168.17" y1="168.17" x2="231.83" y2="231.83" style="fill: none; stroke: #010101; stroke-linecap: round; stroke-linejoin: round; stroke-width: 6px;"/>
+    <path d="M184.08,184.08h-9.55c-3.52,0-6.37,2.85-6.37,6.37v28.65c0,3.52,2.85,6.37,6.37,6.37h50.93" style="fill: none; stroke: #010101; stroke-linecap: round; stroke-linejoin: round; stroke-width: 6px;"/>
+    <path d="M192.04,174.53h15.92l7.96,9.55h9.55c3.52,0,6.37,2.85,6.37,6.37v23.88" style="fill: none; stroke: #010101; stroke-linecap: round; stroke-linejoin: round; stroke-width: 6px;"/>
+    <path d="M206.75,209.94c-3.62,3.83-9.67,4-13.5.38-3.83-3.62-4-9.67-.38-13.5.12-.13.25-.25.38-.38" style="fill: none; stroke: #010101; stroke-linecap: round; stroke-linejoin: round; stroke-width: 6px;"/>
+  </g>
+</svg>
