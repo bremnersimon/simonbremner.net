@@ -33,13 +33,13 @@ export default function HomepageHero({
             <div className="flex flex-col items-center text-center mb-12 w-full h-full">
                 <div className="inline-flex items-center px-4 py-2 rounded-full border mb-8">
                     {/* <span className="text-sm">Now Booking</span> */}
-                    {handleIcon("camera")}
+                    <a href="/projects/photography">{handleIcon("camera")}</a>
                     {handleIcon("dot")}
-                    {handleIcon("code")}
+                    <a href="/projects/development">{handleIcon("code")}</a>
                     {handleIcon("dot")}
-                    {handleIcon("pencil")}
+                    <a href="/projects/design">{handleIcon("pencil")}</a>
                     {handleIcon("dot")}
-                    {handleIcon("hammer")}
+                    <a href="/projects/handcrafted">{handleIcon("hammer")}</a>
                 </div>
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">{title}</h1>
                 <p className="text-2xl md:text-3xl lg:text-4xl text-muted-foreground mb-8">{subtitle}</p>

@@ -28,13 +28,11 @@ interface Technology {
 }
 
 interface StackBlockProps {
-    type?: string;
     heading?: string;
     technologies?: Technology[];
 }
 
 const StackBlock: React.FC<StackBlockProps> = ({
-    type = 'Tech Stack',
     heading = 'Technologies Used',
     technologies = []
 }) => {
@@ -73,9 +71,6 @@ const StackBlock: React.FC<StackBlockProps> = ({
     return (
         <Card className="max-w-3xl mx-auto my-8">
             <CardHeader>
-                <Badge variant="outline" className="w-fit mb-2">
-                    {type}
-                </Badge>
                 <CardTitle>{heading}</CardTitle>
             </CardHeader>
             <CardContent>
