@@ -47,7 +47,7 @@ const TextSection = ({ text, textSize, highlightedWords, highlightStyle }: {
             <div className="flex flex-wrap" style={{ position: "relative", }}>
                 {words.map((word, wordIndex) => (
                     <WordAnimation
-                        key={`word-${wordIndex}`}
+                        key={`word-${word + wordIndex}`}
                         word={word}
                         wordIndex={wordIndex}
                         totalWords={words.length}
