@@ -28,20 +28,18 @@ interface Technology {
 }
 
 interface StackBlockProps {
-    type?: string;
     heading?: string;
     technologies?: Technology[];
 }
 
 const StackBlock: React.FC<StackBlockProps> = ({
-    type = 'Tech Stack',
     heading = 'Technologies Used',
     technologies = []
 }) => {
     if (!technologies || technologies.length === 0) return null;
 
     // Helper function to safely get image URL
-    const getImageUrl = (tech) => {
+    const getImageUrl = (tech: Technology) => {
         try {
             // Check if icon exists
             if (!tech || !tech.icon) {
@@ -73,9 +71,6 @@ const StackBlock: React.FC<StackBlockProps> = ({
     return (
         <Card className="max-w-3xl mx-auto my-8">
             <CardHeader>
-                <Badge variant="outline" className="w-fit mb-2">
-                    {type}
-                </Badge>
                 <CardTitle>{heading}</CardTitle>
             </CardHeader>
             <CardContent>

@@ -24,7 +24,7 @@ export const textComponents = {
     },
     marks: {
         link: ({ children, value }: { children: React.ReactNode; value: { href: string } }) => (
-            <a href={value.href} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+            <a href={value.href} className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
                 {children}
             </a>
         ),

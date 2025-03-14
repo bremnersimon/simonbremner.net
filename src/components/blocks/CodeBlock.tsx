@@ -1,55 +1,76 @@
-// src/components/blocks/CodeBlock.tsx
-import React from 'react';
-import { Card } from '@/components/ui/card';
+import React, { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import typescript from 'highlight.js/lib/languages/typescript';
+import xml from 'highlight.js/lib/languages/xml'; // Use xml for HTML
+import css from 'highlight.js/lib/languages/css';
+import python from 'highlight.js/lib/languages/python';
+import bash from 'highlight.js/lib/languages/bash';
+
+// Register the languages
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('html', xml); // Register XML as HTML
+hljs.registerLanguage('css', css);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('bash', bash);
 
 interface CodeBlockProps {
     code?: string;
-    language?: 'javascript' | 'typescript' | 'html' | 'css' | 'python';
+    language?: 'bash' | 'javascript' | 'typescript' | 'html' | 'css' | 'python';
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = 'javascript' }) => {
+    const codeRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        if (codeRef.current && code) {
+            // Clear any existing highlighting
+            codeRef.current.textContent = code;
+
+            // Apply the correct language class
+            codeRef.current.className = `language-${language}`;
+
+            // Highlight the element
+            hljs.highlightElement(codeRef.current);
+        }
+    }, [code, language]); // This will re-run when code or language changes
 
     if (!code) return null;
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(code);
-        toast(
-            'Code copied to clipboard',
-        );
-    };
-
-    // Helper function to add syntax highlighting classes (you'll need to add appropriate CSS)
-    const formatCode = (code: string, language: string) => {
-        // For now, we'll just return the code as is
-        // In a real implementation, you might use a library like Prism.js or highlight.js
-        return code;
+        toast('Code copied to clipboard');
     };
 
     return (
-        <div className="relative max-w-3xl mx-auto my-6">
-            <div className="flex items-center justify-between bg-gray-800 rounded-t-md px-4 py-2">
-                <span className="text-sm text-gray-300 font-mono">{language}</span>
+        <div className="bg-[#0d1117] relative max-w-3xl mx-auto my-6 overflow-hidden rounded-lg border border-[#30363d]">
+            <div className="flex items-center justify-between bg-foreground/5 px-4 py-2">
+                <span className="text-sm text-[#c9d1d9] font-mono">{language}</span>
                 <Button
                     variant="ghost"
                     size="sm"
                     onClick={copyToClipboard}
-                    className="text-gray-300 hover:text-white hover:bg-gray-700"
+                    className="text-[#c9d1d9] hover:text-white hover:bg-[#1f2937] flex flex-row gap-2"
                 >
-                    <Copy className="h-4 w-4 mr-2" />
-                    <span className="text-xs">Copy</span>
+                    <Copy className="h-4 w-4" />
+                    <span className="text-xs md:inline-block hidden">Copy</span>
                 </Button>
             </div>
 
-            <Card className="rounded-t-none border-gray-800 bg-gray-900 p-0 overflow-hidden">
-                <pre className="p-4 overflow-x-auto">
-                    <code className={`language-${language} text-sm text-white font-mono`}>
-                        {formatCode(code, language)}
+            <div className="p-0 overflow-hidden">
+                <pre className="p-4 overflow-x-auto bg-[#0d1117] text-[#c9d1d9] text-sm">
+                    <code
+                        ref={codeRef}
+                        className={`language-${language} text-xs font-mono`}
+                    >
+                        {code}
                     </code>
                 </pre>
-            </Card>
+            </div>
         </div>
     );
 };

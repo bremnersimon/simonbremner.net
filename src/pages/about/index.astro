@@ -1,22 +1,54 @@
 ---
 import AnimateOnLoad from "@/components/motion/AnimateOnLoad";
 import Layout from "@/layouts/Layout.astro";
-import LeftRightText from "@/components/main/LeftRightText";
+import AboutHero from "@/components/main/AboutHero";
+import { Image } from "astro:assets";
+import headshot from "@/assets/sb-headshot.jpg";
+import { FadingSection } from "@/components/main/FadingSection";
+import LargeText from "@/components/main/LargeText";
+import { Container } from "@/components/main/Container";
+import { Cta } from "@/components/main/Cta";
+
+const heroText = {
+  headline: "I Like Making Things.",
+  paragraphs: [
+    "I started as a Graphic Designer before moving into a career in development. Along the way, I've picked up a few creative pursuits. This website is dedicated to sharing my experiences as I grow my personal and professional skills.",
+    "I'm not here to sell my services to you. This page is solely here to share my journey and potentially inspire someone to continue their journey.",
+  ],
+};
+
+const largeText = [
+  "The projects on this website are not 'complete' and will most likely never be. They are merely a reflection of my journey as a creative. They are not perfect in any way, but I'm going to keep making them!",
+  "If you're interested in learning more about my background, skills, and interests, please continue reading. I'm here to share my journey and inspire others to continue their own journey.",
+];
 ---
 
 <Layout>
-    <AnimateOnLoad
-        client:load
-        variants={{
-            hidden: { opacity: 0, y: -20 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-        }}
-        tag="section"
-        className="py-20 text-center"
-    >
-        <LeftRightText
-            heading="I Like Making Cool Things"
-            description="Description about me and what I do"
+  <Container>
+    <AboutHero client:load content={heroText}>
+      <Image
+        class="rounded-lg aspect-square object-cover"
+        src={headshot}
+        alt="Headshot"
+      />
+    </AboutHero>
+  </Container>
+  <Container className="py-20">
+    {
+      largeText.map((paragraph, index) => (
+        <LargeText
+          index={index}
+          client:load
+          content={paragraph}
+          className="py-20"
         />
-    </AnimateOnLoad>
+      ))
+    }
+  </Container>
+  <Container>
+    <FadingSection client:load />
+  </Container>
+  <Container>
+    <Cta client:load />
+  </Container>
 </Layout>

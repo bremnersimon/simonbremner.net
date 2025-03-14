@@ -40,20 +40,21 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 
     return (
         <div className={cn(widthClasses[width])}>
-            <Card className="overflow-hidden border-0 shadow-md">
-                <CardContent className="p-0">
+            <Card className="overflow-hidden border-0 shadow-md p-0">
+                <CardContent className="p-0 m-0 hover:[&_div]:bg-muted hover:[&_div]:text-foreground transition relative">
                     <img
                         src={imageUrl}
                         alt={alt || 'Project image'}
                         className="w-full h-auto object-cover"
                     />
+                    {caption && (
+                        <div className="text-sm text-foreground/0 bg-muted/0 p-4 absolute w-full bottom-0 left-0 right-0 transition-all">
+                            {caption}
+                        </div>
+                    )}
                 </CardContent>
 
-                {caption && (
-                    <CardFooter className="text-sm text-gray-500 p-4">
-                        {caption}
-                    </CardFooter>
-                )}
+
             </Card>
         </div>
     );

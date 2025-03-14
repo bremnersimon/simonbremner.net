@@ -21,7 +21,7 @@ const QuoteBlock: React.FC<QuoteBlockProps> = ({
         switch (style) {
             case 'pullQuote':
                 return (
-                    <Card className="border-0 bg-gray-50 dark:bg-gray-900 shadow-sm max-w-3xl mx-auto my-8">
+                    <Card className="border-0 bg-gray-50 dark:bg-muted shadow-sm max-w-3xl mx-auto my-8">
                         <CardContent className="pt-8 pb-4 px-6 sm:px-10 relative">
                             <Quote className="absolute text-gray-200 dark:text-gray-800 h-10 w-10 -top-2 left-2" />
                             <p className="italic text-xl md:text-2xl font-serif text-gray-800 dark:text-gray-200 relative z-10 leading-relaxed">

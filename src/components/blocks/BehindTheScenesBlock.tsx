@@ -9,13 +9,6 @@ import {
 import { PortableText } from '@portabletext/react';
 import { textComponents } from './shared/portable-text-components';
 import { urlForImage } from '@/lib/sanity.image';
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface BehindTheScenesImage {
     _type?: string;
@@ -88,77 +81,41 @@ const BehindTheScenesBlock: React.FC<BehindTheScenesBlockProps> = ({
     };
 
     return (
-        <Card className="max-w-4xl mx-auto my-8">
-            <CardHeader>
-                <CardTitle>{title}</CardTitle>
+        <Card className="max-w-4xl mx-auto my-8 border-0 p-0">
+            <CardHeader className="p-0">
+                <CardTitle className="text-2xl">{title}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
                 {description && description.length > 0 && (
                     <div className="prose prose-sm dark:prose-invert max-w-none mb-6">
                         <PortableText
                             value={description}
-                            components={textComponents}
                         />
                     </div>
                 )}
 
                 {images && images.length > 0 && (
-                    <Tabs defaultValue="grid" className="w-full">
-                        <TabsList className="grid w-full max-w-md mx-auto mb-4 grid-cols-2">
-                            <TabsTrigger value="grid">Grid View</TabsTrigger>
-                            <TabsTrigger value="fullsize">Full Size</TabsTrigger>
-                        </TabsList>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {images.map((image) => {
+                            const imageUrl = getImageUrl(image, { width: 400, height: 400, fit: 'crop' });
+                            if (!imageUrl) return null;
 
-                        <TabsContent value="grid">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                {images.map((image) => {
-                                    const imageUrl = getImageUrl(image, { width: 400, height: 400, fit: 'crop' });
-                                    if (!imageUrl) return null;
-
-                                    return (
-                                        <div key={image._key} className="group relative overflow-hidden rounded-md">
-                                            <img
-                                                src={imageUrl}
-                                                alt={image.alt || 'Behind the scenes image'}
-                                                className="w-full h-full object-cover aspect-square"
-                                            />
-                                            {image.caption && (
-                                                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                                                    <p className="text-white text-sm">{image.caption}</p>
-                                                </div>
-                                            )}
+                            return (
+                                <div key={image._key} className="group relative overflow-hidden rounded-md">
+                                    <img
+                                        src={imageUrl}
+                                        alt={image.alt || 'Behind the scenes image'}
+                                        className="w-full h-full object-cover aspect-square"
+                                    />
+                                    {image.caption && (
+                                        <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                                            <p className="text-white text-sm">{image.caption}</p>
                                         </div>
-                                    );
-                                })}
-                            </div>
-                        </TabsContent>
-
-                        <TabsContent value="fullsize">
-                            <ScrollArea className="h-[600px] rounded-md border p-4">
-                                <div className="space-y-8">
-                                    {images.map((image) => {
-                                        const imageUrl = getImageUrl(image, { width: 800 });
-                                        if (!imageUrl) return null;
-
-                                        return (
-                                            <div key={image._key} className="space-y-2">
-                                                <img
-                                                    src={imageUrl}
-                                                    alt={image.alt || 'Behind the scenes image'}
-                                                    className="w-full h-auto rounded-md"
-                                                />
-                                                {image.caption && (
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                        {image.caption}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
+                                    )}
                                 </div>
-                            </ScrollArea>
-                        </TabsContent>
-                    </Tabs>
+                            );
+                        })}
+                    </div>
                 )}
             </CardContent>
         </Card>
