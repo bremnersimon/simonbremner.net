@@ -50,7 +50,6 @@ const { category } = Astro.props;
 
 // Fetch the complete photography post by ID with expanded references
 const postData = await fetchProjectById(category, slug);
-console.log(postData);
 
 // Format the date for display
 const formatDate = (dateString: string) => {
