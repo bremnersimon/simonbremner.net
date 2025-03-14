@@ -8,6 +8,12 @@ import { getHomePageProjects } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
 import ravanelBridge from "@/assets/ravanel-bridge.jpg";
 import { Image } from "astro:assets";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 const data: { featuredProjects: ProjectCardProps[] } =
   await getHomePageProjects();
 ---
