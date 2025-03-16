@@ -6,20 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
 import ScrollIndicator from "@/components/motion/ScrollIndicator";
-
 // Import the content blocks
 import ContentRenderer from "@/components/blocks/ContentRenderer";
 import HeroSection from "@/components/blocks/HeroSection";
 import AuthorSection from "@/components/blocks/AuthorSection";
-import PhotographyMetadata from "@/components/blocks/PhotographyMetadata";
 import { ArrowLeft } from "lucide-react";
-import DevelopmentMetadata from "@/components/blocks/DevelopmentMetadata";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
+import { Separator } from "@/components/ui/separator";
 
 // Define all possible paths for pre-rendering at build time
 export async function getStaticPaths() {
@@ -66,89 +59,63 @@ const publishedDate = formatDate(postData?.publishedAt);
 if (!postData) {
   return Astro.redirect("/404");
 }
+console.log(postData);
 ---
 
 <Layout>
   <ScrollIndicator client:load>
-    <>
-      <article>
-        <HeroSection
-          title={postData.title}
-          mainImage={postData.mainImage}
-          shootMetadata={postData.shootMetadata}
-          urlForImage={urlForImage}
-        />
+    <article>
+      <HeroSection
+        title={postData.title}
+        mainImage={postData.mainImage}
+        shootMetadata={postData.shootMetadata}
+        urlForImage={urlForImage}
+      />
 
-        <Container>
-          <div class="max-w-4xl mx-auto">
-            {
-              category === "photography" && (
-                <PhotographyMetadata
-                  location={postData.location}
-                  shootMetadata={postData.shootMetadata}
-                  isPhotographyPost={category === "photography"}
-                />
-              )
-            }
-            {
-              category === "development" && (
-                <DevelopmentMetadata
-                  projectDuration={postData.projectDuration}
-                  projectStatus={postData.projectStatus}
-                  projectType={postData.projectType}
-                  clientName={postData.clientName}
-                  projectLink={postData.projectLink}
-                  techStack={postData.techStack}
-                  frameworks={postData.frameworks}
-                  libraries={postData.libraries}
-                  hostingPlatform={postData.hostingPlatform}
-                  client:load
-                />
-              )
-            }
+      <Container>
+        <div class="max-w-4xl mx-auto">
+          <AuthorSection
+            author={postData.author}
+            publishedDate={publishedDate}
+            excerpt={postData.excerpt}
+            urlForImage={urlForImage}
+          />
+          <Separator className="my-8" />
 
-            <AuthorSection
-              author={postData.author}
-              publishedDate={publishedDate}
-              excerpt={postData.excerpt}
-              urlForImage={urlForImage}
-            />
+          <!-- Content Blocks rendered using our ContentRenderer component -->
+          {
+            postData.content && postData.content.length > 0 && (
+              <div class="mb-16">
+                <ContentRenderer client:load blocks={postData.content} />
+              </div>
+            )
+          }
 
-            <!-- Content Blocks rendered using our ContentRenderer component -->
-            {
-              postData.content && postData.content.length > 0 && (
-                <div class="mb-16">
-                  <ContentRenderer client:load blocks={postData.content} />
+          <!-- Tags -->
+          {
+            postData.tags && postData.tags.length > 0 && (
+              <div class="mb-12">
+                <h3 class="text-lg font-medium mb-3">Tags</h3>
+                <div class="flex flex-wrap gap-2">
+                  {postData.tags.map((tag: string) => (
+                    <Badge variant="outline">{tag}</Badge>
+                  ))}
                 </div>
-              )
-            }
+              </div>
+            )
+          }
 
-            <!-- Tags -->
-            {
-              postData.tags && postData.tags.length > 0 && (
-                <div class="mb-12">
-                  <h3 class="text-lg font-medium mb-3">Tags</h3>
-                  <div class="flex flex-wrap gap-2">
-                    {postData.tags.map((tag: string) => (
-                      <Badge variant="outline">{tag}</Badge>
-                    ))}
-                  </div>
-                </div>
-              )
-            }
-
-            <!-- Back Button -->
-            <div class="mt-12 mb-24">
-              <a href={`/projects/${category}`}>
-                <Button variant="outline" className="gap-2">
-                  <ArrowLeft />
-                  Back to {category}
-                </Button>
-              </a>
-            </div>
+          <!-- Back Button -->
+          <div class="mt-12 mb-24">
+            <a href={`/projects/${category}`}>
+              <Button variant="outline" className="gap-2">
+                <ArrowLeft />
+                Back to {category}
+              </Button>
+            </a>
           </div>
-        </Container>
-      </article>
-    </>
+        </div>
+      </Container>
+    </article>
   </ScrollIndicator>
 </Layout>

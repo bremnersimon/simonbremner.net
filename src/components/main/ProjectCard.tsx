@@ -50,20 +50,20 @@ export default function ProjectCard({
 
                     {/* Overlay with tags on hover/tap */}
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 md:group-focus-within:opacity-100 transition-opacity duration-300">
-                        <div className="p-4 text-center">
+                        <div className="flex flex-col items-center justify-center relative w-full h-full">
                             {tags.length > 0 && (
-                                <div className="flex flex-wrap gap-2 justify-center mb-4">
+                                <div className="absolute left-0 bottom-0 right-0 flex flex-wrap gap-2 justify-start p-4">
                                     {tags.map((tag, index) => (
-                                        <Badge key={index} variant="secondary" className="bg-primary/80 hover:bg-primary">
+                                        <Badge key={index} variant="secondary">
                                             {tag}
                                         </Badge>
                                     ))}
                                 </div>
                             )}
                             <Button
-                                variant="outline"
+                                variant="default"
                                 size="sm"
-                                className="bg-background/20 backdrop-blur-sm border-white/20 text-white hover:bg-background/40 hover:text-white pointer-events-none"
+                                className=" hover:text-white pointer-events-none"
                             >
                                 View Project
                             </Button>
