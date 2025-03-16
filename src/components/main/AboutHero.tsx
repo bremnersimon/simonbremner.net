@@ -1,4 +1,3 @@
-import { Container } from "./Container";
 import AnimateOnLoad from "../motion/AnimateOnLoad";
 import { Separator } from "../ui/separator";
 
@@ -16,15 +15,15 @@ type AboutHeroProps = {
 export default function AboutHero({ children, content }: AboutHeroProps) {
     return (
         <>
-            <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center md:gap-8 md:py-40 min-h-screen">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center md:gap-8 pt-20 md:py-40 min-h-screen">
                 <AnimateOnLoad
                     variants={{
                         hidden: { opacity: 0, x: -30 },
                         visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
                     }}
                 >
-                    <div className="relative">
-                        <div className="absolute bottom-[-30px] left-10 font-bold text-primary text-7xl">| Simon Bremner</div>
+                    <div className="relative pb-10 md:pb-0">
+                        <div className="hidden md:inline absolute bottom-[-30px] left-10 font-bold text-primary text-7xl">| Simon Bremner</div>
                         {children}
                     </div>
                 </AnimateOnLoad>

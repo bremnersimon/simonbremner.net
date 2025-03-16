@@ -196,7 +196,7 @@ export const Navbar = () => {
                                 <div className="flex items-center gap-2">
                                     <ThemeToggle />
                                     <SheetClose className="rounded-full h-8 w-8 flex items-center justify-center bg-transparent">
-                                        <X className="h-4 w-4" />
+                                        <X className="h-6 w-6" />
                                         <span className="sr-only">Close</span>
                                     </SheetClose>
                                 </div>

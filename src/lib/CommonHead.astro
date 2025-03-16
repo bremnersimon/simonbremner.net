@@ -3,38 +3,38 @@ import { ClientRouter } from "astro:transitions";
 
 // Define the props with default values
 interface Props {
-    title?: string;
-    description?: string;
+  title?: string;
+  description?: string;
 }
 
 // Destructure the props with default values
 const { title = "Simon Bremner", description = "I'm a creative, I think..." } =
-    Astro.props;
+  Astro.props;
 ---
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 <script is:inline>
-    // This script runs before any content renders on every page load
-    // It ensures there's never a flash of the wrong theme
-    function applyTheme() {
-        const storedTheme = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-            "(prefers-color-scheme: dark)",
-        ).matches;
+  // This script runs before any content renders on every page load
+  // It ensures there's never a flash of the wrong theme
+  function applyTheme() {
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
 
-        if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
+    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
+  }
 
-    // Apply theme immediately to prevent flash
-    applyTheme();
+  // Apply theme immediately to prevent flash
+  applyTheme();
 
-    // Re-apply theme on view transitions
-    document.addEventListener("astro:after-swap", applyTheme);
+  // Re-apply theme on view transitions
+  document.addEventListener("astro:after-swap", applyTheme);
 </script>
 <meta name="view-transition" content="same-origin" />
 <!-- Primary Meta Tags -->
@@ -42,29 +42,29 @@ const { title = "Simon Bremner", description = "I'm a creative, I think..." } =
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <script is:inline>
-    document.addEventListener("astro:page-load", () => {
-        // Get all links on the page
-        const links = document.querySelectorAll("a[href]");
+  document.addEventListener("astro:page-load", () => {
+    // Get all links on the page
+    const links = document.querySelectorAll("a[href]");
 
-        links.forEach((link) => {
-            link.addEventListener("click", (event) => {
-                // Get the link's URL and the current page URL
-                const linkPath = new URL(link.href).pathname;
-                const currentPath = window.location.pathname;
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        // Get the link's URL and the current page URL
+        const linkPath = new URL(link.href).pathname;
+        const currentPath = window.location.pathname;
 
-                // If we're already on this page, prevent navigation
-                if (linkPath === currentPath) {
-                    event.preventDefault();
-                    // Optionally, add focus styles or other feedback
-                    // link.classList.add('current-page');
-                    // setTimeout(() => link.classList.remove('current-page'), 300);
-                }
-            });
-        });
+        // If we're already on this page, prevent navigation
+        if (linkPath === currentPath) {
+          event.preventDefault();
+          // Optionally, add focus styles or other feedback
+          // link.classList.add('current-page');
+          // setTimeout(() => link.classList.remove('current-page'), 300);
+        }
+      });
     });
+  });
 </script>
 <ClientRouter
-    data-persist-nav="true"
-    data-content-only="true"
-    data-content-selector="#page-content"
+  data-persist-nav="true"
+  data-content-only="true"
+  data-content-selector="#page-content"
 />

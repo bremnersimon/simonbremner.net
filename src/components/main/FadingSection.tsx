@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import chsWaterfront from "@/assets/chs-waterfront.jpg";
 import busm from "@/assets/busm.jpg";
 import braveBaby from "@/assets/brave-baby-poster.jpg"
 import castleAndKey from "@/assets/c-k.jpg"
@@ -37,7 +36,7 @@ const FadingSection = () => {
         },
         {
             id: 2,
-            title: "Developing Interactive Experiences",
+            title: "Developing Experiences",
             content: ["My path to development began as an extension of my creative vision—a natural evolution driven by the desire to communicate more dynamically than static design would allow. As I learned to code, I discovered a whole new vocabulary for expression, one that enabled truly interactive experiences and deeper connections with users.",
                 "Each new technical skill I've acquired has expanded the possibilities for effective communication, pushing me to tackle increasingly complex challenges. What started as simple websites has grown into sophisticated digital products, yet the core motivation remains unchanged: to create more meaningful conversations through technology."],
             image: sbCode,
@@ -46,7 +45,7 @@ const FadingSection = () => {
         },
         {
             id: 3,
-            title: "Capturing The World",
+            title: "Capturing Moments",
             content: ["Photography gives me a way to capture how I personally see the world. It's not about perfect technique or impressing others—it's simply about documenting moments that catch my eye.",
                 "I love finding beauty in everyday scenes that most people walk past. There's something magical about freezing a moment exactly as I experienced it, creating a visual diary that's authentically mine.",
                 "Unlike my design and development work, my photography isn't created with clients or audiences in mind. It's a purely personal creative outlet that brings me joy and helps me pay closer attention to the world around me."],
@@ -56,7 +55,7 @@ const FadingSection = () => {
         },
         {
             id: 4,
-            title: "Handcrafted Products",
+            title: "Crafting Products",
             content: ["My hands have always wanted to create what my mind imagines. When I see something that could exist but doesn't, I feel compelled to bring it into the world myself—whether that's a guitar pedal with just the right sound, a leather wallet designed specifically for password storage, or a lamp that casts light exactly how I envision it.",
                 "This maker's impulse has pushed me to develop skills across wildly different disciplines. One month I might be soldering circuits, the next I'm working with leather or shaping wood. The medium always follows the idea, not the other way around. I simply learn whatever techniques are necessary to manifest what I've imagined.",
                 "There's something deeply satisfying about holding a physical object that began as nothing more than a concept in my mind. These tangible creations connect me to age-old traditions of craftsmanship while satisfying my constant appetite for learning. Each finished piece represents not just a functional object, but a new set of skills mastered and challenges overcome."],
@@ -70,6 +69,7 @@ const FadingSection = () => {
         <div className="w-full" ref={scrollContainerRef}>
             {sections.map((section) => (
                 <ContentSection
+                    key={section.id}
                     content={section}
                 />
             ))}
@@ -134,7 +134,7 @@ const ContentSection = ({ content }: { content: SectionProps }) => {
                 <motion.div
                     className={`w-full md:w-1/2 p-4 ${content.imagePosition === "right" ? "md:order-2" : "md:order-1"}`}
                     style={{
-                        x: imageX
+                        x: imageX,
                     }}
                 >
                     <div className=" rounded-lg shadow-xl relative">
@@ -170,7 +170,7 @@ const ContentSection = ({ content }: { content: SectionProps }) => {
                         >
                             {content.title}
                         </motion.h2>
-                        <motion.p
+                        <motion.div
                             className="text-foreground-muted"
                             initial={{ y: 20, opacity: 0 }}
                             whileInView={{ y: 0, opacity: 1 }}
@@ -178,15 +178,15 @@ const ContentSection = ({ content }: { content: SectionProps }) => {
                             transition={{ duration: 0.3, delay: 0.2 }}
                         >
                             <Separator className="my-4" />
-                            {content.content.map((paragraph, index) => {
-                                return <p key={index} className="mb-4 text-lg leading-loose">{paragraph}</p>
-                            })}
+                            {content.content.map((paragraph, index) => (
+                                <p key={index} className="mb-4 text-lg leading-loose">{paragraph}</p>
+                            ))}
                             <Button asChild variant="default" className="mt-4" >
                                 <a href={content.button.href} target={content.button.external ? "_blank" : "_self"}>
                                     {content.button.label} {handleIcon(content.button.icon ? content.button.icon : "")}
                                 </a>
                             </Button>
-                        </motion.p>
+                        </motion.div>
                     </div>
                 </motion.div>
             </div>

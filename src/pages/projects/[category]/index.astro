@@ -39,21 +39,21 @@ const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
 
 // Category descriptions
 const categorySubtitles: { [key: string]: string } = {
-  photography: "Creative visual storytelling through our lens",
+  photography: "Creative visual storytelling through my lens",
   design: "Innovative visual solutions for modern brands",
   development: "Custom software and web solutions",
   handcrafted: "Unique handmade creations with attention to detail",
 };
 
 // Default description if category isn't in our predefined list
-const defaultCategorySubtitle = "Explore our portfolio of creative work";
+const defaultCategorySubtitle = "Explore my portfolio of creative work";
 
 // Get appropriate subtitle for the category
 const categorySubtitle = categorySubtitles[category] || defaultCategorySubtitle;
 
 // Page metadata
 const pageTitle = `${categoryTitle} Projects`;
-const pageDescription = `Explore our ${category} portfolio - ${categorySubtitle}`;
+const pageDescription = `Explore my ${category} portfolio - ${categorySubtitle}`;
 
 const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
 
@@ -84,7 +84,7 @@ if (!projects || projects.length === 0) {
   <ProjectsGrid
     transition:persist
     allProjects={projects}
-    title={`${categoryTitle} Portfolio`}
+    title={`${categoryTitle} Projects`}
     subtitle={categorySubtitle}
     currentPath={currentPath}
   />
