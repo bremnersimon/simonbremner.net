@@ -11,6 +11,18 @@ const year = new Date().getFullYear();
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script src="https://www.googletagmanager.com/gtag/js?id=G-C6RRVRPQSC"
+    ></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-C6RRVRPQSC");
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <CommonHead title="Simon Bremner" description="Portfolio" />
