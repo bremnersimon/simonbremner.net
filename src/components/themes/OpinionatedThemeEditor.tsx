@@ -20,9 +20,6 @@ import {
 } from '@/components/ui/dialog';
 import { Copy, ChevronDown, ChevronUp, Check, RefreshCw } from 'lucide-react';
 
-// Types
-type ColorFormat = 'hsl' | 'oklch';
-
 interface ColorHSL {
     format: 'hsl';
     values: { h: number; s: number; l: number };
@@ -1101,7 +1098,7 @@ const ThemeEditor = () => {
                                                 <Input
                                                     type="color"
                                                     id={`${activeTheme}-background-base`}
-                                                    className="h-10"
+                                                    className="h-10 w-20"
                                                     value={hslToHex(
                                                         baseColors[activeTheme].background.h,
                                                         baseColors[activeTheme].background.s,
