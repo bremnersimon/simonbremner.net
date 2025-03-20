@@ -145,10 +145,10 @@ export default function TabbedPostSlider({
                     <p className="text-2xl md:text-4xl text-muted-foreground">{subtitle}</p>
                 </div>
 
-                <Tabs orientation="vertical" defaultValue={defaultTab} onValueChange={handleTabChange} className="w-full">
+                <Tabs defaultValue={defaultTab} onValueChange={handleTabChange}>
                     <TabsList className="mb-8 hidden md:block">
                         {categories.map(category => (
-                            <TabsTrigger key={category} value={category} className="px-4 py-2">
+                            <TabsTrigger key={category} value={category} className="px-4">
                                 {category}
                             </TabsTrigger>
                         ))}

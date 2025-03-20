@@ -1,22 +1,22 @@
 import { Camera, Code, Dot, ExternalLink, Hammer, Link, Pencil, User } from "lucide-react";
-const handleIcon = (icon: string) => {
+const handleIcon = (icon: string, size?: number) => {
     switch (icon) {
         case "camera":
-            return <Camera />;
+            return <Camera size={size} />;
         case "code":
-            return <Code />;
+            return <Code size={size} />;
         case "pencil":
-            return <Pencil />;
+            return <Pencil size={size} />;
         case "hammer":
-            return <Hammer />;
+            return <Hammer size={size} />;
         case "external":
-            return <ExternalLink />;
+            return <ExternalLink size={size} />;
         case "dot":
-            return <Dot />;
+            return <Dot size={size} />;
         case "link":
-            return <Link />;
+            return <Link size={size} />;
         case "user":
-            return <User />;
+            return <User size={size} />;
         default:
             return null;
     }

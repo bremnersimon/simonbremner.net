@@ -8,18 +8,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ThemeToggle } from "@/components/globals/ThemeToggle";
 import { cn } from "@/lib/utils";
-import { Menu, X, ChevronRight, Home, User, Briefcase, Camera, Paintbrush, Code, Scissors, GalleryVerticalEnd } from "lucide-react";
+import { Menu, X, ChevronRight, Home, User, Briefcase, Camera, Paintbrush, Code, Scissors, GalleryVerticalEnd, Wrench } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
-
-type NavBarItemProps = {
-    title: string;
-    href: string;
-    description?: string;
-    icon: any;
-    main?: boolean;
-}
 
 type NavbarProps = {
     title: string;
@@ -72,6 +64,25 @@ export const Navbar = () => {
                     href: "/projects/handcrafted",
                     description: "Explore handcrafted projects",
                     icon: Scissors,
+                },
+            ],
+        },
+        {
+            title: "Tools",
+            icon: Wrench,
+            children: [
+                // {
+                //     title: "All Projects",
+                //     href: "/projects",
+                //     description: "Explore a full list of Photography, Design, Development, and Handcrafted projects.",
+                //     icon: GalleryVerticalEnd,
+                //     main: true,
+                // },
+                {
+                    title: "Shadcn Theme Generator",
+                    href: "/shadcn-theme",
+                    description: "Create custom Shadcn X Tailwind V4 themes with ease",
+                    icon: Paintbrush,
                 },
             ],
         },
