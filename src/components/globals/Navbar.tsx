@@ -67,25 +67,18 @@ export const Navbar = () => {
                 },
             ],
         },
-        {
-            title: "Tools",
-            icon: Wrench,
-            children: [
-                // {
-                //     title: "All Projects",
-                //     href: "/projects",
-                //     description: "Explore a full list of Photography, Design, Development, and Handcrafted projects.",
-                //     icon: GalleryVerticalEnd,
-                //     main: true,
-                // },
-                {
-                    title: "Shadcn Theme Generator",
-                    href: "/shadcn-theme",
-                    description: "Create custom Shadcn X Tailwind V4 themes with ease",
-                    icon: Paintbrush,
-                },
-            ],
-        },
+        // {
+        //     title: "Tools",
+        //     icon: Wrench,
+        //     children: [
+        //         {
+        //             title: "Shadcn Theme Generator",
+        //             href: "/shadcn-theme",
+        //             description: "Create custom Shadcn X Tailwind V4 themes with ease",
+        //             icon: Paintbrush,
+        //         },
+        //     ],
+        // },
         {
             title: "About",
             href: "/about",
