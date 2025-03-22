@@ -6,10 +6,14 @@
     "env.d.ts",
     "**/*",
     "**/**/*",
+    "**/**/**/*",
+    "**/**/**/**/*",
   ],
   "exclude": [
     "dist",
-    "node_modules"
+    "node_modules",
+    "src/pages/_shadcn-theme",
+    "src/pages/_shadcn-theme/**",
   ],
   "compilerOptions": {
     "esModuleInterop": true,

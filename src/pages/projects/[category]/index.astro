@@ -1,5 +1,4 @@
 ---
-// src/pages/projects/[category].astro
 import Layout from "@/layouts/Layout.astro";
 import ProjectsGrid from "@/layouts/ProjectsGrid.astro";
 import { getAllPostsByType, urlForImage } from "@/lib/sanity";
@@ -86,6 +85,8 @@ if (!projects || projects.length === 0) {
     allProjects={projects}
     title={`${categoryTitle} Projects`}
     subtitle={categorySubtitle}
-    currentPath={currentPath}
   />
+  <!-- <Container>
+    <Cta client:load />
+  </Container> -->
 </Layout>
