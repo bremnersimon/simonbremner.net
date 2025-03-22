@@ -1,5 +1,4 @@
 ---
-import AnimateOnLoad from "@/components/motion/AnimateOnLoad";
 import Layout from "@/layouts/Layout.astro";
 import AboutHero from "@/components/main/AboutHero";
 import { Image } from "astro:assets";
@@ -7,8 +6,13 @@ import headshot from "@/assets/sb-headshot.jpg";
 import { FadingSection } from "@/components/main/FadingSection";
 import LargeText from "@/components/main/LargeText";
 import { Container } from "@/components/main/Container";
+import busm from "@/assets/busm.jpg";
+import braveBaby from "@/assets/brave-baby-poster.jpg";
+import castleAndKey from "@/assets/c-k.jpg";
+import sbCode from "@/assets/sb-code.jpg";
+import type { AboutHeroTextProps, FadingSectionProps } from "@/types/types";
 
-const heroText = {
+const heroText: AboutHeroTextProps = {
   headline: "About Me",
   paragraphs: [
     "I started as a Graphic Designer before moving into a career in development. Along the way, I've picked up a few creative pursuits. This website is dedicated to sharing my experiences as I grow my personal and professional skills.",
@@ -16,7 +20,7 @@ const heroText = {
   ],
 };
 
-const largeText = [
+const largeText: string[] = [
   "The projects on this website are not 'complete' and will most likely never be. They are merely a reflection of my journey as a creative. They are not perfect in any way, but I'm going to keep making them!",
   "If you're interested in learning more about my background, skills, and interests, please continue reading. I'm here to share my journey and inspire others to continue their own journey.",
 ];
@@ -25,6 +29,73 @@ const highlightStyle = {
   backgroundColor: "#f0f0f0",
   color: "#000",
 };
+
+const fadingSections: FadingSectionProps[] = [
+  {
+    id: 1,
+    title: "Designing With Purpose",
+    content: [
+      "Graphic Design has always been about communication.",
+      "My design philosophy centers on this belief. While I've collaborated with recognizable brands and corporations, the projects that truly resonate are those that solve real problems and improve lives through meaningful communication.",
+    ],
+    image: braveBaby,
+    imagePosition: "left",
+    button: {
+      label: "View Projects",
+      href: "/projects/design",
+      icon: "pencil",
+      external: false,
+    },
+  },
+  {
+    id: 2,
+    title: "Developing Experiences",
+    content: [
+      "I started coding because I wanted to make interactive experiences.",
+      "Allowing the user to choose their journey is at the center of my development work. I've always been drawn to the idea of creating experiences that are not only functional but engaging and memorable too.",
+    ],
+    image: sbCode,
+    imagePosition: "right",
+    button: {
+      label: "View Projects",
+      href: "/projects/development",
+      icon: "code",
+      external: false,
+    },
+  },
+  {
+    id: 3,
+    title: "Capturing Moments",
+    content: [
+      "Photography allows me to capture the world the way I see it.",
+      "Unlike my Design and Development work, Photography is a purely personal creative outlet that brings me joy and helps me connect with the world around me.",
+    ],
+    image: castleAndKey,
+    imagePosition: "left",
+    button: {
+      label: "View Projects",
+      href: "/projects/photography",
+      icon: "camera",
+      external: false,
+    },
+  },
+  {
+    id: 4,
+    title: "Crafting Products",
+    content: [
+      "I have always been fascinated with how the world works.",
+      "Figuring out how things work is a constant pursuit of mine. I'm not scared of learning new skills or taking on new challenges in pursuit of realizing my imagination.",
+    ],
+    image: busm,
+    imagePosition: "right",
+    button: {
+      label: "View Projects",
+      href: "/projects/handcrafted",
+      icon: "hammer",
+      external: false,
+    },
+  },
+];
 ---
 
 <Layout>
@@ -50,7 +121,7 @@ const highlightStyle = {
     }
   </Container>
   <Container>
-    <FadingSection client:load />
+    <FadingSection sections={fadingSections} client:load />
   </Container>
   <!-- TODO: Add CTA back in -->
   <!-- <Container>
