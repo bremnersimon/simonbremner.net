@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
 import type { ProjectCardProps } from "@/types";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 type CardProps = ProjectCardProps & {
     id?: string;
@@ -44,7 +44,7 @@ export default function ProjectCard({
                 >
                     <img
                         style={{
-                            viewTransitionName: "project-image"
+                            viewTransitionName: `${mainImage?.src}`
                         }}
                         src={mainImage?.src || "/images/chs-waterfront.jpg"}
                         alt={title}
@@ -52,24 +52,17 @@ export default function ProjectCard({
                     />
 
                     {/* Overlay with tags on hover/tap */}
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 md:group-focus-within:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 md:group-focus-within:opacity-100 transition-opacity duration-300">
                         <div className="flex flex-col items-center justify-center relative w-full h-full">
                             {tags.length > 0 && (
                                 <div className="absolute left-0 bottom-0 right-0 flex flex-wrap gap-2 justify-start p-4">
                                     {tags.map((tag, index) => (
-                                        <Badge key={index} variant="secondary">
+                                        <Badge key={index} variant="secondary" className="py-2 px-4">
                                             {tag}
                                         </Badge>
                                     ))}
                                 </div>
                             )}
-                            <Button
-                                variant="default"
-                                size="sm"
-                                className=" hover:text-white pointer-events-none"
-                            >
-                                View Project
-                            </Button>
                         </div>
                     </div>
                 </div>

@@ -42,45 +42,19 @@ const ContentSection = ({ content }: { content: FadingSectionProps }) => {
         [0, 1, 1, 0]
     );
 
-    // Modified transforms for text and image that maintain position longer
-    const textX = useTransform(
-        scrollYProgress,
-        [0, 0.3, 0.7, 1],
-        content.imagePosition === "left"
-            ? [50, 0, 0, -50]
-            : [-50, 0, 0, 50]
-    );
-
-    const imageX = useTransform(
-        scrollYProgress,
-        [0, 0.3, 0.7, 1],
-        content.imagePosition === "left"
-            ? [-50, 0, 0, 50]
-            : [50, 0, 0, -50]
-    );
-
-    const scale = useTransform(
-        scrollYProgress,
-        [0, 0.3, 0.7, 1],
-        [0.8, 1, 1, 0.8]
-    );
-
     return (
         <motion.div
             ref={sectionRef}
             className="w-full flex items-center justify-center relative py-20 md:py-40"
             style={{
                 opacity,
-                scale
             }}
         >
-            <div className="w-full mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center">
                 {/* Image Column */}
-                <motion.div
-                    className={`w-full md:w-1/2 p-4 ${content.imagePosition === "right" ? "md:order-2" : "md:order-1"}`}
-                    style={{
-                        x: imageX,
-                    }}
+                <div
+                    className={`w-full p-4 ${content.imagePosition === "right" ? "md:order-2" : "md:order-1"}`}
+
                 >
                     <div className="rounded-lg shadow-xl relative">
                         <div className={cn("absolute top-[-50px] md:top-[50px] w-[100px] h-[100px] rounded-lg bg-primary flex items-center justify-center z-10 shadow-md text-white", content.imagePosition === "right" ? "right-[50%] translate-x-1/2 md:translate-x-0 md:right-[-50px]" : "translate-x-1/2 md:translate-x-0 right-[50%] md:left-[-50px]")}>
@@ -96,18 +70,15 @@ const ContentSection = ({ content }: { content: FadingSectionProps }) => {
                             }}
                         />
                     </div>
-                </motion.div>
+                </div>
 
                 {/* Text Column */}
-                <motion.div
-                    className={`w-full md:w-1/2 p-4 ${content.imagePosition === "right" ? "md:order-1" : "md:order-2"}`}
-                    style={{
-                        x: textX
-                    }}
+                <div
+                    className={`w-full p-4 ${content.imagePosition === "right" ? "md:order-1" : "md:order-2"}`}
                 >
                     <div className="">
                         <motion.h2
-                            className="text-xl md:text-4xl lg:text-6xl text-foreground font-bold mb-6"
+                            className="text-xl md:text-4xl lg:text-5xl text-foreground font-bold mb-6"
                             initial={{ y: 20, opacity: 0 }}
                             whileInView={{ y: 0, opacity: 1 }}
                             viewport={{ once: false, amount: 0.3 }}
@@ -133,7 +104,7 @@ const ContentSection = ({ content }: { content: FadingSectionProps }) => {
                             </Button>
                         </motion.div>
                     </div>
-                </motion.div>
+                </div>
             </div>
         </motion.div>
     );

@@ -12,32 +12,26 @@ import castleAndKey from "@/assets/c-k.jpg";
 import sbCode from "@/assets/sb-code.jpg";
 import type { AboutHeroTextProps, FadingSectionProps } from "@/types/types";
 import { Cta } from "@/components/main/Cta";
+import PageLayout from "@/layouts/PageLayout.astro";
 
 const heroText: AboutHeroTextProps = {
   headline: "About Me",
   paragraphs: [
-    "I started as a Graphic Designer before moving into a career in development. Along the way, I've picked up a few creative pursuits. This website is dedicated to sharing my experiences as I grow my personal and professional skills.",
-    "I'm not here to sell my services. This page is solely here to share my journey and potentially inspire someone on theirs.",
+    "I started my professional career as a Graphic Designer before transitioning into development. Along the way, I've picked up a few creative pursuits that help me grow and express myself.",
   ],
 };
 
 const largeText: string[] = [
-  "The projects on this website are not 'complete' and will most likely never be. They are merely a reflection of my journey as a creative. They are not perfect in any way, but I'm going to keep making them!",
-  "If you're interested in learning more about my background, skills, and interests, please continue reading. I'm here to share my journey and inspire others to continue their own journey.",
+  "This website is dedicated to sharing my experiences as I grow my personal and professional career. It does not exist to sell you my services and/or products. The sole purpose is to share my journey and potentially inspire someone on theirs.",
 ];
-const highlightedWords = ["complete", "perfect"];
-const highlightStyle = {
-  backgroundColor: "#f0f0f0",
-  color: "#000",
-};
 
 const fadingSections: FadingSectionProps[] = [
   {
     id: 1,
     title: "Designing With Purpose",
     content: [
-      "Graphic Design has always been about communication.",
-      "My design philosophy centers on this belief. While I've collaborated with recognizable brands and corporations, the projects that truly resonate are those that solve real problems and improve lives through meaningful communication.",
+      "My professional career started with graphic design. As a multicultural individual, I continually strive to communicate clearly and effectively with others.",
+      "My design style, is not artistic, but functional. I always say that I'm not the kind of designer that puts art on my work. I approach every projects with the mentality that form follows function.",
     ],
     image: braveBaby,
     imagePosition: "left",
@@ -52,11 +46,11 @@ const fadingSections: FadingSectionProps[] = [
     id: 2,
     title: "Developing Experiences",
     content: [
-      "I started coding because I wanted to make interactive experiences.",
-      "Allowing the user to choose their journey is at the center of my development work. I've always been drawn to the idea of creating experiences that are not only functional but engaging and memorable too.",
+      "My interest in development grew as I looked for new ways to communicate to audiences. Development opens up new and interactive ways to engage audiences.",
+      "From there, it has grown into a career that allows me to be creative and innovative in ways that I never thought possible. From building websites to creating custom software, I'm always looking for new ways to challenge myself and push the boundaries of what's possible.",
     ],
     image: sbCode,
-    imagePosition: "right",
+    imagePosition: "left",
     button: {
       label: "View Projects",
       href: "/projects/development",
@@ -68,8 +62,8 @@ const fadingSections: FadingSectionProps[] = [
     id: 3,
     title: "Capturing Moments",
     content: [
-      "Photography allows me to capture the world the way I see it.",
-      "Unlike my Design and Development work, Photography is a purely personal creative outlet that brings me joy and helps me connect with the world around me.",
+      "Photography is purely for my personal enjoyment. It allows me the opportunity to experiment and express my creativity in a way that is unique to me.",
+      "While this experience is first and foremost self-expression, it has also deepened my understanding of visual composition and many other aspects of visual communication. Additionally, I urge you to pick up a hobby that lets you explore your surroundings and be in awe of something you have never noticed before.",
     ],
     image: castleAndKey,
     imagePosition: "left",
@@ -84,11 +78,11 @@ const fadingSections: FadingSectionProps[] = [
     id: 4,
     title: "Crafting Products",
     content: [
-      "I have always been fascinated with how the world works.",
-      "Figuring out how things work is a constant pursuit of mine. I'm not scared of learning new skills or taking on new challenges in pursuit of realizing my imagination.",
+      "I have always been fascinated with how the world works. I can't help but wonder how a combustion engine works, what makes clock tick, or how a carpenter bends wood.",
+      "This fascination has led me to learn various trades and skills that I apply in physical creations. Over the years I've created furniture, lamps, fences, guitar pedals, leather goods, and many more.",
     ],
     image: busm,
-    imagePosition: "right",
+    imagePosition: "left",
     button: {
       label: "View Projects",
       href: "/projects/handcrafted",
@@ -99,7 +93,7 @@ const fadingSections: FadingSectionProps[] = [
 ];
 ---
 
-<Layout>
+<PageLayout title="About | Simon Bremner" description="About me">
   <Container>
     <AboutHero client:load content={heroText}>
       <Image
@@ -124,8 +118,4 @@ const fadingSections: FadingSectionProps[] = [
   <Container>
     <FadingSection sections={fadingSections} client:load />
   </Container>
-  <!-- TODO: Add CTA back in -->
-  <Container>
-    <Cta client:load />
-  </Container>
-</Layout>
+</PageLayout>
