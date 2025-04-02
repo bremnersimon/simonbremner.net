@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.2.3",
+    "@astrojs/sitemap": "^3.3.0",
     "@portabletext/react": "^3.2.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-aspect-ratio": "^1.1.2",

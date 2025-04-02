@@ -1,5 +1,5 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import PageLayout from "@/layouts/PageLayout.astro";
 import ProjectsGrid from "@/layouts/ProjectsGrid.astro";
 import { getAllPostsByType, urlForImage } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
@@ -76,7 +76,7 @@ if (!projects || projects.length === 0) {
 }
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
+<PageLayout title={pageTitle} description={pageDescription}>
   <ProjectsGrid
     transition:persist
     allProjects={projects}
@@ -86,4 +86,4 @@ if (!projects || projects.length === 0) {
   <!-- <Container>
     <Cta client:load />
   </Container> -->
-</Layout>
+</PageLayout>
