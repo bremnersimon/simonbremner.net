@@ -9,7 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/react": "^4.2.0",
+    "@astrojs/react": "^4.2.3",
     "@portabletext/react": "^3.2.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-aspect-ratio": "^1.1.2",
@@ -32,7 +32,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@types/react-is": "^19.0.0",
-    "astro": "^5.3.1",
+    "astro": "^5.5.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel": "^8.5.2",

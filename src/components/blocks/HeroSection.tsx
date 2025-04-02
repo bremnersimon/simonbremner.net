@@ -31,6 +31,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="absolute inset-0">
                 {mainImage && urlForImage && (
                     <img
+                        style={{
+                            viewTransitionName: `${urlForImage(mainImage).url()}`
+                        }}
                         src={urlForImage(mainImage).url()}
                         alt={mainImage.alt || title}
                         className="w-full h-full object-cover opacity-90"

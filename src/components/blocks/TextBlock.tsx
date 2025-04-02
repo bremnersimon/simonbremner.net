@@ -21,7 +21,7 @@ const TextBlock: React.FC<TextBlockProps> = ({ content, width = 'normal' }) => {
     };
 
     return (
-        <div className={cn('prose prose-lg dark:prose-invert', widthClasses[width])}>
+        <div className={cn('prose prose-lg dark:prose-invert leading-relaxed', widthClasses[width])}>
             <PortableText value={content} components={textComponents} />
         </div>
     );

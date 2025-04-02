@@ -23,7 +23,6 @@ type NavbarProps = {
 }
 
 export const Navbar = () => {
-    // Define navigation links in a structured format
     const navigationLinks: NavbarProps[] = [
         {
             title: "Home",
@@ -34,13 +33,6 @@ export const Navbar = () => {
             title: "Projects",
             icon: Briefcase,
             children: [
-                // {
-                //     title: "All Projects",
-                //     href: "/projects",
-                //     description: "Explore a full list of Photography, Design, Development, and Handcrafted projects.",
-                //     icon: GalleryVerticalEnd,
-                //     main: true,
-                // },
                 {
                     title: "Photography",
                     href: "/projects/photography",
@@ -67,18 +59,6 @@ export const Navbar = () => {
                 },
             ],
         },
-        // {
-        //     title: "Tools",
-        //     icon: Wrench,
-        //     children: [
-        //         {
-        //             title: "Shadcn Theme Generator",
-        //             href: "/shadcn-theme",
-        //             description: "Create custom Shadcn X Tailwind V4 themes with ease",
-        //             icon: Paintbrush,
-        //         },
-        //     ],
-        // },
         {
             title: "About",
             href: "/about",
@@ -86,30 +66,7 @@ export const Navbar = () => {
         },
     ];
 
-    // State to track which mobile dropdowns are open
     const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
-
-    // State to track if user has scrolled
-    const [hasScrolled, setHasScrolled] = useState(false);
-
-    // Effect to add scroll event listener
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollTop = window.scrollY;
-            setHasScrolled(scrollTop > 0);
-        };
-
-        // Add event listener
-        window.addEventListener('scroll', handleScroll);
-
-        // Initial check
-        handleScroll();
-
-        // Clean up
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
 
     // Toggle dropdown state for mobile
     const toggleDropdown = (title: string) => {
@@ -121,149 +78,149 @@ export const Navbar = () => {
 
     return (
         <header
-            className={`w-full px-4 lg:px-6 h-14 flex items-center justify-between fixed top-0 right-0 left-0 z-50 border-b shadow-sm transition-colors duration-200 ${hasScrolled ? 'bg-background/60 backdrop-blur-sm hover:bg-background' : 'bg-background'
-                }`}
+            className="bg-background w-full px-4 lg:px-6 h-14 fixed top-0 right-0 left-0 z-50 border-b shadow-sm transition-colors duration-200"
         >
-            {/* Logo always visible */}
-            <div className="flex items-center">
-                <a href="/" className="flex items-center">
-                    <img src="/images/icon.svg" width={32} height={32} alt="Logo" />
-                </a>
-            </div>
+            <div className="w-full h-full container mx-auto  flex items-center justify-between">
+                {/* Logo always visible */}
+                <div className="flex items-center">
+                    <a href="/" className="flex items-center">
+                        <img src="/images/icon.svg" width={32} height={32} alt="Logo" />
+                    </a>
+                </div>
 
-            {/* Desktop Navigation - hidden on mobile */}
-            <div className="hidden md:flex">
-                <NavigationMenu>
-                    <NavigationMenuList>
-                        {navigationLinks.map((link, index) => (
-                            <NavigationMenuItem key={link.title + index}>
-                                {link.children ? (
-                                    <>
-                                        <NavigationMenuTrigger className="bg-transparent hover:bg-accent/50 transition-colors">
-                                            {link.title}
-                                        </NavigationMenuTrigger>
-                                        <NavigationMenuContent>
-                                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                                                {link.children?.map((child, childIndex) => (
-                                                    <li key={child.title + childIndex} className={child?.main === true ? "col-span-2" : "col-span-1"}>
-                                                        <NavigationMenuLink asChild>
-                                                            <a
-                                                                href={child.href}
-                                                                className={cn(
-                                                                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                                                                )}
-                                                            >
-                                                                <div className="text-sm font-medium leading-none flex items-center gap-2">
-                                                                    {child.icon && <child.icon className="h-4 w-4" />}
-                                                                    {child.title}
-                                                                </div>
-                                                                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                                                    {child.description}
-                                                                </p>
-                                                            </a>
-                                                        </NavigationMenuLink>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </NavigationMenuContent>
-                                    </>
-                                ) : (
-                                    <NavigationMenuLink
-                                        href={link.href}
-                                        className="bg-transparent hover:bg-accent/50 transition-colors flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium"
-                                    >
-                                        {link.title}
-                                    </NavigationMenuLink>
-                                )}
-                            </NavigationMenuItem>
-                        ))}
-                    </NavigationMenuList>
-                </NavigationMenu>
-            </div>
-
-            {/* Right side controls (theme toggle + mobile menu) */}
-            <div className="flex items-center gap-2">
-                <ThemeToggle />
-
-                {/* Mobile Menu (Sheet from shadcn/ui) */}
-                <Sheet>
-                    <SheetTrigger asChild className="md:hidden">
-                        <Button variant="ghost" size="icon" className="bg-transparent">
-                            <Menu className="h-6 w-6" />
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="right" className="w-full max-w-xs p-0">
-                        <div className="flex flex-col h-full">
-                            {/* Header with close button */}
-                            <div className="flex justify-between items-center p-4 border-b">
-                                <h2 className="text-lg font-semibold">Menu</h2>
-                                <div className="flex items-center gap-2">
-                                    <ThemeToggle />
-                                    <SheetClose className="rounded-full h-8 w-8 flex items-center justify-center bg-transparent">
-                                        <X className="h-6 w-6" />
-                                        <span className="sr-only">Close</span>
-                                    </SheetClose>
-                                </div>
-                            </div>
-
-                            {/* Main mobile navigation */}
-                            <nav className="flex flex-col divide-y">
-                                {navigationLinks.map((link, index) => (
-                                    <div key={link.title + index}>
-                                        {link.children ? (
-                                            <>
-                                                <button
-                                                    onClick={() => toggleDropdown(link.title)}
-                                                    className="flex items-center justify-between w-full p-4 text-foreground hover:bg-muted transition-colors"
-                                                >
-                                                    <div className="flex items-center gap-3">
-                                                        {link.icon && <link.icon className="h-5 w-5" />}
-                                                        <span>{link.title}</span>
-                                                    </div>
-                                                    <ChevronRight className={`h-4 w-4 transition-transform ${openDropdowns[link.title] ? 'rotate-90' : ''}`} />
-                                                </button>
-
-                                                {/* Collapsible submenu */}
-                                                {openDropdowns[link.title] && (
-                                                    <div className="bg-muted/40 pl-4">
-                                                        {link.children.map((child, childIndex) => (
-                                                            <SheetClose key={child.title + childIndex} asChild>
+                {/* Desktop Navigation - hidden on mobile */}
+                <div className="hidden md:flex">
+                    <NavigationMenu>
+                        <NavigationMenuList>
+                            {navigationLinks.map((link, index) => (
+                                <NavigationMenuItem key={link.title + index}>
+                                    {link.children ? (
+                                        <>
+                                            <NavigationMenuTrigger className="bg-transparent hover:bg-accent/50 transition-colors">
+                                                {link.title}
+                                            </NavigationMenuTrigger>
+                                            <NavigationMenuContent>
+                                                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                                                    {link.children?.map((child, childIndex) => (
+                                                        <li key={child.title + childIndex} className={child?.main === true ? "col-span-2" : "col-span-1"}>
+                                                            <NavigationMenuLink asChild>
                                                                 <a
                                                                     href={child.href}
-                                                                    className="flex items-center gap-2 p-3 pl-8 text-sm text-foreground hover:bg-muted transition-colors"
+                                                                    className={cn(
+                                                                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                                                                    )}
                                                                 >
-                                                                    {child.icon && <child.icon className="h-4 w-4" />}
-                                                                    {child.title}
+                                                                    <div className="text-sm font-medium leading-none flex items-center gap-2">
+                                                                        {child.icon && <child.icon className="h-4 w-4" />}
+                                                                        {child.title}
+                                                                    </div>
+                                                                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                                                        {child.description}
+                                                                    </p>
                                                                 </a>
-                                                            </SheetClose>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </>
-                                        ) : (
-                                            <SheetClose asChild>
-                                                <a
-                                                    href={link.href}
-                                                    className="flex items-center gap-3 p-4 text-foreground hover:bg-muted transition-colors"
-                                                >
-                                                    {link.icon && <link.icon className="h-5 w-5" />}
-                                                    <span>{link.title}</span>
-                                                </a>
-                                            </SheetClose>
-                                        )}
-                                    </div>
-                                ))}
-                            </nav>
+                                                            </NavigationMenuLink>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </NavigationMenuContent>
+                                        </>
+                                    ) : (
+                                        <NavigationMenuLink
+                                            href={link.href}
+                                            className="bg-transparent hover:bg-accent/50 transition-colors flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium"
+                                        >
+                                            {link.title}
+                                        </NavigationMenuLink>
+                                    )}
+                                </NavigationMenuItem>
+                            ))}
+                        </NavigationMenuList>
+                    </NavigationMenu>
+                </div>
 
-                            {/* Footer */}
-                            <div className="mt-auto p-4 border-t">
-                                <p className="text-sm text-muted-foreground text-center">
-                                    © {new Date().getFullYear()} Simon Bremner
-                                </p>
+                {/* Right side controls (theme toggle + mobile menu) */}
+                <div className="flex items-center gap-2">
+                    <ThemeToggle />
+
+                    {/* Mobile Menu (Sheet from shadcn/ui) */}
+                    <Sheet>
+                        <SheetTrigger asChild className="md:hidden">
+                            <Button variant="ghost" size="icon" className="bg-transparent">
+                                <Menu className="h-6 w-6" />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="right" className="w-full max-w-xs p-0">
+                            <div className="flex flex-col h-full">
+                                {/* Header with close button */}
+                                <div className="flex justify-between items-center p-4 border-b">
+                                    <h2 className="text-lg font-semibold">Simon Bremner</h2>
+                                    <div className="flex items-center gap-2">
+                                        <SheetClose className="rounded-full h-8 w-8 flex items-center justify-center bg-transparent">
+                                            <X className="h-6 w-6" />
+                                            <span className="sr-only">Close</span>
+                                        </SheetClose>
+                                    </div>
+                                </div>
+
+                                {/* Main mobile navigation */}
+                                <nav className="flex flex-col divide-y">
+                                    {navigationLinks.map((link, index) => (
+                                        <div key={link.title + index}>
+                                            {link.children ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => toggleDropdown(link.title)}
+                                                        className="flex items-center justify-between w-full p-4 text-foreground hover:bg-muted transition-colors"
+                                                    >
+                                                        <div className="flex items-center gap-3">
+                                                            {link.icon && <link.icon className="h-5 w-5" />}
+                                                            <span>{link.title}</span>
+                                                        </div>
+                                                        <ChevronRight className={`h-4 w-4 transition-transform ${openDropdowns[link.title] ? 'rotate-90' : ''}`} />
+                                                    </button>
+
+                                                    {/* Collapsible submenu */}
+                                                    {openDropdowns[link.title] && (
+                                                        <div className="bg-muted/40 pl-4">
+                                                            {link.children.map((child, childIndex) => (
+                                                                <SheetClose key={child.title + childIndex} asChild>
+                                                                    <a
+                                                                        href={child.href}
+                                                                        className="flex items-center gap-2 p-3 pl-8 text-sm text-foreground hover:bg-muted transition-colors"
+                                                                    >
+                                                                        {child.icon && <child.icon className="h-4 w-4" />}
+                                                                        {child.title}
+                                                                    </a>
+                                                                </SheetClose>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                <SheetClose asChild>
+                                                    <a
+                                                        href={link.href}
+                                                        className="flex items-center gap-3 p-4 text-foreground hover:bg-muted transition-colors"
+                                                    >
+                                                        {link.icon && <link.icon className="h-5 w-5" />}
+                                                        <span>{link.title}</span>
+                                                    </a>
+                                                </SheetClose>
+                                            )}
+                                        </div>
+                                    ))}
+                                </nav>
+
+                                {/* Footer */}
+                                <div className="mt-auto p-4 border-t">
+                                    <p className="text-sm text-muted-foreground text-center">
+                                        © {new Date().getFullYear()} Simon Bremner
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </SheetContent>
-                </Sheet>
+                        </SheetContent>
+                    </Sheet>
+                </div>
             </div>
         </header>
     );

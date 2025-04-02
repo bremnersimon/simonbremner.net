@@ -1,45 +1,45 @@
 ---
-import { Button } from "@/components/ui/button";
 import { Container } from "../main/Container";
 import type { FooterProps } from "@/types";
+import { Image } from "astro:assets";
 const props = Astro.props as FooterProps;
-const { title = "Simon Bremner", sections, year = 2025 } = props;
+const { title = "Simon Bremner", year = 2025 } = props;
+const links = [
+  { title: "Home", href: "/" },
+  { title: "About", href: "/about" },
+  { title: "Photography", href: "/projects/photography" },
+  { title: "Design", href: "/projects/design" },
+  { title: "Development", href: "/projects/development" },
+  { title: "Handcrafted", href: "/projects/handcrafted" },
+];
 ---
 
-<footer class="w-full py-24 relative overflow-hidden border-t">
+<footer class="w-full overflow-hidden border-t">
   <Container>
-    <div
-      class="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <h2
-        class="text-[6rem] md:text-[10rem] lg:text-[16rem] font-bold tracking-tighter text-muted-foreground/10 whitespace-nowrap">
-        {title}
-      </h2>
-    </div>
-
-    <div class="container px-4 relative z-10">
-      <div class="flex flex-col gap-16">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {
-            sections.map((section) => (
-              <div>
-                <h3 class="text-lg font-medium mb-4">{section.title}</h3>
-                <ul class="space-y-2">
-                  {section.links.map((link) => (
-                    <li class="text-sm">
-                      <a href={link.href}>{link.title}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))
-          }
-        </div>
-        <div class="border-t pt-8">
-          <p class="text-sm text-muted-foreground">
-            © {year} simonbremner.net. All rights reserved.
-          </p>
-        </div>
+    <div class="flex flex-col gap-4 py-10 px-4 md:px-0">
+      <div class="flex flex-col items-start">
+        <Image src="/images/icon.svg" width={32} height={32} alt="Logo" />
+        <p class="text-lg font-bold text-foreground mt-2">Simon Bremner</p>
+        <p class="text-sm text-muted-foreground max-w-sm">
+          A creative professional sharing his personal creative pursuits.
+        </p>
       </div>
+      <div class="flex flex-row flex-wrap gap-4">
+        {
+          links.map((link) => (
+            <ul>
+              <li class="text-md md:text-sm mr-4">
+                <a href={link.href}>{link.title}</a>
+              </li>
+            </ul>
+          ))
+        }
+      </div>
+    </div>
+    <div class="border-t py-8 px-4 md:px-0">
+      <p class="text-sm text-muted-foreground text-right">
+        © {year} simonbremner.net. All rights reserved.
+      </p>
     </div>
   </Container>
 </footer>

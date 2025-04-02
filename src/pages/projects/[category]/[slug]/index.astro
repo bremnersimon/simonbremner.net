@@ -89,7 +89,6 @@ if (!postData) {
               </div>
             )
           }
-
           <!-- Tags -->
           {
             postData.tags && postData.tags.length > 0 && (
@@ -107,7 +106,7 @@ if (!postData) {
           <!-- Back Button -->
           <div class="mt-12 mb-24">
             <a href={`/projects/${category}`}>
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline" className="gap-2 cursor-pointer">
                 <ArrowLeft />
                 Back to {category}
               </Button>
