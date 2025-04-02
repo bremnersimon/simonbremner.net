@@ -15,6 +15,15 @@ const { title = "Simon Bremner", description = "I'm a creative, I think..." } =
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 <script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-C6RRVRPQSC");
+</script>
+<script is:inline>
   // This script runs before any content renders on every page load
   // It ensures there's never a flash of the wrong theme
   function applyTheme() {

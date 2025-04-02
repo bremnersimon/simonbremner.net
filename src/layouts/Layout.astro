@@ -3,66 +3,26 @@ import "@/styles/global.css";
 import "highlight.js/styles/github-dark.css";
 import { Navbar } from "../components/globals/Navbar";
 import CommonHead from "../lib/CommonHead.astro";
-import Footer from "@/components/globals/Footer";
+import Footer from "@/components/globals/Footer.astro";
 import { Toaster } from "@/components/ui/sonner";
+import TagManager from "../lib/TagManager.astro";
 const year = new Date().getFullYear();
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script src="https://www.googletagmanager.com/gtag/js?id=G-C6RRVRPQSC"
-    ></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-C6RRVRPQSC");
-    </script>
+    <TagManager />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <CommonHead title="Simon Bremner" description="Portfolio" />
   </head>
   <body class="bg-background text-foreground">
-    <Navbar client:load transition:persist />
-    <main id="container">
+    <Navbar client:load />
+    <main id="page-content">
       <slot />
     </main>
-    <Footer
-      title="Simon Bremner"
-      sections={[
-        {
-          title: "Pages",
-          links: [
-            { title: "Home", href: "/" },
-            { title: "About", href: "/about" },
-            { title: "Contact", href: "/contact" },
-          ],
-        },
-        {
-          title: "Projects",
-          links: [
-            { title: "Photography", href: "/projects/photography" },
-            { title: "Design", href: "/projects/design" },
-            { title: "Development", href: "/projects/development" },
-            { title: "Handcrafted", href: "/projects/handcrafted" },
-          ],
-        },
-        {
-          title: "Legal",
-          links: [
-            { title: "Privacy", href: "/privacy" },
-            { title: "Terms", href: "/terms" },
-            { title: "Contact", href: "/contact" },
-          ],
-        },
-      ]}
-      year={year}
-    />
+    <Footer title="Simon Bremner" year={year} />
     <Toaster />
   </body>
 </html>

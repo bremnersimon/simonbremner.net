@@ -29,7 +29,7 @@ export default function HomepageHero({
     secondaryCta
 }: HomepageHeroProps) {
     return (
-        <Container className="h-full flex flex-col items-center justify-center py-20 md:py-60">
+        <Container className="h-full flex flex-col items-center justify-center py-20 md:py-30 lg:py-40">
             <div className="flex flex-col items-center text-center mb-12 w-full h-full">
                 <div className="inline-flex items-center px-4 py-2 rounded-full border mb-8">
                     {/* <span className="text-sm">Now Booking</span> */}

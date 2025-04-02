@@ -81,7 +81,7 @@ const BehindTheScenesBlock: React.FC<BehindTheScenesBlockProps> = ({
     };
 
     return (
-        <Card className="max-w-4xl mx-auto my-8 border-0 p-0">
+        <Card className="max-w-2xl mx-auto my-8 border-0 p-0">
             <CardHeader className="p-0">
                 <CardTitle className="text-2xl">{title}</CardTitle>
             </CardHeader>

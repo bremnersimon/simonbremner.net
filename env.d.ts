@@ -11,7 +11,7 @@ declare namespace Astro {
     site: string;
     url: URL;
     request: Request;
-    params: { 
+    params: {
       category?: "photography" | "design" | "development" | "handcrafted";  // Category parameter for /projects/[category]
       slug?: string;      // Slug parameter for /projects/[category]/[slug]
     };
@@ -39,21 +39,4 @@ declare namespace Astro {
       showLabel?: boolean;
     };
   }
-}
-declare module '*.svg' {
-  const content: {
-    src: string;
-    width?: number;
-    height?: number;
-  };
-  export default content;
-}
-
-declare module '*.png' {
-  const content: {
-    src: string;
-    width?: number;
-    height?: number;
-  };
-  export default content;
 }

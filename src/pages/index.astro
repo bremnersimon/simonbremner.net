@@ -1,5 +1,5 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import PageLayout from "@/layouts/PageLayout.astro";
 import HomepageHero from "@/components/main/HomepageHero";
 import TabbedPostSlider from "@/components/main/TabbedPostSlider";
 import LargeText from "@/components/main/LargeText";
@@ -12,7 +12,7 @@ const data: { featuredProjects: ProjectCardProps[] } =
   await getHomePageProjects();
 ---
 
-<Layout>
+<PageLayout title="Home | Simon Bremner" description="Welcome to my portfolio">
   <AnimateOnLoad
     client:load
     variants={{
@@ -40,7 +40,7 @@ const data: { featuredProjects: ProjectCardProps[] } =
     <TabbedPostSlider
       client:load
       title="Recent Projects"
-      subtitle="A few of my projects across all my interests"
+      subtitle=""
       categories={[
         "All",
         "Photography",
@@ -52,4 +52,4 @@ const data: { featuredProjects: ProjectCardProps[] } =
       featuredProjects={data.featuredProjects}
     />
   </div>
-</Layout>
+</PageLayout>
