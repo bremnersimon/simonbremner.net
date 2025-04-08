@@ -1,0 +1,66 @@
+---
+import { Image } from "astro:assets";
+import BraveBabyPoster from "@/assets/brave-baby-poster.jpg";
+import CK from "@/assets/c-k.jpg";
+import RavanelBridge from "@/assets/ravanel-bridge.jpg";
+import PineappleFountain from "@/assets/pineapple-fountain.jpg";
+import CatawbaKayak from "@/assets/catawba-kayak.jpg";
+import CatawbaRiver from "@/assets/catawba-river.jpg";
+import BooneVista from "@/assets/boone-vista.jpg";
+import BcTeaTree from "@/assets/bc-tea-tree.jpg";
+const images = [
+  { image: CK },
+  { image: BcTeaTree },
+  { image: RavanelBridge },
+  { image: PineappleFountain },
+  { image: CatawbaKayak },
+  { image: CatawbaRiver },
+  { image: BooneVista },
+  { image: BraveBabyPoster },
+];
+---
+
+<section class="hidden md:block h-[200vh] relative img-group-container">
+  <div class="sticky top-0 overflow-hidden">
+    <ul class="flex img-group">
+      <li class="w-[200vw] h-screen flex-none img-container">
+        <div class="flex flex-row h-full w-full items-center">
+          {
+            images.map((item, index) => (
+              <Image
+                class="image-item pointer-events-none object-cover opacity-0 aspect-[3/4] w-1/8"
+                src={item.image}
+                alt={`Image ${index + 1}`}
+                loading="eager"
+              />
+            ))
+          }
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { animate, scroll, inView } from "motion";
+  document.addEventListener("astro:page-load", () => {
+    inView(".image-item", (element) => {
+      animate(element, { opacity: 1, y: -50 }, { duration: 1 });
+      return () => {
+        animate(element, { opacity: 0, y: 0 }, { duration: 1 });
+      };
+    });
+
+    scroll(
+      animate(".img-group", {
+        transform: ["none", "translateX(-100vw)"],
+      }),
+      { target: document.querySelector(".img-group-container") || undefined }
+    );
+  });
+
+  // TODO: Implement progress bar representing gallery scroll
+  // scroll(animate(".progress", { scaleX: [0, 1] }), {
+  //   target: document.querySelector(".img-group-container") || undefined,
+  // });
+</script>

@@ -41,7 +41,7 @@ export async function getHomePageProjects() {
       mainImage,
       tags,
       "category": _type
-    } | order(publishedAt desc)[0...24]
+    } | order(publishedAt desc)[0...10]
   }`);
 }
 

@@ -3,9 +3,7 @@ import { Container } from "./Container";
 import { handleIcon } from "@/lib/handleIconLookup";
 
 interface HomepageHeroProps {
-    children: React.ReactNode
-    title: string
-    subtitle: string
+    title: string[]
     primaryCta: {
         text: string
         href: string
@@ -19,47 +17,49 @@ interface HomepageHeroProps {
 }
 
 export default function HomepageHero({
-    children,
-    title = "Brands. Sites. Products.",
-    subtitle = "Designed and Developed in-house.",
+    title,
     primaryCta = {
-        text: "View Plans & Pricing",
-        href: "/pricing",
+        text: "Meet Me",
+        href: "/about",
+        icon: "user",
     },
     secondaryCta
 }: HomepageHeroProps) {
+    const categoryLinks = [
+        { href: "/projects/photography", icon: "camera" },
+        { href: "/projects/development", icon: "code" },
+        { href: "/projects/design", icon: "pencil" },
+        { href: "/projects/handcrafted", icon: "hammer" },
+    ]
     return (
-        <Container className="h-full flex flex-col items-center justify-center py-20 md:py-30 lg:py-40">
-            <div className="flex flex-col items-center text-center mb-12 w-full h-full">
-                <div className="inline-flex items-center px-4 py-2 rounded-full border mb-8">
-                    {/* <span className="text-sm">Now Booking</span> */}
-                    <a href="/projects/photography">{handleIcon("camera")}</a>
-                    {handleIcon("dot")}
-                    <a href="/projects/development">{handleIcon("code")}</a>
-                    {handleIcon("dot")}
-                    <a href="/projects/design">{handleIcon("pencil")}</a>
-                    {handleIcon("dot")}
-                    <a href="/projects/handcrafted">{handleIcon("hammer")}</a>
+        <Container className="flex flex-col items-center justify-center h-screen">
+            <div className="flex flex-col items-center justify-center text-center w-full h-full">
+                <div className="inline-flex items-center justify-center px-4 py-2 rounded-full border mb-8">
+                    {categoryLinks.map((link, index) => (
+                        <div key={link.href} className="inline-flex items-center">
+                            <a className="hover:text-primary transition-colors" href={link.href}>
+                                {handleIcon(link.icon)}
+                            </a>
+                            {index !== categoryLinks.length - 1 && handleIcon("dot")}
+                        </div>
+                    ))}
                 </div>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">{title}</h1>
-                <p className="text-2xl md:text-3xl lg:text-4xl text-muted-foreground mb-8">{subtitle}</p>
-                <div className="flex flex-col sm:flex-row gap-4">
+                {title.map((line) => (
+                    <h1 key={line} className="text-2xl md:text-4xl lg:text-6xl font-bold tracking-tight mb-4">{line}</h1>
+                ))}
+                <div className="flex flex-col sm:flex-row gap-4 mt-10">
                     {primaryCta && (
                         <Button asChild variant="default" size="lg">
-                            <a href={primaryCta.href}>{primaryCta.text}{primaryCta?.icon ? handleIcon(primaryCta.icon) : null}</a>
+                            <a href={primaryCta.href} data-astro-reload>{primaryCta.text}{primaryCta?.icon ? handleIcon(primaryCta.icon) : null}</a>
                         </Button>
                     )}
                     {secondaryCta && (
                         <Button asChild variant="outline" size="lg">
-                            <a href={secondaryCta.href}>{secondaryCta.text}{secondaryCta?.icon ? handleIcon(secondaryCta.icon) : null}</a>
+                            <a href={secondaryCta.href} data-astro-reload>{secondaryCta.text}{secondaryCta?.icon ? handleIcon(secondaryCta.icon) : null}</a>
                         </Button>
                     )}
                 </div>
             </div>
-            <div className="aspect-video w-full max-w-5xl mx-auto rounded-lg overflow-hidden bg-muted">
-                {children}
-            </div>
         </Container>
     )
 }
-

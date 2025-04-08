@@ -76,7 +76,9 @@ if (!projects || projects.length === 0) {
 }
 ---
 
-<PageLayout title={pageTitle} description={pageDescription}>
+<PageLayout
+  title={pageTitle + " | Simon Bremner"}
+  description={pageDescription}>
   <ProjectsGrid
     transition:persist
     allProjects={projects}

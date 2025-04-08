@@ -8,6 +8,7 @@ import { getHomePageProjects } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
 import ravanelBridge from "@/assets/ravanel-bridge.jpg";
 import { Image } from "astro:assets";
+import HorizontalScrolling from "@/components/main/HorizontalScrolling.astro";
 const data: { featuredProjects: ProjectCardProps[] } =
   await getHomePageProjects();
 ---
@@ -21,26 +22,30 @@ const data: { featuredProjects: ProjectCardProps[] } =
     }}
     tag="section">
     <HomepageHero
-      title="Crafting Moments, Building Connections"
-      subtitle="Photographer, developer, designer, and maker—bringing ideas to life through multiple creative languages that connect people with what matters most."
+      title={["Crafting Moments,", "Building Connections"]}
       primaryCta={{
         text: "About Me",
         href: "/about",
         icon: "user",
-      }}>
-      <Image priority src={ravanelBridge} alt="Ravanel Bridge" />
-    </HomepageHero>
+      }}
+    />
+    <Image
+      class="block md:hidden"
+      priority
+      src={ravanelBridge}
+      alt="Ravanel Bridge"
+    />
+    <HorizontalScrolling />
   </AnimateOnLoad>
   <LargeText
     className="py-24"
     client:load
     content={"Welcome to my portfolio—a site documenting my creative journey and professional evolution. Browse through these visual stories and technical experiments, shared for fellow enthusiasts and anyone seeking inspiration for their next expedition."}
   />
-  <div id="projects">
+  <div id="projects" class="overflow-hidden">
     <TabbedPostSlider
       client:load
       title="Recent Projects"
-      subtitle=""
       categories={[
         "All",
         "Photography",

@@ -121,7 +121,7 @@ export default function LargeText({ className, content, textSize = "large", high
     return (
         <section id="aboutMe" key={index + content} className={cn("w-full relative", className)}>
             <Container className="relative">
-                <div className="space-y-20 relative">
+                <div className="space-y-4 md:space-y-20 relative">
                     <TextSection
                         text={content}
                         textSize={textSize}
