@@ -1,9 +1,8 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
-import HomepageHero from "@/components/main/HomepageHero";
+import HomepageHero from "@/components/main/HomepageHero.astro";
 import TabbedPostSlider from "@/components/main/TabbedPostSlider";
 import LargeText from "@/components/main/LargeText";
-import AnimateOnLoad from "@/components/motion/AnimateOnLoad";
 import { getHomePageProjects } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
 import ravanelBridge from "@/assets/ravanel-bridge.jpg";
@@ -14,29 +13,14 @@ const data: { featuredProjects: ProjectCardProps[] } =
 ---
 
 <PageLayout title="Home | Simon Bremner" description="Welcome to my portfolio">
-  <AnimateOnLoad
-    client:load
-    variants={{
-      hidden: { opacity: 0, y: -20 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-    }}
-    tag="section">
-    <HomepageHero
-      title={["Crafting Moments,", "Building Connections"]}
-      primaryCta={{
-        text: "About Me",
-        href: "/about",
-        icon: "user",
-      }}
-    />
-    <Image
-      class="block md:hidden"
-      priority
-      src={ravanelBridge}
-      alt="Ravanel Bridge"
-    />
-    <HorizontalScrolling />
-  </AnimateOnLoad>
+  <HomepageHero />
+  <Image
+    class="block lg:hidden"
+    priority
+    src={ravanelBridge}
+    alt="Ravanel Bridge"
+  />
+  <HorizontalScrolling />
   <LargeText
     className="py-24"
     client:load

@@ -2,7 +2,7 @@
 import AboutHero from "@/components/main/AboutHero";
 import { Image } from "astro:assets";
 import headshot from "@/assets/sb-headshot.jpg";
-import { FadingSection } from "@/components/main/FadingSection";
+import FadingSection from "@/components/main/FadingSection.astro";
 import LargeText from "@/components/main/LargeText";
 import { Container } from "@/components/main/Container";
 import busm from "@/assets/busm.jpg";
@@ -10,7 +10,6 @@ import braveBaby from "@/assets/brave-baby-poster.jpg";
 import castleAndKey from "@/assets/c-k.jpg";
 import sbCode from "@/assets/sb-code.jpg";
 import type { AboutHeroTextProps, FadingSectionProps } from "@/types/types";
-import { Cta } from "@/components/main/Cta";
 import PageLayout from "@/layouts/PageLayout.astro";
 
 const heroText: AboutHeroTextProps = {
@@ -93,7 +92,7 @@ const fadingSections: FadingSectionProps[] = [
 ---
 
 <PageLayout title="About | Simon Bremner" description="About me">
-  <Container>
+  <Container className="px-10 lg:px-0">
     <AboutHero client:load content={heroText}>
       <Image
         class="rounded-lg aspect-square object-cover"
@@ -102,7 +101,7 @@ const fadingSections: FadingSectionProps[] = [
       />
     </AboutHero>
   </Container>
-  <Container className="py-20">
+  <Container className="py-4 lg:py-20">
     {
       largeText.map((paragraph, index) => (
         <LargeText

@@ -37,7 +37,7 @@ const TextSection = ({ text, textSize, highlightedWords, highlightStyle }: {
         <motion.div
             ref={sectionRef}
             className={`mb-20 text-foreground ${textSize === "large"
-                ? "text-2xl md:text-3xl lg:text-4xl"
+                ? "text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
                 : "text-xl md:text-2xl"
                 } leading-tight font-medium `}
             style={{
@@ -120,8 +120,8 @@ const WordAnimation = ({
 export default function LargeText({ className, content, textSize = "large", highlightedWords, highlightStyle, index }: LargeTextProps) {
     return (
         <section id="aboutMe" key={index + content} className={cn("w-full relative", className)}>
-            <Container className="relative">
-                <div className="space-y-4 md:space-y-20 relative">
+            <Container className="">
+                <div className="space-y-4 md:space-y-10 lg:space-y-20 relative">
                     <TextSection
                         text={content}
                         textSize={textSize}
