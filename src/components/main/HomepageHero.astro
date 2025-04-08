@@ -1,0 +1,67 @@
+---
+import { Container } from "@/components/main/Container";
+import { Button } from "@/components/ui/button";
+import { CategoryLinks } from "./CategoryLinks";
+import { Image } from "astro:assets";
+import headshot from "@/assets/sb-headshot.jpg";
+import { Icon } from "./Icon";
+const { primaryCta, secondaryCta } = Astro.props;
+---
+
+<Container className="">
+  <div
+    class="flex flex-col items-center justify-center text-center w-full h-full py-40 max-w-5xl mx-auto px-4 lg:px-0">
+    <CategoryLinks />
+    <h1
+      class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-relaxed leading-tight">
+      Hello, my name is <a
+        href="/about"
+        class="underline hover:text-primary transition-colors">Simon</a
+      >. A
+      <a
+        href="/projects/photography"
+        class="underline hover:text-primary transition-colors">Designer</a
+      >,
+      <a
+        href="/projects/development"
+        class="underline hover:text-primary transition-colors">Developer</a
+      >,
+      <a
+        href="/projects/design"
+        class="underline hover:text-primary transition-colors">Photographer</a
+      >, and Maker of <a
+        href="/projects/handcrafted"
+        class="underline hover:text-primary transition-colors"
+        >Handcrafted Products</a
+      >
+    </h1>
+    <div class="flex flex-col sm:flex-row gap-4 mt-10">
+      {
+        primaryCta && (
+          <a href={primaryCta.href} data-astro-reload>
+            <Button
+              client:load
+              className="cursor-pointer"
+              variant="default"
+              size="lg">
+              {primaryCta.text}
+              {primaryCta?.icon && <Icon name={primaryCta.icon} size={24} />}
+            </Button>
+          </a>
+        )
+      }
+      {
+        secondaryCta && (
+          <a href={secondaryCta.href} data-astro-reload>
+            <Button className="cursor-pointer" variant="outline" size="lg">
+              {secondaryCta.text}
+              {secondaryCta?.icon && (
+                <Icon name={secondaryCta.icon} size={24} />
+              )}
+            </Button>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</Container>

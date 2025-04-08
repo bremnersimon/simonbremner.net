@@ -1,6 +1,5 @@
 ---
 // src/pages/photography/[slug].astro
-import Layout from "@/layouts/Layout.astro";
 import { Container } from "@/components/main/Container";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +12,7 @@ import HeroSection from "@/components/blocks/HeroSection";
 import AuthorSection from "@/components/blocks/AuthorSection";
 import { ArrowLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import PageLayout from "@/layouts/PageLayout.astro";
 
 // Define all possible paths for pre-rendering at build time
 export async function getStaticPaths() {
@@ -61,7 +61,9 @@ if (!postData) {
 }
 ---
 
-<Layout>
+<PageLayout
+  title={postData.title + " | Simon Bremner"}
+  description={postData.excerpt}>
   <ScrollIndicator client:load>
     <article>
       <HeroSection
@@ -116,4 +118,4 @@ if (!postData) {
       </Container>
     </article>
   </ScrollIndicator>
-</Layout>
+</PageLayout>

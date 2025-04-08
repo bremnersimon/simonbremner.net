@@ -1,5 +1,5 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import PageLayout from "@/layouts/PageLayout.astro";
 import ProjectsGrid from "@/layouts/ProjectsGrid.astro";
 import { getAllPostsByType, urlForImage } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
@@ -48,7 +48,7 @@ const defaultCategorySubtitle = "Explore my portfolio of creative work";
 const categorySubtitle = categorySubtitles[category] || defaultCategorySubtitle;
 
 // Page metadata
-const pageTitle = `${categoryTitle} Projects`;
+const pageTitle = `${categoryTitle}`;
 const pageDescription = `Explore my ${category} portfolio - ${categorySubtitle}`;
 
 const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
@@ -76,7 +76,9 @@ if (!projects || projects.length === 0) {
 }
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
+<PageLayout
+  title={pageTitle + " | Simon Bremner"}
+  description={pageDescription}>
   <ProjectsGrid
     transition:persist
     allProjects={projects}
@@ -86,4 +88,4 @@ if (!projects || projects.length === 0) {
   <!-- <Container>
     <Cta client:load />
   </Container> -->
-</Layout>
+</PageLayout>
