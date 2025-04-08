@@ -1,6 +1,6 @@
 import { type MotionValue, motion, useScroll, useTransform } from "motion/react"
 import { useRef } from "react"
-import { Container } from "./Container"
+import { Container } from "@/components/main/Container"
 import { cn } from "@/lib/utils"
 
 interface LargeTextProps {

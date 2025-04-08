@@ -1,5 +1,4 @@
 // src/components/ContentRenderer.jsx
-import React from 'react';
 import { HeadlineBlock } from './';
 import { TextBlock } from './';
 import { ImageBlock } from './';
@@ -24,6 +23,7 @@ const ContentRenderer = ({ blocks = [] }) => {
 
     return (
         <div className="content-blocks space-y-8">
+            {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
             {blocks.map((block: any) => {
                 // Use the _type to determine which component to render
                 switch (block._type) {

@@ -1,10 +1,9 @@
 ---
-import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import type { FadingSectionProps } from "@/types/types";
-import { Icon } from "./Icon";
+import { Icon } from "@/components/main/Icon";
 import { Image } from "astro:assets";
-import Link from "./Link.astro";
+import Link from "@/components/main/Link.astro";
 
 interface Props {
   sections: FadingSectionProps[];
@@ -86,6 +85,7 @@ const { sections } = Astro.props;
       animate(
         element as HTMLElement,
         {
+          // @ts-ignore
           opacity: [0, 1],
           y: [20, 0],
         },
