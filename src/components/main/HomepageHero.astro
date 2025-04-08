@@ -2,9 +2,8 @@
 import { Container } from "@/components/main/Container";
 import { Button } from "@/components/ui/button";
 import { CategoryLinks } from "./CategoryLinks";
-import { Image } from "astro:assets";
-import headshot from "@/assets/sb-headshot.jpg";
 import { Icon } from "./Icon";
+import TextScramble from "@/components/main/TextScramble.astro";
 const { primaryCta, secondaryCta } = Astro.props;
 ---
 
@@ -13,7 +12,7 @@ const { primaryCta, secondaryCta } = Astro.props;
     class="flex flex-col items-center justify-center text-center w-full h-full py-40 max-w-5xl mx-auto px-4 lg:px-0">
     <CategoryLinks />
     <h1
-      class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-relaxed leading-tight">
+      class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-relaxed leading-tight">
       Hello, my name is <a
         href="/about"
         class="underline hover:text-primary transition-colors">Simon</a
