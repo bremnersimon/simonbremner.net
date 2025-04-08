@@ -22,13 +22,13 @@ const PostCarousel = ({ projects }: { projects: ProjectCardProps[] }) => {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         align: "start",
         slidesToScroll: 1,
-        containScroll: "trimSnaps",
+        containScroll: "keepSnaps",
     });
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
     const [nextBtnEnabled, setNextBtnEnabled] = useState(true);
 
-    const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-    const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+    const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+    const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
     const onSelect = useCallback(() => {
         if (!emblaApi) return;
@@ -61,14 +61,13 @@ const PostCarousel = ({ projects }: { projects: ProjectCardProps[] }) => {
             alt: post.title,
         },
         category: post.category,
-        caption: post.caption,
         tags: post.tags || [],
         publishedAt: post.publishedAt,
     }));
 
     return (
         <div className="relative mx-auto">
-            <div className="overflow-hidden" ref={emblaRef}>
+            <div className="" ref={emblaRef}>
                 <div className="flex gap-6">
                     {convertedProjects?.map((project) => (
                         <div
@@ -108,8 +107,8 @@ const PostCarousel = ({ projects }: { projects: ProjectCardProps[] }) => {
 
 export default function TabbedPostSlider({
     featuredProjects,
-    title = "Reputation is everything.",
-    subtitle = "Ours is flawless.",
+    title,
+    subtitle,
     categories = ["All", "Photography", "Design", "Development", "Handcrafted"],
     defaultTab = "All",
     lazyLoad = true,
@@ -142,7 +141,7 @@ export default function TabbedPostSlider({
             <Container>
                 <div className="text-left mb-12">
                     <h2 className="text-4xl md:text-6xl font-bold mb-4">{title}</h2>
-                    <p className="text-2xl md:text-4xl text-muted-foreground">{subtitle}</p>
+                    {subtitle && <p className="text-2xl md:text-4xl text-muted-foreground">{subtitle}</p>}
                 </div>
 
                 <Tabs defaultValue={defaultTab} onValueChange={handleTabChange}>

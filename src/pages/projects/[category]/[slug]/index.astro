@@ -61,7 +61,9 @@ if (!postData) {
 }
 ---
 
-<PageLayout title={postData.title} description={postData.excerpt}>
+<PageLayout
+  title={postData.title + " | Simon Bremner"}
+  description={postData.excerpt}>
   <ScrollIndicator client:load>
     <article>
       <HeroSection

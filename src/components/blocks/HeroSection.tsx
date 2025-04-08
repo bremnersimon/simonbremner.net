@@ -57,7 +57,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                             </Badge>
                         )}
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-white">
                         {title}
                     </h1>
                     {mainImage?.caption && (
