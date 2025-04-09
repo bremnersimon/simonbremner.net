@@ -13,19 +13,19 @@ interface Props {
 const {
   text = "Hello World",
   className = "",
-  duration = 5000,
+  duration = 1000,
   fps = 30,
 } = Astro.props;
 ---
 
 <div
-  class={`inline-block relative cursor-pointer hover:after:w-full ${className}`}
+  class={`text-scramble inline-block relative cursor-pointer group ${className}`}
   data-text={text}
   data-duration={duration}
   data-fps={fps}>
   <span class="text-scramble-output"></span>
   <div
-    class="absolute bottom-[-2px] left-0 w-0 h-[1px] bg-current transition-[width] duration-300 ease-in-out after:content-['']">
+    class="absolute bottom-[-2px] left-0 w-0 h-[1px] bg-current transition-[width] duration-300 ease-in-out group-hover:w-full">
   </div>
 </div>
 
@@ -142,12 +142,10 @@ const {
   }
 
   // Initialize all text scramble elements on the page
-  document.addEventListener("DOMContentLoaded", () => {
-    const elements = document.querySelectorAll("[data-text]");
+  document.addEventListener("astro:page-load", () => {
+    const elements = document.querySelectorAll(".text-scramble");
     elements.forEach((element) => {
-      if (element instanceof HTMLElement) {
-        new TextScrambleEffect(element);
-      }
+      new TextScrambleEffect(element as HTMLElement);
     });
   });
 </script>
