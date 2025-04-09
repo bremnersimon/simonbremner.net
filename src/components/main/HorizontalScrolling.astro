@@ -77,12 +77,14 @@ const images = [
         );
 
         // Opacity formula: closer to center = more visible
+        const opacity = 0 + 1 * (1 - normalizedDistance);
         const scale = 0.8 + 0.2 * (1 - normalizedDistance);
         const yOffset = -50 * (1 - normalizedDistance);
 
         // Apply styles
         (img as HTMLElement).style.transform =
           `translateY(${yOffset}px) scale(${scale})`;
+        (img as HTMLElement).style.opacity = opacity.toString();
       });
     };
 
