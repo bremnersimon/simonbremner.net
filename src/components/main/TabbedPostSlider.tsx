@@ -93,10 +93,10 @@ const PostCarousel = ({ projects }: { projects: ProjectCardProps[] }) => {
             </div>
 
             <div className="flex justify-end gap-2 mt-8">
-                <Button variant="outline" size="icon" onClick={scrollPrev} disabled={!prevBtnEnabled}>
+                <Button aria-label="Previous slide" variant="outline" size="icon" onClick={scrollPrev} disabled={!prevBtnEnabled}>
                     <ChevronLeft className="h-4 w-4" />
                 </Button>
-                <Button variant="outline" size="icon" onClick={scrollNext} disabled={!nextBtnEnabled}>
+                <Button aria-label="Next slide" variant="outline" size="icon" onClick={scrollNext} disabled={!nextBtnEnabled}>
                     <ChevronRight className="h-4 w-4" />
                 </Button>
             </div>
@@ -146,14 +146,14 @@ export default function TabbedPostSlider({
                 <Tabs defaultValue={defaultTab} onValueChange={handleTabChange}>
                     <TabsList className="mb-8 hidden md:block text-foreground">
                         {categories.map(category => (
-                            <TabsTrigger aria-label={`Tab ${category}`} key={category} value={category} className="px-4">
+                            <TabsTrigger aria-label={`Tab for ${category} projects`} key={category} value={category} className="px-4">
                                 {category}
                             </TabsTrigger>
                         ))}
                     </TabsList>
 
                     {categories.map(category => (
-                        <TabsContent aria-label={`Content ${category}`} key={category} value={category} className="mt-0">
+                        <TabsContent aria-label={`Tab content ${category} projects`} key={category} value={category} className="mt-0">
                             {(!lazyLoad || loadedTabs.includes(category)) && (
                                 <PostCarousel projects={getFilteredProjects(category)} />
                             )}
