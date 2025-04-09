@@ -9,7 +9,7 @@ const { content } = Astro.props as AboutHeroProps;
 ---
 
 <div
-  class="grid grid-cols-1 lg:grid-cols-2 items-center justify-center md:gap-8 pt-20 md:py-40 min-h-screen">
+  class="grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-0 md:gap-8 pt-20 md:py-40 md:min-h-screen">
   <div class="relative pb-10 md:pb-0">
     <div
       class="hidden lg:inline absolute bottom-[-30px] left-10 font-bold text-primary text-7xl">
@@ -18,9 +18,9 @@ const { content } = Astro.props as AboutHeroProps;
     <slot />
   </div>
 
-  <div class="text-left">
+  <div class="text-left mb-10 lg:mb-0">
     <h1
-      class="text-4xl md:text-6xl lg:text-[8rem] font-bold text-left md:leading-tight lg:leading-30 relative">
+      class="text-4xl md:text-6xl lg:text-8xl font-bold text-left md:leading-tight lg:leading-30 relative">
       {content.headline}
     </h1>
     {
