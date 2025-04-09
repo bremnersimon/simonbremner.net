@@ -5,6 +5,7 @@ import { Navbar } from "../components/globals/Navbar";
 import CommonHead from "../lib/CommonHead.astro";
 import Footer from "@/components/globals/Footer.astro";
 import TagManager from "../lib/TagManager.astro";
+import TagManagerBody from "../lib/TagManagerBody.astro";
 
 const year = new Date().getFullYear();
 const { title = "Simon Bremner", description = "Portfolio" } = Astro.props;
@@ -21,6 +22,7 @@ const { title = "Simon Bremner", description = "Portfolio" } = Astro.props;
   </head>
   <body
     class="text-foreground bg-background flex flex-col min-h-screen m-0 w-full h-full">
+    <TagManagerBody />
     <Navbar client:load />
     <main id="page-content" class="flex-grow">
       <slot />

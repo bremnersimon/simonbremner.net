@@ -78,7 +78,7 @@ export const Navbar = () => {
 
     return (
         <header
-            className="bg-background w-full px-4 lg:px-6 h-14 fixed top-0 right-0 left-0 z-50 border-b shadow-sm"
+            className="bg-background w-full px-4 lg:px-6 h-14 sticky top-0 right-0 left-0 z-50 border-b shadow-sm"
         >
             <div className="w-full h-full container mx-auto  flex items-center justify-between">
                 {/* Logo always visible */}
@@ -144,10 +144,8 @@ export const Navbar = () => {
 
                     {/* Mobile Menu (Sheet from shadcn/ui) */}
                     <Sheet>
-                        <SheetTrigger asChild className="md:hidden">
-                            <Button variant="ghost" size="icon" className="bg-transparent">
-                                <Menu className="h-6 w-6" />
-                            </Button>
+                        <SheetTrigger asChild className="md:hidden" aria-label="Open mobile menu">
+                            <Menu className="h-6 w-6" />
                         </SheetTrigger>
                         <SheetContent side="right" className="w-full max-w-xs p-0">
                             <div className="flex flex-col h-full">
@@ -155,9 +153,8 @@ export const Navbar = () => {
                                 <div className="flex justify-between items-center p-4 border-b">
                                     <h2 className="text-lg font-semibold">Simon Bremner</h2>
                                     <div className="flex items-center gap-2">
-                                        <SheetClose className="rounded-full h-8 w-8 flex items-center justify-center bg-transparent">
+                                        <SheetClose aria-label="Close mobile menu" className="rounded-full h-8 w-8 flex items-center justify-center bg-transparent">
                                             <X className="h-6 w-6" />
-                                            <span className="sr-only">Close</span>
                                         </SheetClose>
                                     </div>
                                 </div>

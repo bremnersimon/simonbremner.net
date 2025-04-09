@@ -54,7 +54,11 @@ const { sections } = Astro.props;
                 {section.content.map((paragraph) => (
                   <p class="mb-4 text-lg leading-loose">{paragraph}</p>
                 ))}
-                <Link variant="default" class="mt-4" href={section.button.href}>
+                <Link
+                  aria-label={`Link to ${section.button.label} page`}
+                  variant="default"
+                  class="mt-4"
+                  href={section.button.href}>
                   {section.button.label}{" "}
                   <Icon name={section.button.icon ? section.button.icon : ""} />
                 </Link>

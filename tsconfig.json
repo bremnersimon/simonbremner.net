@@ -11,6 +11,7 @@
     "node_modules",
     "src/pages/_shadcn-theme",
     "src/pages/_shadcn-theme/**",
+    "src/lib/TagManager.astro"
   ],
   "compilerOptions": {
     "esModuleInterop": true,

@@ -144,16 +144,16 @@ export default function TabbedPostSlider({
                 </div>
 
                 <Tabs defaultValue={defaultTab} onValueChange={handleTabChange}>
-                    <TabsList className="mb-8 hidden md:block">
+                    <TabsList className="mb-8 hidden md:block text-foreground">
                         {categories.map(category => (
-                            <TabsTrigger key={category} value={category} className="px-4">
+                            <TabsTrigger aria-label={`Tab ${category}`} key={category} value={category} className="px-4">
                                 {category}
                             </TabsTrigger>
                         ))}
                     </TabsList>
 
                     {categories.map(category => (
-                        <TabsContent key={category} value={category} className="mt-0">
+                        <TabsContent aria-label={`Content ${category}`} key={category} value={category} className="mt-0">
                             {(!lazyLoad || loadedTabs.includes(category)) && (
                                 <PostCarousel projects={getFilteredProjects(category)} />
                             )}
