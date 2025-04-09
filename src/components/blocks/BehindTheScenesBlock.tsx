@@ -1,5 +1,5 @@
 // src/components/blocks/BehindTheScenesBlock.tsx
-import React from 'react';
+import type React from 'react';
 import {
     Card,
     CardContent,
@@ -7,8 +7,8 @@ import {
     CardTitle
 } from '@/components/ui/card';
 import { PortableText } from '@portabletext/react';
-import { textComponents } from './shared/portable-text-components';
 import { urlForImage } from '@/lib/sanity.image';
+import type { FitMode } from '@sanity/image-url/lib/types/types';
 
 interface BehindTheScenesImage {
     _type?: string;
@@ -70,7 +70,7 @@ const BehindTheScenesBlock: React.FC<BehindTheScenesBlockProps> = ({
             }
 
             if (options.fit) {
-                imageBuilder = imageBuilder.fit(options.fit as any);
+                imageBuilder = imageBuilder.fit(options.fit as FitMode);
             }
 
             return imageBuilder.auto('format').url();

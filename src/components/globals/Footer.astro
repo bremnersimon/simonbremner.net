@@ -1,9 +1,8 @@
 ---
-import { Container } from "../main/Container";
+import Container from "@/components/main/Container.astro";
 import type { FooterProps } from "@/types";
 import { Image } from "astro:assets";
-const props = Astro.props as FooterProps;
-const { title = "Simon Bremner", year = 2025 } = props;
+const { title = "Simon Bremner", year = 2025 } = Astro.props as FooterProps;
 const links = [
   { title: "Home", href: "/" },
   { title: "About", href: "/about" },
@@ -19,7 +18,7 @@ const links = [
     <div class="flex flex-col gap-4 py-10 px-4 md:px-0">
       <div class="flex flex-col items-start">
         <Image src="/images/icon.svg" width={32} height={32} alt="Logo" />
-        <p class="text-lg font-bold text-foreground mt-2">Simon Bremner</p>
+        <p class="text-lg font-bold text-foreground mt-2">{title}</p>
         <p class="text-sm text-muted-foreground max-w-sm">
           A creative professional sharing his personal creative pursuits.
         </p>

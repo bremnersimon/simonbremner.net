@@ -1,6 +1,5 @@
 import { type MotionValue, motion, useScroll, useTransform } from "motion/react"
 import { useRef } from "react"
-import { Container } from "@/components/main/Container"
 import { cn } from "@/lib/utils"
 
 interface LargeTextProps {
@@ -120,7 +119,7 @@ const WordAnimation = ({
 export default function LargeText({ className, content, textSize = "large", highlightedWords, highlightStyle, index }: LargeTextProps) {
     return (
         <section id="aboutMe" key={index + content} className={cn("w-full relative", className)}>
-            <Container className="">
+            <div className="container mx-auto px-4 md:px-0">
                 <div className="space-y-4 md:space-y-10 lg:space-y-20 relative">
                     <TextSection
                         text={content}
@@ -129,7 +128,7 @@ export default function LargeText({ className, content, textSize = "large", high
                         highlightStyle={highlightStyle}
                     />
                 </div>
-            </Container>
+            </div>
         </section>
     );
 }

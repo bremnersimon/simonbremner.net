@@ -18,7 +18,7 @@ const { title = "Simon Bremner", description = "Portfolio" } = Astro.props;
     <CommonHead title={title} description={description} />
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
-  <body class="text-foreground bg-background">
+  <body class="text-foreground bg-background flex flex-col min-h-screen">
     <Navbar client:load />
     <main id="page-content" class="flex-grow">
       <slot />

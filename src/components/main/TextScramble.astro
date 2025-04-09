@@ -19,11 +19,14 @@ const {
 ---
 
 <div
-  class={`text-scramble ${className}`}
+  class={`inline-block relative cursor-pointer hover:after:w-full ${className}`}
   data-text={text}
   data-duration={duration}
   data-fps={fps}>
   <span class="text-scramble-output"></span>
+  <div
+    class="absolute bottom-[-2px] left-0 w-0 h-[1px] bg-current transition-[width] duration-300 ease-in-out after:content-['']">
+  </div>
 </div>
 
 <script>
@@ -140,36 +143,11 @@ const {
 
   // Initialize all text scramble elements on the page
   document.addEventListener("DOMContentLoaded", () => {
-    const elements = document.querySelectorAll(".text-scramble");
+    const elements = document.querySelectorAll("[data-text]");
     elements.forEach((element) => {
-      new TextScrambleEffect(element as HTMLElement);
+      if (element instanceof HTMLElement) {
+        new TextScrambleEffect(element);
+      }
     });
   });
 </script>
-
-<style>
-  .text-scramble {
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .text-scramble-output {
-    font-family: monospace;
-  }
-
-  .text-scramble::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background-color: currentColor;
-    transition: width 0.3s ease;
-  }
-
-  .text-scramble:hover::after {
-    width: 100%;
-  }
-</style>

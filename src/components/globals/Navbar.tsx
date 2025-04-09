@@ -9,13 +9,13 @@ import {
 import { ThemeToggle } from "@/components/globals/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { Menu, X, ChevronRight, Home, User, Briefcase, Camera, Paintbrush, Code, Scissors, GalleryVerticalEnd, Wrench } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 
 type NavbarProps = {
     title: string;
-    icon: any;
+    icon: React.ReactNode;
     href?: string;
     description?: string;
     main?: boolean;
@@ -27,42 +27,42 @@ export const Navbar = () => {
         {
             title: "Home",
             href: "/",
-            icon: Home,
+            icon: <Home />,
         },
         {
             title: "Projects",
-            icon: Briefcase,
+            icon: <Briefcase />,
             children: [
                 {
                     title: "Photography",
                     href: "/projects/photography",
                     description: "Explore photography projects",
-                    icon: Camera,
+                    icon: <Camera />,
                 },
                 {
                     title: "Design",
                     href: "/projects/design",
                     description: "Explore design projects",
-                    icon: Paintbrush,
+                    icon: <Paintbrush />,
                 },
                 {
                     title: "Development",
                     href: "/projects/development",
                     description: "Explore development projects",
-                    icon: Code,
+                    icon: <Code />,
                 },
                 {
                     title: "Handcrafted",
                     href: "/projects/handcrafted",
                     description: "Explore handcrafted projects",
-                    icon: Scissors,
+                    icon: <Scissors />,
                 },
             ],
         },
         {
             title: "About",
             href: "/about",
-            icon: User,
+            icon: <User />,
         },
     ];
 
@@ -78,7 +78,7 @@ export const Navbar = () => {
 
     return (
         <header
-            className="bg-background w-full px-4 lg:px-6 h-14 fixed top-0 right-0 left-0 z-50 border-b shadow-sm transition-colors duration-200"
+            className="bg-background w-full px-4 lg:px-6 h-14 fixed top-0 right-0 left-0 z-50 border-b shadow-sm"
         >
             <div className="w-full h-full container mx-auto  flex items-center justify-between">
                 {/* Logo always visible */}
@@ -92,26 +92,26 @@ export const Navbar = () => {
                 <div className="hidden md:flex">
                     <NavigationMenu>
                         <NavigationMenuList>
-                            {navigationLinks.map((link, index) => (
-                                <NavigationMenuItem key={link.title + index}>
+                            {navigationLinks.map((link) => (
+                                <NavigationMenuItem key={link.title}>
                                     {link.children ? (
                                         <>
-                                            <NavigationMenuTrigger className="bg-transparent hover:bg-accent/50 transition-colors">
+                                            <NavigationMenuTrigger className="bg-transparent hover:bg-accent/50">
                                                 {link.title}
                                             </NavigationMenuTrigger>
                                             <NavigationMenuContent>
                                                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                                                    {link.children?.map((child, childIndex) => (
-                                                        <li key={child.title + childIndex} className={child?.main === true ? "col-span-2" : "col-span-1"}>
+                                                    {link.children?.map((child) => (
+                                                        <li key={child.title} className={child?.main === true ? "col-span-2" : "col-span-1"}>
                                                             <NavigationMenuLink asChild>
                                                                 <a
                                                                     href={child.href}
                                                                     className={cn(
-                                                                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                                                                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                                                                     )}
                                                                 >
                                                                     <div className="text-sm font-medium leading-none flex items-center gap-2">
-                                                                        {child.icon && <child.icon className="h-4 w-4" />}
+                                                                        {child.icon && child.icon}
                                                                         {child.title}
                                                                     </div>
                                                                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
@@ -127,7 +127,7 @@ export const Navbar = () => {
                                     ) : (
                                         <NavigationMenuLink
                                             href={link.href}
-                                            className="bg-transparent hover:bg-accent/50 transition-colors flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium"
+                                            className="bg-transparent hover:bg-accent/50 flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium"
                                         >
                                             {link.title}
                                         </NavigationMenuLink>
@@ -164,16 +164,17 @@ export const Navbar = () => {
 
                                 {/* Main mobile navigation */}
                                 <nav className="flex flex-col divide-y">
-                                    {navigationLinks.map((link, index) => (
-                                        <div key={link.title + index}>
+                                    {navigationLinks.map((link) => (
+                                        <div key={link.title}>
                                             {link.children ? (
                                                 <>
                                                     <button
+                                                        type="button"
                                                         onClick={() => toggleDropdown(link.title)}
-                                                        className="flex items-center justify-between w-full p-4 text-foreground hover:bg-muted transition-colors"
+                                                        className="flex items-center justify-between w-full p-4 text-foreground hover:bg-muted"
                                                     >
                                                         <div className="flex items-center gap-3">
-                                                            {link.icon && <link.icon className="h-5 w-5" />}
+                                                            {link.icon && link.icon}
                                                             <span>{link.title}</span>
                                                         </div>
                                                         <ChevronRight className={`h-4 w-4 transition-transform ${openDropdowns[link.title] ? 'rotate-90' : ''}`} />
@@ -183,12 +184,12 @@ export const Navbar = () => {
                                                     {openDropdowns[link.title] && (
                                                         <div className="bg-muted/40 pl-4">
                                                             {link.children.map((child, childIndex) => (
-                                                                <SheetClose key={child.title + childIndex} asChild>
+                                                                <SheetClose key={child.title} asChild>
                                                                     <a
                                                                         href={child.href}
-                                                                        className="flex items-center gap-2 p-3 pl-8 text-sm text-foreground hover:bg-muted transition-colors"
+                                                                        className="flex items-center gap-2 p-3 pl-8 text-sm text-foreground hover:bg-muted"
                                                                     >
-                                                                        {child.icon && <child.icon className="h-4 w-4" />}
+                                                                        {child.icon && child.icon}
                                                                         {child.title}
                                                                     </a>
                                                                 </SheetClose>
@@ -200,9 +201,9 @@ export const Navbar = () => {
                                                 <SheetClose asChild>
                                                     <a
                                                         href={link.href}
-                                                        className="flex items-center gap-3 p-4 text-foreground hover:bg-muted transition-colors"
+                                                        className="flex items-center gap-3 p-4 text-foreground hover:bg-muted"
                                                     >
-                                                        {link.icon && <link.icon className="h-5 w-5" />}
+                                                        {link.icon && link.icon}
                                                         <span>{link.title}</span>
                                                     </a>
                                                 </SheetClose>

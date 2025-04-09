@@ -1,10 +1,17 @@
 ---
-import { Container } from "@/components/main/Container";
+import Container from "@/components/main/Container.astro";
 import { Button } from "@/components/ui/button";
 import { CategoryLinks } from "./CategoryLinks";
 import { Icon } from "./Icon";
-import TextScramble from "@/components/main/TextScramble.astro";
-const { primaryCta, secondaryCta } = Astro.props;
+type Cta = {
+  text: string;
+  href: string;
+  icon?: string;
+};
+const { primaryCta, secondaryCta } = Astro.props as {
+  primaryCta: Cta;
+  secondaryCta: Cta;
+};
 ---
 
 <Container className="">

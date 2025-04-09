@@ -1,4 +1,3 @@
-import { Container } from "./Container";
 
 type LeftRightTextProps = {
     heading: string;
@@ -11,7 +10,7 @@ const LeftRightText = ({
 }: LeftRightTextProps) => {
     return (
         <section className="w-full py-12 text-left">
-            <Container>
+            <div className="container mx-auto px-4 md:px-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                     {/* Left side - Large text */}
                     <div className="space-y-4">
@@ -29,7 +28,7 @@ const LeftRightText = ({
 
                     </div>
                 </div>
-            </Container>
+            </div>
         </section>
     );
 };
