@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProjectCard from "./ProjectCard";
-import { Container } from "./Container";
 import type { ProjectCardProps } from "@/types";
 import { urlForImage } from "@/lib/sanity";
 
@@ -137,8 +136,8 @@ export default function TabbedPostSlider({
     };
 
     return (
-        <section className="w-full py-24">
-            <Container>
+        <div className="container mx-auto px-4 md:px-0 w-full py-24">
+            <div>
                 <div className="text-left mb-12">
                     <h2 className="text-4xl md:text-6xl font-bold mb-4">{title}</h2>
                     {subtitle && <p className="text-2xl md:text-4xl text-muted-foreground">{subtitle}</p>}
@@ -161,7 +160,7 @@ export default function TabbedPostSlider({
                         </TabsContent>
                     ))}
                 </Tabs>
-            </Container>
-        </section>
+            </div>
+        </div>
     );
 }

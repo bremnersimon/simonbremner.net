@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 // Components for rendering different Portable Text node types
 export const textComponents = {

@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
 import type { ProjectCardProps } from "@/types";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 type CardProps = ProjectCardProps & {
     id?: string;
@@ -18,14 +17,13 @@ export default function ProjectCard({
     tags = [],
     aspectRatio = "square",
     showCategory = true,
-    id,
 }: CardProps) {
     const [isHovered, setIsHovered] = useState(false);
 
     // Construct the project URL based on category and slug
     const projectUrl = category
         ? `/projects/${category.toLowerCase()}/${slug.current}`
-        : ``;
+        : "";
 
     return (
         <div
@@ -56,8 +54,8 @@ export default function ProjectCard({
                         <div className="flex flex-col items-center justify-center relative w-full h-full">
                             {tags.length > 0 && (
                                 <div className="absolute left-0 bottom-0 right-0 flex flex-wrap gap-2 justify-start p-4">
-                                    {tags.map((tag, index) => (
-                                        <Badge key={index} variant="secondary" className="py-2 px-4">
+                                    {tags.map((tag) => (
+                                        <Badge key={tag} variant="secondary" className="py-2 px-4">
                                             {tag}
                                         </Badge>
                                     ))}
@@ -69,7 +67,7 @@ export default function ProjectCard({
 
                 <div className="mt-4 space-y-1">
                     {showCategory && category && (
-                        <div className="text-sm text-muted-foreground">{category}</div>
+                        <div className="text-sm text-muted-foreground">{category.slice(0, 1).toUpperCase() + category.slice(1)}</div>
                     )}
 
                     <div className="flex items-center justify-between">
