@@ -41,9 +41,6 @@ export default function ProjectCard({
                         }`}
                 >
                     <img
-                        style={{
-                            viewTransitionName: `${mainImage?.src}`
-                        }}
                         src={mainImage?.src || "/images/chs-waterfront.jpg"}
                         alt={title}
                         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"

@@ -92,9 +92,10 @@ const fadingSections: FadingSectionProps[] = [
 ---
 
 <PageLayout title="About | Simon Bremner" description="About me">
-  <Container className="px-10 lg:px-0">
+  <Container className="px-10 lg:px-0 mt-4">
     <AboutHero content={heroText}>
       <Image
+        transition:name="headshot"
         class="rounded-lg aspect-square object-cover"
         src={headshot}
         alt="Headshot"

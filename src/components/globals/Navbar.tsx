@@ -78,7 +78,7 @@ export const Navbar = () => {
 
     return (
         <header
-            className="bg-background w-full px-4 lg:px-6 h-14 fixed top-0 right-0 left-0 z-50 border-b shadow-sm"
+            className="bg-background w-full px-4 lg:px-6 h-14 sticky top-0 right-0 left-0 z-50 border-b shadow-sm"
         >
             <div className="w-full h-full container mx-auto  flex items-center justify-between">
                 {/* Logo always visible */}

@@ -9,10 +9,10 @@ const { content } = Astro.props as AboutHeroProps;
 ---
 
 <div
-  class="grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-0 md:gap-8 pt-20 md:py-40 md:min-h-screen">
+  class="grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-0 md:gap-8 py-20">
   <div class="relative pb-10 md:pb-0">
     <div
-      class="hidden lg:inline absolute bottom-[-30px] left-10 font-bold text-primary text-7xl">
+      class="hidden lg:inline absolute bottom-[-30px] left-10 font-bold text-primary text-7xl z-10">
       | Simon Bremner
     </div>
     <slot />
