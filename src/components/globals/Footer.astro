@@ -28,7 +28,9 @@ const links = [
           links.map((link) => (
             <ul>
               <li class="text-md md:text-sm mr-4">
-                <a href={link.href}>{link.title}</a>
+                <a href={link.href} aria-label={link.title}>
+                  {link.title}
+                </a>
               </li>
             </ul>
           ))
