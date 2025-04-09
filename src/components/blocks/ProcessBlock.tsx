@@ -1,5 +1,5 @@
 // src/components/blocks/ProcessBlock.tsx
-import React from 'react';
+import type React from 'react';
 import {
     Card,
     CardContent,
@@ -12,6 +12,7 @@ import { textComponents } from './shared/portable-text-components';
 
 interface Phase {
     phase?: string;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     description?: any[];
     _key: string;
 }
@@ -52,7 +53,9 @@ const ProcessBlock: React.FC<ProcessBlockProps> = ({
                             {phase.description && phase.description.length > 0 && (
                                 <div className="prose prose-sm dark:prose-invert max-w-none">
                                     <PortableText
+                                        // @ts-ignore
                                         value={phase.description}
+                                        // @ts-ignore
                                         components={textComponents}
                                     />
                                 </div>
@@ -65,4 +68,4 @@ const ProcessBlock: React.FC<ProcessBlockProps> = ({
     );
 };
 
-export default ProcessBlock;
+export { ProcessBlock };

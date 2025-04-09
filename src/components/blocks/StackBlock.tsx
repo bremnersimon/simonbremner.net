@@ -1,5 +1,5 @@
 // src/components/blocks/StackBlock.tsx
-import React from 'react';
+import type React from 'react';
 import {
     Card,
     CardContent,
@@ -112,4 +112,4 @@ const StackBlock: React.FC<StackBlockProps> = ({
     );
 };
 
-export default StackBlock;
+export { StackBlock };

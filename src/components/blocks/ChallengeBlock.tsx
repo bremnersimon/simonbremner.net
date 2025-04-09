@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "motion/react";
 
 interface Challenge {
     problem?: string;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     solution?: any[];
     _key: string;
 }
@@ -39,6 +40,7 @@ const CustomAccordionTrigger = ({
     children: React.ReactNode;
     className?: string;
     index: number;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     [key: string]: any;
 }) => (
     <AccordionTrigger
@@ -58,6 +60,7 @@ const CustomAccordionContent = ({
 }: {
     children: React.ReactNode;
     className?: string;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     [key: string]: any;
 }) => {
     return (
@@ -114,6 +117,7 @@ const ChallengeBlock: React.FC<ChallengeBlockProps> = ({
                                             {challenge.solution && challenge.solution.length > 0 && (
                                                 <div className="prose prose-sm dark:prose-invert max-w-none">
                                                     <PortableText
+                                                        // @ts-ignore
                                                         value={challenge.solution}
                                                     />
                                                 </div>
@@ -130,4 +134,4 @@ const ChallengeBlock: React.FC<ChallengeBlockProps> = ({
     );
 };
 
-export default ChallengeBlock;
+export { ChallengeBlock };

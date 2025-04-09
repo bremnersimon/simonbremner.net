@@ -1,5 +1,4 @@
-// src/components/blocks/DividerBlock.tsx
-import React from 'react';
+import type React from 'react';
 import { Separator } from '@/components/ui/separator';
 
 interface DividerBlockProps {
@@ -13,9 +12,9 @@ const DividerBlock: React.FC<DividerBlockProps> = ({ style = 'line' }) => {
                 return (
                     <div className="flex justify-center my-12">
                         <div className="flex space-x-2">
-                            <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-                            <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-                            <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+                            <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700" />
+                            <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700" />
+                            <div className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-700" />
                         </div>
                     </div>
                 );
@@ -32,9 +31,10 @@ const DividerBlock: React.FC<DividerBlockProps> = ({ style = 'line' }) => {
                 );
 
             case 'space':
-                return <div className="h-16"></div>;
+                return <div className="h-16" />;
 
             case 'line':
+                return <div className="flex justify-center my-12"><Separator className="max-w-md mx-auto" /></div>;
             default:
                 return (
                     <div className="my-12">
@@ -47,4 +47,4 @@ const DividerBlock: React.FC<DividerBlockProps> = ({ style = 'line' }) => {
     return renderDivider();
 };
 
-export default DividerBlock;
+export { DividerBlock };

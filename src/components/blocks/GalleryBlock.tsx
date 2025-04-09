@@ -32,7 +32,7 @@ const GalleryBlock = ({
     const [open, setOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
-    if (!images || !images.length) return null;
+    if (!images || !images.length) return <></>;
 
     const handleImageClick = (index: number) => {
         setSelectedIndex(index);
@@ -60,6 +60,7 @@ const GalleryBlock = ({
                                 key={image._key}
                                 className="overflow-hidden rounded-md cursor-pointer group"
                                 onClick={() => handleImageClick(index)}
+                                onKeyDown={() => handleImageClick(index)}
                             >
                                 <AspectRatio ratio={1 / 1}>
                                     <img
@@ -80,6 +81,7 @@ const GalleryBlock = ({
                                 key={image._key}
                                 className="break-inside-avoid mb-4 cursor-pointer"
                                 onClick={() => handleImageClick(index)}
+                                onKeyDown={() => handleImageClick(index)}
                             >
                                 <img
                                     src={urlForImage(image).width(600).auto('format').url()}
@@ -99,6 +101,7 @@ const GalleryBlock = ({
                                     key={image._key}
                                     className="shrink-0 w-[85%] sm:w-[45%] md:w-[30%] snap-center"
                                     onClick={() => handleImageClick(index)}
+                                    onKeyDown={() => handleImageClick(index)}
                                 >
                                     <div className="rounded-md overflow-hidden cursor-pointer">
                                         <AspectRatio ratio={3 / 2}>
@@ -180,4 +183,4 @@ const GalleryBlock = ({
     );
 };
 
-export default GalleryBlock;
+export { GalleryBlock };

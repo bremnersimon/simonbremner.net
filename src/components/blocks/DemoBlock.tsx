@@ -1,5 +1,6 @@
 // src/components/blocks/DemoBlock.tsx
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import {
     Card,
     CardContent,
@@ -49,7 +50,7 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
     if (!demoContent || demoContent.length === 0) return null;
 
     // Helper function to safely generate image URL
-    const getImageUrl = (image: DemoContent, width: number = 1000) => {
+    const getImageUrl = (image: DemoContent, width = 1000) => {
         try {
             if (!image || (!image.asset && !image.url)) {
                 console.error("Invalid image data:", image);
@@ -95,12 +96,12 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
             return (
                 <div className="aspect-video w-full">
                     <iframe
+                        title={`YouTube video player for ${videoId}`}
                         src={`https://www.youtube.com/embed/${videoId}`}
                         className="w-full h-full"
                         allowFullScreen
-                        frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    ></iframe>
+                    />
                 </div>
             );
         }
@@ -111,12 +112,12 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
             return (
                 <div className="aspect-video w-full">
                     <iframe
+                        title={`Vimeo video player for ${videoId}`}
                         src={`https://player.vimeo.com/video/${videoId}`}
                         className="w-full h-full"
                         allowFullScreen
-                        frameBorder="0"
                         allow="autoplay; fullscreen; picture-in-picture"
-                    ></iframe>
+                    />
                 </div>
             );
         }
@@ -272,6 +273,7 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
                                                     viewBox="0 0 24 24"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                 >
+                                                    <title>Download resource</title>
                                                     <path
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
@@ -296,4 +298,4 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
     );
 };
 
-export default DemoBlock;
+export { DemoBlock };

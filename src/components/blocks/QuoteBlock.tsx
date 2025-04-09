@@ -1,6 +1,5 @@
 // src/components/blocks/QuoteBlock.tsx
-import React from 'react';
-import { cn } from '@/lib/utils';
+import type React from 'react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Quote } from 'lucide-react';
 
@@ -16,6 +15,19 @@ const QuoteBlock: React.FC<QuoteBlockProps> = ({
     style = 'simple'
 }) => {
     if (!quote) return null;
+
+    const simpleQuote = (
+        <div className="text-center max-w-3xl mx-auto my-8 py-6">
+            <p className="text-xl md:text-2xl text-gray-800 dark:text-gray-200 italic font-serif">
+                "{quote}"
+            </p>
+            {attribution && (
+                <p className="mt-3 text-gray-600 dark:text-gray-400">
+                    — {attribution}
+                </p>
+            )}
+        </div>
+    );
 
     const renderQuote = () => {
         switch (style) {
@@ -53,23 +65,13 @@ const QuoteBlock: React.FC<QuoteBlockProps> = ({
                 );
 
             case 'simple':
+                return simpleQuote;
             default:
-                return (
-                    <div className="text-center max-w-3xl mx-auto my-8 py-6">
-                        <p className="text-xl md:text-2xl text-gray-800 dark:text-gray-200 italic font-serif">
-                            "{quote}"
-                        </p>
-                        {attribution && (
-                            <p className="mt-3 text-gray-600 dark:text-gray-400">
-                                — {attribution}
-                            </p>
-                        )}
-                    </div>
-                );
+                return simpleQuote;
         }
     };
 
     return renderQuote();
 };
 
-export default QuoteBlock;
+export { QuoteBlock };

@@ -1,5 +1,5 @@
 // src/components/blocks/DesignMetadata.tsx
-import React from 'react';
+import type React from 'react';
 import { Badge } from '../ui/badge';
 import {
     Calendar,
@@ -125,7 +125,7 @@ const ColorSwatch: React.FC<{ color: Color }> = ({ color }) => {
             <div
                 className="w-14 h-14 rounded-sm border border-foreground/10"
                 style={{ backgroundColor: color.hex || '#000000' }}
-            ></div>
+            />
             <div className="text-xs text-center">
                 <div>{color.name || 'Unnamed'}</div>
                 <div className="text-muted-foreground">{color.hex}</div>
@@ -339,4 +339,4 @@ const DesignMetadata: React.FC<DesignMetadataProps> = ({
     );
 };
 
-export default DesignMetadata;
+export { DesignMetadata };

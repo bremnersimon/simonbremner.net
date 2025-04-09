@@ -71,4 +71,4 @@ const AuthorSection: React.FC<AuthorSectionProps> = ({
     );
 };
 
-export default AuthorSection;
+export { AuthorSection };

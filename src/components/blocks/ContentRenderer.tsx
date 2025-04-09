@@ -75,4 +75,4 @@ const ContentRenderer = ({ blocks = [] }) => {
     );
 };
 
-export default ContentRenderer;
+export { ContentRenderer };

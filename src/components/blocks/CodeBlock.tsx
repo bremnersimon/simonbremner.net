@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import type React from 'react';
+import { useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Copy } from 'lucide-react';
 import { toast } from 'sonner';
@@ -75,4 +76,4 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = 'javascript' }) 
     );
 };
 
-export default CodeBlock;
+export { CodeBlock };

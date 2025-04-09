@@ -1,4 +1,3 @@
-// src/components/blocks/BehindTheScenesBlock.tsx
 import type React from 'react';
 import {
     Card,
@@ -6,7 +5,7 @@ import {
     CardHeader,
     CardTitle
 } from '@/components/ui/card';
-import { PortableText } from '@portabletext/react';
+import { PortableText, type PortableTextProps } from '@portabletext/react';
 import { urlForImage } from '@/lib/sanity.image';
 import type { FitMode } from '@sanity/image-url/lib/types/types';
 
@@ -36,6 +35,7 @@ interface BehindTheScenesImage {
 
 interface BehindTheScenesBlockProps {
     title?: string;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     description?: any[];
     images?: BehindTheScenesImage[];
 }
@@ -89,6 +89,7 @@ const BehindTheScenesBlock: React.FC<BehindTheScenesBlockProps> = ({
                 {description && description.length > 0 && (
                     <div className="prose prose-sm dark:prose-invert max-w-none mb-6">
                         <PortableText
+                            // @ts-ignore
                             value={description}
                         />
                     </div>
@@ -122,4 +123,4 @@ const BehindTheScenesBlock: React.FC<BehindTheScenesBlockProps> = ({
     );
 };
 
-export default BehindTheScenesBlock;
+export { BehindTheScenesBlock };

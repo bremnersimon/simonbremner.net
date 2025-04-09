@@ -1,10 +1,11 @@
 // src/components/blocks/TextBlock.tsx
-import React from 'react';
+import type React from 'react';
 import { PortableText } from '@portabletext/react';
 import { cn } from '@/lib/utils';
 
 interface TextBlockProps {
-    content?: any[]; // This will be the Portable Text content
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    content?: any[];
     width?: 'normal' | 'wide' | 'full';
 }
 
@@ -22,9 +23,12 @@ const TextBlock: React.FC<TextBlockProps> = ({ content, width = 'normal' }) => {
 
     return (
         <div className={cn('prose prose-lg dark:prose-invert leading-relaxed', widthClasses[width])}>
-            <PortableText value={content} components={textComponents} />
+            <PortableText
+                value={content}
+                // @ts-ignore
+                components={textComponents} />
         </div>
     );
 };
 
-export default TextBlock;
+export { TextBlock };

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Separator } from '../ui/separator';
+import type React from 'react';
 
 interface Location {
     name?: string;
@@ -84,8 +83,8 @@ const PhotoMetadata: React.FC<PhotoMetadataProps> = ({
                             <div className="mb-4">
                                 <h4 className="font-medium mb-2">Cameras</h4>
                                 <ul className="list-disc pl-5 space-y-1 text-sm">
-                                    {shootMetadata.equipment.cameras.map((camera, index) => (
-                                        <li key={`camera-${index}`}>
+                                    {shootMetadata.equipment.cameras.map((camera) => (
+                                        <li key={`camera-${JSON.stringify(camera)}`}>
                                             {camera.brand} {camera.name}
                                             {camera.type && (
                                                 <span className="text-muted-foreground">
@@ -103,8 +102,8 @@ const PhotoMetadata: React.FC<PhotoMetadataProps> = ({
                             <div>
                                 <h4 className="font-medium mb-2">Lenses</h4>
                                 <ul className="list-disc pl-5 space-y-1">
-                                    {shootMetadata.equipment.lenses.map((lens, index) => (
-                                        <li key={`lens-${index}`}>
+                                    {shootMetadata.equipment.lenses.map((lens) => (
+                                        <li key={`lens-${JSON.stringify(lens)}`}>
                                             {lens.brand} {lens.name}
                                             {lens.focalLength && (
                                                 <span className="text-muted-foreground">
@@ -136,4 +135,4 @@ const PhotoMetadata: React.FC<PhotoMetadataProps> = ({
     );
 };
 
-export default PhotoMetadata;
+export { PhotoMetadata };

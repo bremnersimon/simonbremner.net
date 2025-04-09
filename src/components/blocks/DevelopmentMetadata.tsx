@@ -1,24 +1,4 @@
-// src/components/blocks/DevelopmentMetadata.tsx
-import React from 'react';
-import { Badge } from '../ui/badge';
-import {
-    Calendar,
-    Link as LinkIcon,
-    Box,
-    Clock,
-    Server,
-    Database,
-    Code2,
-    Package,
-    Cloud,
-    User
-} from 'lucide-react';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "../ui/tooltip";
+import type React from 'react';
 
 // Define types for the component props
 interface TechItem {
@@ -30,6 +10,7 @@ interface TechItem {
             url?: string;
         }
     };
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     [key: string]: any;
 }
 
@@ -131,79 +112,6 @@ const DevelopmentMetadata: React.FC<DevelopmentMetadataProps> = ({
 
     return (
         <div className="border-b-1 overflow-hidden mb-8">
-            {/* <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-6">Project Details</h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                    <div className="mb-6 flex flex-col gap-10">
-                        <div className="">
-                            <h3 className="text-base font-medium mb-3">Status</h3>
-                            {projectStatus && (
-                                <Badge variant="outline" className="rounded-full px-3 py-1">
-                                    {projectStatus}
-                                </Badge>
-                            )}
-                        </div>
-                        <div className="">
-                            <h3 className="text-base font-medium mb-3">Type</h3>
-                            {projectType && (
-                                <Badge variant="outline" className="rounded-full px-3 py-1">
-                                    Type: {projectType}
-                                </Badge>
-                            )}
-                        </div>
-                    </div>
-
-                    {projectDuration && (
-                        <div className="mb-6">
-                            <h3 className="flex items-center gap-2 text-base font-medium mb-3">
-                                <Calendar className="h-5 w-5" />
-                                Timeline
-                            </h3>
-                            <div className="space-y-1">
-                                {startDate && <div>Started: {startDate}</div>}
-                                {endDate && <div>Completed: {endDate}</div>}
-                                {projectDuration.timeSpent && (
-                                    <div className="flex items-center gap-1 mt-2">
-                                        <Clock className="h-4 w-4" />
-                                        <span>{projectDuration.timeSpent}</span>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    )}
-
-                    <div>
-                        {clientName && (
-                            <div className="mb-6">
-                                <h3 className="flex items-center gap-2 text-base font-medium mb-3">
-                                    <User className="h-5 w-5" />
-                                    Client
-                                </h3>
-                                <div>{clientName}</div>
-                            </div>
-                        )}
-
-                        {projectLink && (
-                            <div className="mb-6">
-                                <h3 className="flex items-center gap-2 text-base font-medium mb-3">
-                                    <LinkIcon className="h-5 w-5" />
-                                    Live Project
-                                </h3>
-                                <a
-                                    href={projectLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-primary hover:underline"
-                                >
-                                    {projectLink}
-                                </a>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-            </div> */}
             {/* Technology Stack Section */}
             <div className="border-border pb-4">
                 <h2 className="text-xl font-semibold mb-4">Technology Stack</h2>
@@ -270,4 +178,4 @@ const DevelopmentMetadata: React.FC<DevelopmentMetadataProps> = ({
     );
 };
 
-export default DevelopmentMetadata;
+export { DevelopmentMetadata };

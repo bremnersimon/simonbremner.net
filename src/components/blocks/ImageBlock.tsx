@@ -1,5 +1,5 @@
 // src/components/blocks/ImageBlock.tsx
-import React from 'react';
+import type React from 'react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
@@ -60,4 +60,4 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
     );
 };
 
-export default ImageBlock;
+export { ImageBlock };

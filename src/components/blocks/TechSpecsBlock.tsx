@@ -1,5 +1,5 @@
 // src/components/blocks/TechSpecsBlock.tsx
-import React from 'react';
+import type React from 'react';
 import {
     Card,
     CardContent,
@@ -76,4 +76,4 @@ const TechSpecsBlock: React.FC<TechSpecsBlockProps> = ({
     );
 };
 
-export default TechSpecsBlock;
+export { TechSpecsBlock };

@@ -1,9 +1,7 @@
 /// <reference types="astro/client" />
 /// <reference types="@sanity/astro/module" />
 
-interface ImportMetaEnv {
-  // Define env variables here if needed
-}
+// interface ImportMetaEnv {}
 
 declare namespace Astro {
   interface Globals {

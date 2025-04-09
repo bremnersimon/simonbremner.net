@@ -1,5 +1,5 @@
 // src/components/blocks/FeaturedImageBlock.tsx
-import React from 'react';
+import type React from 'react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { urlForImage } from '@/lib/sanity.image';
@@ -78,9 +78,9 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
     };
 
     // Get the image URL using urlForImage for Sanity references
-    let imageUrl;
+    let imageUrl: string | undefined;
     try {
-        if (image.asset?.url) {
+        if (image?.asset?.url) {
             // Direct URL in asset
             imageUrl = image.asset.url;
         } else if (image._type === 'image' || image.asset?._ref || image.asset?._type === 'reference') {
@@ -163,4 +163,4 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
     );
 };
 
-export default FeaturedImageBlock;
+export { FeaturedImageBlock };

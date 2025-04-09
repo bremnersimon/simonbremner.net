@@ -1,5 +1,5 @@
 // src/components/blocks/RepoLinkBlock.tsx
-import React from 'react';
+import type React from 'react';
 import {
     Card,
     CardContent,
@@ -78,4 +78,4 @@ const RepoLinkBlock: React.FC<RepoLinkBlockProps> = ({
     );
 };
 
-export default RepoLinkBlock;
+export { RepoLinkBlock };
