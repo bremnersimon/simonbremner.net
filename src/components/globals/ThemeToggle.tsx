@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun, SunMoon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 
@@ -51,7 +51,7 @@ export function ThemeToggle() {
                 size="icon"
             >
                 {/* Placeholder for pre-hydration */}
-                <div className="h-[1.2rem] w-[1.2rem]" />
+                <SunMoon className="h-[1.2rem] w-[1.2rem]" />
             </Button>
         )
     }
