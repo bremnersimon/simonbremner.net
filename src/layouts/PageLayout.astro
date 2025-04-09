@@ -5,6 +5,10 @@ import { Navbar } from "../components/globals/Navbar";
 import CommonHead from "../lib/CommonHead.astro";
 import Footer from "@/components/globals/Footer.astro";
 import TagManager from "../lib/TagManager.astro";
+import Background from "@/assets/background-lines.svg";
+import { Image } from "astro:assets";
+
+const columns = [1, 2, 3];
 
 const year = new Date().getFullYear();
 const { title = "Simon Bremner", description = "Portfolio" } = Astro.props;
