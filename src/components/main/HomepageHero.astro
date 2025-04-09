@@ -48,11 +48,7 @@ const { primaryCta, secondaryCta } = Astro.props as {
       {
         primaryCta && (
           <a href={primaryCta.href} data-astro-reload>
-            <Button
-              client:load
-              className="cursor-pointer"
-              variant="default"
-              size="lg">
+            <Button className="cursor-pointer" variant="default" size="lg">
               {primaryCta.text}
               {primaryCta?.icon && <Icon name={primaryCta.icon} size={24} />}
             </Button>
