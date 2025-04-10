@@ -11,7 +11,7 @@ import { getHomePageProjects } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
 
 const data: { featuredProjects: ProjectCardProps[] } =
-	await getHomePageProjects();
+  await getHomePageProjects();
 ---
 
 <PageLayout
@@ -20,10 +20,13 @@ const data: { featuredProjects: ProjectCardProps[] } =
   image={MainOgImage}>
   <HomepageHero />
   <Image
-    class="block lg:hidden"
-    priority
+    class="block lg:hidden pt-20"
     src={ravanelBridge}
     alt="Ravanel Bridge"
+    width={700}
+    height={500}
+    priority={true}
+    format="webp"
   />
   <HorizontalScrolling />
   <LargeText

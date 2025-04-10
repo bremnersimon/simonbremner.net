@@ -6,35 +6,27 @@ import { Icon } from "./Icon";
 // import Headshot from "@/assets/sb-headshot.jpg";
 
 type Cta = {
-	text: string;
-	href: string;
-	icon?: string;
+  text: string;
+  href: string;
+  icon?: string;
 };
 const { primaryCta, secondaryCta } = Astro.props as {
-	primaryCta: Cta;
-	secondaryCta: Cta;
+  primaryCta: Cta;
+  secondaryCta: Cta;
 };
 const hoverImageStyles =
-	"w-[100px] absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 object-cover aspect-[3/4] transition-opacity";
+  "w-[100px] absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 object-cover aspect-[3/4] transition-opacity";
 ---
 
 <Container>
   <div
-    class="flex flex-col items-start justify-center text-left w-full h-full pt-40 max-w-5xl px-4 lg:px-0">
+    class="flex flex-col items-start justify-center text-left w-full h-full pt-10 md:pt-40 max-w-5xl px-4 lg:px-0">
     <h1
       class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-relaxed leading-tight">
       Hello, my name is <a
         href="/about"
         class="underline hover:text-primary transition-colors relative group">
         Simon Bremner
-        <!-- <Image
-          transition:name="headshot"
-          src={Headshot}
-          alt="Headshot"
-          class={hoverImageStyles}
-          width={300}
-          height={300}
-        /> -->
       </a>.
       <br />
       A
