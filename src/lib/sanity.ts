@@ -12,9 +12,9 @@ export const client = createClient({
 const builder = imageUrlBuilder(client);
 
 // Helper function to build image URLs
-export function urlForImage(source: any) {
+export function urlForImage(source: SanityImageSource) {
   // Handle cases where source might be null or undefined
-  if (!source || !source.asset) {
+  if (!source) {
     return {
       url: () => '',
       width: () => urlForImage(source),

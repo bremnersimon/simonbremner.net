@@ -63,7 +63,7 @@ if (!postData) {
 const mainImage = postData?.mainImage;
 const mainImageCaption = mainImage?.caption;
 const mainImageAlt = mainImage?.alt;
-const mainImageUrl = urlForImage(mainImage).url();
+const mainImageUrl = urlForImage(mainImage).width(1200).height(630).url();
 ---
 
 <PageLayout

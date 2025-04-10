@@ -64,7 +64,6 @@ else {
   });
   ogImage = new URL(processedDefaultImage.src, baseUrl).toString();
 }
-console.log("OG Image:", ogImage);
 // Create full canonical URL
 const canonicalURL = Astro.url.href;
 // Handle robots directives for noindex/nofollow
