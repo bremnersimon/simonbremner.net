@@ -1,17 +1,17 @@
 ---
-import PageLayout from "@/layouts/PageLayout.astro";
+import { Image } from "astro:assets";
+import MainOgImage from "@/assets/main-og-image.jpg";
+import ravanelBridge from "@/assets/ravanel-bridge.jpg";
 import HomepageHero from "@/components/main/HomepageHero.astro";
-import TabbedPostSlider from "@/components/main/TabbedPostSlider";
+import HorizontalScrolling from "@/components/main/HorizontalScrolling.astro";
 import LargeText from "@/components/main/LargeText";
+import TabbedPostSlider from "@/components/main/TabbedPostSlider";
+import PageLayout from "@/layouts/PageLayout.astro";
 import { getHomePageProjects } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
-import ravanelBridge from "@/assets/ravanel-bridge.jpg";
-import { Image } from "astro:assets";
-import HorizontalScrolling from "@/components/main/HorizontalScrolling.astro";
-import MainOgImage from "@/assets/main-og-image.jpg";
 
 const data: { featuredProjects: ProjectCardProps[] } =
-  await getHomePageProjects();
+	await getHomePageProjects();
 ---
 
 <PageLayout

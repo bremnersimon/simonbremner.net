@@ -1,12 +1,12 @@
 ---
+import { Image } from "astro:assets";
+import { Icon } from "@/components/main/Icon";
+import Link from "@/components/main/Link.astro";
 import { cn } from "@/lib/utils";
 import type { FadingSectionProps } from "@/types/types";
-import { Icon } from "@/components/main/Icon";
-import { Image } from "astro:assets";
-import Link from "@/components/main/Link.astro";
 
 interface Props {
-  sections: FadingSectionProps[];
+	sections: FadingSectionProps[];
 }
 
 const { sections } = Astro.props;

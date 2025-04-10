@@ -1,23 +1,23 @@
 ---
 // src/pages/photography/[slug].astro
 import Container from "@/components/main/Container.astro";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
 import ScrollIndicator from "@/components/motion/ScrollIndicator";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
 
+import { AuthorSection } from "@/components/blocks/AuthorSection";
 // Import the content blocks
 import { ContentRenderer } from "@/components/blocks/ContentRenderer";
 import HeroSection from "@/components/blocks/HeroSection.astro";
-import { AuthorSection } from "@/components/blocks/AuthorSection";
-import { ArrowLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import PageLayout from "@/layouts/PageLayout.astro";
+import { ArrowLeft } from "lucide-react";
 
 // Define all possible paths for pre-rendering at build time
 export async function getStaticPaths() {
-  // Get all photography posts from Sanity
-  const postCategories = await client.fetch(`
+	// Get all photography posts from Sanity
+	const postCategories = await client.fetch(`
     *[_type in ["photography", "design", "development", "handcrafted"]]{
       "slug": slug.current,
       "category": _type,
@@ -25,16 +25,16 @@ export async function getStaticPaths() {
     }
   `);
 
-  // Create paths for photography posts
-  return postCategories?.map((post: { category: string; slug: string }) => ({
-    params: {
-      category: post?.category,
-      slug: post?.slug,
-    },
-    props: {
-      category: post?.category,
-    },
-  }));
+	// Create paths for photography posts
+	return postCategories?.map((post: { category: string; slug: string }) => ({
+		params: {
+			category: post?.category,
+			slug: post?.slug,
+		},
+		props: {
+			category: post?.category,
+		},
+	}));
 }
 
 // Get the slug from the URL
@@ -46,18 +46,18 @@ const postData = await fetchProjectById(category, slug);
 
 // Format the date for display
 const formatDate = (dateString: string) => {
-  if (!dateString) return "";
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+	if (!dateString) return "";
+	return new Date(dateString).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
 };
 
 const publishedDate = formatDate(postData?.publishedAt);
 
 if (!postData) {
-  return Astro.redirect("/404");
+	return Astro.redirect("/404");
 }
 
 const mainImage = postData?.mainImage;
