@@ -66,6 +66,7 @@ const mainImageAlt = mainImage?.alt;
 const mainImageUrl = urlForImage(mainImage)
   .width(1200)
   .height(630)
+  .crop("center")
   .format("webp")
   .url();
 const authorImageUrl = urlForImage(postData?.author?.image)

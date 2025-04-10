@@ -2,20 +2,20 @@
 import { Badge } from "@/components/ui/badge";
 
 interface ShootMetadata {
-	theme?: string;
+  theme?: string;
 }
 
 interface HeroSectionProps {
-	title: string;
-	mainImage?: string;
-	mainImageAlt?: string;
-	shootMetadata?: ShootMetadata;
-	mainImageCaption?: string;
+  title: string;
+  mainImage?: string;
+  mainImageAlt?: string;
+  shootMetadata?: ShootMetadata;
+  mainImageCaption?: string;
 }
 type Props = HeroSectionProps;
 
 const { title, mainImage, shootMetadata, mainImageAlt, mainImageCaption } =
-	Astro.props;
+  Astro.props;
 ---
 
 <div class="relative h-[50vh] md:h-[70vh] mb-16">
@@ -26,7 +26,7 @@ const { title, mainImage, shootMetadata, mainImageAlt, mainImageCaption } =
         <img
           src={mainImage}
           alt={mainImageAlt || title}
-          class="w-full h-full object-cover opacity-90"
+          class="w-full h-full object-cover object-center opacity-90"
         />
       )
     }
