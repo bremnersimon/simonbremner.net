@@ -29,6 +29,4 @@ export interface FooterProps {
 }
 
 // Global Types
-export interface SiteConfig {
-  // ...
-}
+// export interface SiteConfig {}

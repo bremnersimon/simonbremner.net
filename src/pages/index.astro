@@ -8,11 +8,16 @@ import type { ProjectCardProps } from "@/types";
 import ravanelBridge from "@/assets/ravanel-bridge.jpg";
 import { Image } from "astro:assets";
 import HorizontalScrolling from "@/components/main/HorizontalScrolling.astro";
+import MainOgImage from "@/assets/main-og-image.jpg";
+
 const data: { featuredProjects: ProjectCardProps[] } =
   await getHomePageProjects();
 ---
 
-<PageLayout title="Home | Simon Bremner" description="Welcome to my portfolio">
+<PageLayout
+  title="Home | Simon Bremner"
+  description="Welcome to my portfolio"
+  image={MainOgImage}>
   <HomepageHero />
   <Image
     class="block lg:hidden"

@@ -11,6 +11,7 @@ import castleAndKey from "@/assets/c-k.jpg";
 import sbCode from "@/assets/sb-code.jpg";
 import type { AboutHeroTextProps, FadingSectionProps } from "@/types/types";
 import PageLayout from "@/layouts/PageLayout.astro";
+import ogImage from "@/assets/about-og-image.jpg";
 
 const heroText: AboutHeroTextProps = {
   headline: "About Me",
@@ -91,7 +92,10 @@ const fadingSections: FadingSectionProps[] = [
 ];
 ---
 
-<PageLayout title="About | Simon Bremner" description="About me">
+<PageLayout
+  title="About | Simon Bremner"
+  description="About me"
+  image={ogImage}>
   <Container className="px-10 lg:px-0 mt-4">
     <AboutHero content={heroText}>
       <Image

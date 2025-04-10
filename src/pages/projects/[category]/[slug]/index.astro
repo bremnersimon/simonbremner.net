@@ -8,7 +8,7 @@ import ScrollIndicator from "@/components/motion/ScrollIndicator";
 
 // Import the content blocks
 import { ContentRenderer } from "@/components/blocks/ContentRenderer";
-import { HeroSection } from "@/components/blocks/HeroSection";
+import HeroSection from "@/components/blocks/HeroSection.astro";
 import { AuthorSection } from "@/components/blocks/AuthorSection";
 import { ArrowLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -59,18 +59,26 @@ const publishedDate = formatDate(postData?.publishedAt);
 if (!postData) {
   return Astro.redirect("/404");
 }
+
+const mainImage = postData?.mainImage;
+const mainImageCaption = mainImage?.caption;
+const mainImageAlt = mainImage?.alt;
+const mainImageUrl = urlForImage(mainImage).url();
 ---
 
 <PageLayout
-  title={postData.title + " | Simon Bremner"}
-  description={postData.excerpt}>
+  title={postData.title}
+  description={postData.excerpt}
+  image={mainImageUrl}
+  pageType="article">
   <ScrollIndicator client:load>
     <article>
       <HeroSection
         title={postData.title}
-        mainImage={postData.mainImage}
+        mainImage={mainImageUrl}
+        mainImageAlt={mainImageAlt}
+        mainImageCaption={mainImageCaption}
         shootMetadata={postData.shootMetadata}
-        urlForImage={urlForImage}
       />
 
       <Container>

@@ -1,20 +1,43 @@
 ---
-import "../styles/global.css";
+import "@/styles/global.css";
 import "highlight.js/styles/github-dark.css";
-import { Navbar } from "../components/globals/Navbar";
-import CommonHead from "../lib/CommonHead.astro";
+import { Navbar } from "@/components/globals/Navbar";
+import CommonHead from "@/lib/CommonHead.astro";
 import Footer from "@/components/globals/Footer.astro";
-import TagManager from "../lib/TagManager.astro";
-import TagManagerBody from "../lib/TagManagerBody.astro";
+import TagManager from "@/lib/TagManager.astro";
+import TagManagerBody from "@/lib/TagManagerBody.astro";
+import SEO from "@/lib/SEO.astro";
+import type { SEOProps } from "@/types/types";
+import MainOgImage from "@/assets/main-og-image.jpg";
 
 const year = new Date().getFullYear();
-const { title = "Simon Bremner", description = "Portfolio" } = Astro.props;
+
+type Props = SEOProps;
+
+const {
+  title = "Portfolio | Simon Bremner",
+  description = "A Creative Portfolio",
+  pageType = "website",
+  noindex = false,
+  nofollow = false,
+  image,
+  article,
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
     <TagManager />
+    <SEO
+      title={title}
+      description={description}
+      pageType={pageType}
+      noindex={noindex}
+      nofollow={nofollow}
+      image={image ? image : MainOgImage.src}
+      article={article ? article : undefined}
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <CommonHead title={title} description={description} />
