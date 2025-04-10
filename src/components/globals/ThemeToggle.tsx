@@ -53,7 +53,7 @@ export function ThemeToggle() {
 	// Avoid hydration mismatch by rendering nothing until mounted
 	if (!mounted) {
 		return (
-			<Button variant="ghost" size="icon">
+			<Button variant="ghost" size="icon" aria-label="Toggle theme">
 				{/* Placeholder for pre-hydration */}
 				<SunMoon className="h-[1.2rem] w-[1.2rem]" />
 			</Button>

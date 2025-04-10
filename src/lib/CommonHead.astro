@@ -3,26 +3,17 @@ import { ClientRouter } from "astro:transitions";
 
 // Define the props with default values
 interface Props {
-	title?: string;
-	description?: string;
+  title?: string;
+  description?: string;
 }
 
 // Destructure the props with default values
 const { title = "Simon Bremner", description = "I'm a creative, I think..." } =
-	Astro.props;
+  Astro.props;
 ---
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
-<script is:inline>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-
-  gtag("config", "G-C6RRVRPQSC");
-</script>
 <script is:inline>
   // This script runs before any content renders on every page load
   // It ensures there's never a flash of the wrong theme
@@ -46,10 +37,6 @@ const { title = "Simon Bremner", description = "I'm a creative, I think..." } =
   document.addEventListener("astro:after-swap", applyTheme);
 </script>
 <meta name="view-transition" content="same-origin" />
-<!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
-<meta name="description" content={description} />
 <script is:inline>
   document.addEventListener("astro:page-load", () => {
     // Get all links on the page
