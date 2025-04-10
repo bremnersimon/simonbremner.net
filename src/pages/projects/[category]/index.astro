@@ -6,28 +6,28 @@ import type { ProjectCardProps } from "@/types";
 
 // Define all possible paths for pre-rendering at build time
 export function getStaticPaths() {
-	// Define all supported categories
-	const categories = ["photography", "design", "development", "handcrafted"];
+  // Define all supported categories
+  const categories = ["photography", "design", "development", "handcrafted"];
 
-	// Return an array of objects, each with a "params" property
-	return categories.map((category) => ({
-		params: { category },
-	}));
+  // Return an array of objects, each with a "params" property
+  return categories.map((category) => ({
+    params: { category },
+  }));
 }
 
 // Get category from URL parameter
 const { category } = Astro.params;
 
 if (!category) {
-	return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 // Fetch posts based on category
 let posts: ProjectCardProps[] = [];
 if (!!category && category.length > 0) {
-	posts = await getAllPostsByType(
-		category as "photography" | "design" | "development" | "handcrafted",
-	);
+  posts = await getAllPostsByType(
+    category as "photography" | "design" | "development" | "handcrafted"
+  );
 }
 
 // Capitalize first letter for display purposes
@@ -35,10 +35,10 @@ const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
 
 // Category descriptions
 const categorySubtitles: { [key: string]: string } = {
-	photography: "Creative visual storytelling through my personal lens",
-	design: "Innovative visual solutions for modern brands",
-	development: "Custom software and web solutions",
-	handcrafted: "Unique handmade creations with attention to detail",
+  photography: "Creative visual storytelling through my personal lens",
+  design: "Innovative visual solutions for modern brands",
+  development: "Custom software and web solutions",
+  handcrafted: "Unique handmade creations with attention to detail",
 };
 
 // Default description if category isn't in our predefined list
@@ -54,24 +54,24 @@ const pageDescription = `Explore my ${category} portfolio - ${categorySubtitle}`
 const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
 // Convert Sanity posts to the ProjectsGrid format
 const projects = posts.map((post) => ({
-	_id: post._id,
-	title: post.title,
-	slug: post.slug,
-	mainImage: {
-		src: post.mainImage
-			? urlForImage(post.mainImage).url()
-			: "/images/no-image.svg",
-		alt: post.title,
-	},
-	caption: post.caption,
-	category: categoryLabel,
-	tags: post.tags || [],
-	publishedAt: post.publishedAt,
+  _id: post._id,
+  title: post.title,
+  slug: post.slug,
+  mainImage: {
+    src: post.mainImage
+      ? urlForImage(post.mainImage).format("webp").width(700).url()
+      : "/images/no-image.svg",
+    alt: post.title,
+  },
+  caption: post.caption,
+  category: categoryLabel,
+  tags: post.tags || [],
+  publishedAt: post.publishedAt,
 }));
 
 // 404 handling - if no projects found for this category
 if (!projects || projects.length === 0) {
-	return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 ---
 

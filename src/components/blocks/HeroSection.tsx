@@ -15,7 +15,7 @@ interface HeroSectionProps {
 	title: string;
 	mainImage?: MainImage;
 	shootMetadata?: ShootMetadata;
-	urlForImage?: (image: MainImage) => { url: () => string };
+	urlForImage?: (image: MainImage) => { format: (format: string) => { width: (width: number) => { url: () => string } } };
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
@@ -30,7 +30,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 			<div className="absolute inset-0">
 				{mainImage && urlForImage && (
 					<img
-						src={urlForImage(mainImage).url()}
+						src={urlForImage(mainImage).format("webp").width(1200).url()}
 						alt={mainImage.alt || title}
 						className="w-full h-full object-cover opacity-90"
 					/>

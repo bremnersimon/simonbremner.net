@@ -89,7 +89,7 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
 			image.asset?._type === "reference"
 		) {
 			// This is a Sanity image reference
-			imageUrl = urlForImage(image).url();
+			imageUrl = urlForImage(image).format("webp").width(1000).url();
 		}
 	} catch (error) {
 		console.error("Error generating image URL:", error);

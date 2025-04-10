@@ -56,7 +56,6 @@ const StackBlock: React.FC<StackBlockProps> = ({
 					.height(60)
 					.format("webp")
 					.fit("crop")
-					.auto("format")
 					.url();
 			}
 
