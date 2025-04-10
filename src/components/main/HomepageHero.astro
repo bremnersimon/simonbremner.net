@@ -2,20 +2,20 @@
 import Container from "@/components/main/Container.astro";
 import { Button } from "@/components/ui/button";
 import { Icon } from "./Icon";
-import { Image } from "astro:assets";
-import Headshot from "@/assets/sb-headshot.jpg";
+// import { Image } from "astro:assets";
+// import Headshot from "@/assets/sb-headshot.jpg";
 
 type Cta = {
-  text: string;
-  href: string;
-  icon?: string;
+	text: string;
+	href: string;
+	icon?: string;
 };
 const { primaryCta, secondaryCta } = Astro.props as {
-  primaryCta: Cta;
-  secondaryCta: Cta;
+	primaryCta: Cta;
+	secondaryCta: Cta;
 };
 const hoverImageStyles =
-  "w-[100px] absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 object-cover aspect-[3/4] transition-opacity";
+	"w-[100px] absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 object-cover aspect-[3/4] transition-opacity";
 ---
 
 <Container>

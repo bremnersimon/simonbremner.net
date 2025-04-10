@@ -1,97 +1,101 @@
 ---
-import AboutHero from "@/components/main/AboutHero.astro";
 import { Image } from "astro:assets";
-import headshot from "@/assets/sb-headshot.jpg";
-import FadingSection from "@/components/main/FadingSection.astro";
-import LargeText from "@/components/main/LargeText";
-import Container from "@/components/main/Container.astro";
-import busm from "@/assets/busm.jpg";
+import ogImage from "@/assets/about-og-image.jpg";
 import braveBaby from "@/assets/brave-baby-poster.jpg";
+import busm from "@/assets/busm.jpg";
 import castleAndKey from "@/assets/c-k.jpg";
 import sbCode from "@/assets/sb-code.jpg";
-import type { AboutHeroTextProps, FadingSectionProps } from "@/types/types";
+import headshot from "@/assets/sb-headshot.jpg";
+import AboutHero from "@/components/main/AboutHero.astro";
+import Container from "@/components/main/Container.astro";
+import FadingSection from "@/components/main/FadingSection.astro";
+import LargeText from "@/components/main/LargeText";
 import PageLayout from "@/layouts/PageLayout.astro";
+import type { AboutHeroTextProps, FadingSectionProps } from "@/types/types";
 
 const heroText: AboutHeroTextProps = {
-  headline: "About Me",
-  paragraphs: [
-    "I started my professional career as a Graphic Designer before transitioning into development. Along the way, I've picked up a few creative pursuits that help me grow and express myself.",
-  ],
+	headline: "About Me",
+	paragraphs: [
+		"I started my professional career as a Graphic Designer before transitioning into development. Along the way, I've picked up a few creative pursuits that help me grow and express myself.",
+	],
 };
 
 const largeText: string[] = [
-  "This website is dedicated to sharing my experiences as I grow my personal and professional career. It does not exist to sell you my services and/or products. The sole purpose is to share my journey and potentially inspire someone on theirs.",
+	"This website is dedicated to sharing my experiences as I grow my personal and professional career. It does not exist to sell you my services and/or products. The sole purpose is to share my journey and potentially inspire someone on theirs.",
 ];
 
 const fadingSections: FadingSectionProps[] = [
-  {
-    id: 1,
-    title: "Designing With Purpose",
-    content: [
-      "My professional career started with graphic design. As a multicultural individual, I continually strive to communicate clearly and effectively with others.",
-      "My design style, is not artistic, but functional. I always say that I'm not the kind of designer that puts art on my work. I approach every projects with the mentality that form follows function.",
-    ],
-    image: braveBaby,
-    imagePosition: "left",
-    button: {
-      label: "View Projects",
-      href: "/projects/design",
-      icon: "pencil",
-      external: false,
-    },
-  },
-  {
-    id: 2,
-    title: "Developing Experiences",
-    content: [
-      "My interest in development grew as I looked for new ways to communicate to audiences. Development opens up new and interactive ways to engage audiences.",
-      "From there, it has grown into a career that allows me to be creative and innovative in ways that I never thought possible. From building websites to creating custom software, I'm always looking for new ways to challenge myself and push the boundaries of what's possible.",
-    ],
-    image: sbCode,
-    imagePosition: "left",
-    button: {
-      label: "View Projects",
-      href: "/projects/development",
-      icon: "code",
-      external: false,
-    },
-  },
-  {
-    id: 3,
-    title: "Capturing Moments",
-    content: [
-      "Photography is purely for my personal enjoyment. It allows me the opportunity to experiment and express my creativity in a way that is unique to me.",
-      "While this experience is first and foremost self-expression, it has also deepened my understanding of visual composition and many other aspects of visual communication. Additionally, I urge you to pick up a hobby that lets you explore your surroundings and be in awe of something you have never noticed before.",
-    ],
-    image: castleAndKey,
-    imagePosition: "left",
-    button: {
-      label: "View Projects",
-      href: "/projects/photography",
-      icon: "camera",
-      external: false,
-    },
-  },
-  {
-    id: 4,
-    title: "Crafting Products",
-    content: [
-      "I have always been fascinated with how the world works. I can't help but wonder how a combustion engine works, what makes clock tick, or how a carpenter bends wood.",
-      "This fascination has led me to learn various trades and skills that I apply in physical creations. Over the years I've created furniture, lamps, fences, guitar pedals, leather goods, and many more.",
-    ],
-    image: busm,
-    imagePosition: "left",
-    button: {
-      label: "View Projects",
-      href: "/projects/handcrafted",
-      icon: "hammer",
-      external: false,
-    },
-  },
+	{
+		id: 1,
+		title: "Designing With Purpose",
+		content: [
+			"My professional career started with graphic design. As a multicultural individual, I continually strive to communicate clearly and effectively with others.",
+			"My design style, is not artistic, but functional. I always say that I'm not the kind of designer that puts art on my work. I approach every projects with the mentality that form follows function.",
+		],
+		image: braveBaby,
+		imagePosition: "left",
+		button: {
+			label: "View Projects",
+			href: "/projects/design",
+			icon: "pencil",
+			external: false,
+		},
+	},
+	{
+		id: 2,
+		title: "Developing Experiences",
+		content: [
+			"My interest in development grew as I looked for new ways to communicate to audiences. Development opens up new and interactive ways to engage audiences.",
+			"From there, it has grown into a career that allows me to be creative and innovative in ways that I never thought possible. From building websites to creating custom software, I'm always looking for new ways to challenge myself and push the boundaries of what's possible.",
+		],
+		image: sbCode,
+		imagePosition: "left",
+		button: {
+			label: "View Projects",
+			href: "/projects/development",
+			icon: "code",
+			external: false,
+		},
+	},
+	{
+		id: 3,
+		title: "Capturing Moments",
+		content: [
+			"Photography is purely for my personal enjoyment. It allows me the opportunity to experiment and express my creativity in a way that is unique to me.",
+			"While this experience is first and foremost self-expression, it has also deepened my understanding of visual composition and many other aspects of visual communication. Additionally, I urge you to pick up a hobby that lets you explore your surroundings and be in awe of something you have never noticed before.",
+		],
+		image: castleAndKey,
+		imagePosition: "left",
+		button: {
+			label: "View Projects",
+			href: "/projects/photography",
+			icon: "camera",
+			external: false,
+		},
+	},
+	{
+		id: 4,
+		title: "Crafting Products",
+		content: [
+			"I have always been fascinated with how the world works. I can't help but wonder how a combustion engine works, what makes clock tick, or how a carpenter bends wood.",
+			"This fascination has led me to learn various trades and skills that I apply in physical creations. Over the years I've created furniture, lamps, fences, guitar pedals, leather goods, and many more.",
+		],
+		image: busm,
+		imagePosition: "left",
+		button: {
+			label: "View Projects",
+			href: "/projects/handcrafted",
+			icon: "hammer",
+			external: false,
+		},
+	},
 ];
 ---
 
-<PageLayout title="About | Simon Bremner" description="About me">
+<PageLayout
+  title="About | Simon Bremner"
+  description="About me"
+  image={ogImage}>
   <Container className="px-10 lg:px-0 mt-4">
     <AboutHero content={heroText}>
       <Image

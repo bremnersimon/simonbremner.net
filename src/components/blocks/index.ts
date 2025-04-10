@@ -1,18 +1,18 @@
 // src/components/blocks/index.ts
 // Central export file for all content blocks
 
-export { default as HeadlineBlock } from './HeadlineBlock';
-export { default as TextBlock } from './TextBlock';
-export { default as ImageBlock } from './ImageBlock';
-export { default as GalleryBlock } from './GalleryBlock';
-export { default as CodeBlock } from './CodeBlock';
-export { default as DividerBlock } from './DividerBlock';
-export { default as QuoteBlock } from './QuoteBlock';
-export { default as FeaturedImageBlock } from './FeaturedImageBlock';
-export { default as TechSpecsBlock } from './TechSpecsBlock';
-export { default as BehindTheScenesBlock } from './BehindTheScenesBlock';
-export { default as ChallengeBlock } from './ChallengeBlock';
-export { default as DemoBlock } from './DemoBlock';
-export { default as ProcessBlock } from './ProcessBlock';
-export { default as RepoLinkBlock } from './RepoLinkBlock';
-export { default as StackBlock } from './StackBlock';
+export { HeadlineBlock } from "./HeadlineBlock";
+export { TextBlock } from "./TextBlock";
+export { ImageBlock } from "./ImageBlock";
+export { GalleryBlock } from "./GalleryBlock";
+export { CodeBlock } from "./CodeBlock";
+export { DividerBlock } from "./DividerBlock";
+export { QuoteBlock } from "./QuoteBlock";
+export { FeaturedImageBlock } from "./FeaturedImageBlock";
+export { TechSpecsBlock } from "./TechSpecsBlock";
+export { BehindTheScenesBlock } from "./BehindTheScenesBlock";
+export { ChallengeBlock } from "./ChallengeBlock";
+export { DemoBlock } from "./DemoBlock";
+export { ProcessBlock } from "./ProcessBlock";
+export { RepoLinkBlock } from "./RepoLinkBlock";
+export { StackBlock } from "./StackBlock";
