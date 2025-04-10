@@ -1,3 +1,4 @@
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import type React from "react";
 
 interface AuthorImage {
@@ -17,20 +18,14 @@ interface AuthorSectionProps {
 	author?: Author;
 	publishedDate?: string;
 	excerpt?: string;
-	urlForImage: (image: AuthorImage) => {
-		width: (width: number) => {
-			height: (height: number) => {
-				url: () => string;
-			};
-		};
-	};
+	authorImage?: string;
 }
 
 const AuthorSection: React.FC<AuthorSectionProps> = ({
 	author,
 	publishedDate,
 	excerpt,
-	urlForImage,
+	authorImage
 }) => {
 	return (
 		<div className="mb-16">
@@ -39,7 +34,7 @@ const AuthorSection: React.FC<AuthorSectionProps> = ({
 					{author.image && (
 						<div className="w-10 h-10 rounded-full overflow-hidden mr-3">
 							<img
-								src={urlForImage(author.image).width(80).height(80).url()}
+								src={authorImage}
 								alt={author.name}
 								className="w-full h-full object-cover"
 							/>

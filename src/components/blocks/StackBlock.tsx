@@ -54,8 +54,8 @@ const StackBlock: React.FC<StackBlockProps> = ({
 				return urlForImage(tech.icon)
 					.width(60)
 					.height(60)
+					.format("webp")
 					.fit("crop")
-					.auto("format")
 					.url();
 			}
 

@@ -55,7 +55,7 @@ const PostCarousel = ({ projects }: { projects: ProjectCardProps[] }) => {
 		slug: post.slug,
 		mainImage: {
 			src: post.mainImage
-				? urlForImage(post.mainImage).url()
+				? urlForImage(post.mainImage).format("webp").width(700).url()
 				: "/images/placeholder.jpg",
 			alt: post.title,
 		},

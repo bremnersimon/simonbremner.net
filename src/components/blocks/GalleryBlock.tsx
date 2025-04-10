@@ -65,10 +65,10 @@ const GalleryBlock = ({
 								<AspectRatio ratio={1 / 1}>
 									<img
 										src={urlForImage(image)
+											.format("webp")
 											.width(400)
 											.height(400)
 											.fit("crop")
-											.auto("format")
 											.url()}
 										alt={image.alt || `Gallery image ${index + 1}`}
 										className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
@@ -89,7 +89,10 @@ const GalleryBlock = ({
 								onKeyDown={() => handleImageClick(index)}
 							>
 								<img
-									src={urlForImage(image).width(600).auto("format").url()}
+									src={urlForImage(image)
+										.format("webp")
+										.width(600)
+										.url()}
 									alt={image.alt || `Gallery image ${index + 1}`}
 									className="w-full h-auto rounded-md hover:opacity-90 transition-opacity"
 								/>
@@ -112,10 +115,10 @@ const GalleryBlock = ({
 										<AspectRatio ratio={3 / 2}>
 											<img
 												src={urlForImage(image)
+													.format("webp")
 													.width(500)
 													.height(333)
 													.fit("crop")
-													.auto("format")
 													.url()}
 												alt={image.alt || `Gallery image ${index + 1}`}
 												className="w-full h-full object-cover hover:opacity-90 transition-opacity"
@@ -154,8 +157,8 @@ const GalleryBlock = ({
 						<div className="flex items-center justify-center p-4">
 							<img
 								src={urlForImage(selectedImage)
+									.format("webp")
 									.width(1500)
-									.auto("format")
 									.url()}
 								alt={selectedImage?.alt || `Gallery image ${selectedIndex + 1}`}
 								className="max-h-[80vh] w-auto object-contain"

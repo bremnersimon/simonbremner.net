@@ -64,7 +64,7 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
 
 			// If it's a Sanity image reference
 			if (image._type === "image" && image.asset?._ref) {
-				return urlForImage(image).width(width).auto("format").url();
+				return urlForImage(image).width(width).format("webp").url();
 			}
 
 			console.error("Could not determine image URL format:", image);
@@ -158,9 +158,8 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
 						<TabsList
 							className="grid w-full max-w-md mx-auto mb-4"
 							style={{
-								gridTemplateColumns: `repeat(${
-									[videos.length > 0, images.length > 0].filter(Boolean).length
-								}, minmax(0, 1fr))`,
+								gridTemplateColumns: `repeat(${[videos.length > 0, images.length > 0].filter(Boolean).length
+									}, minmax(0, 1fr))`,
 							}}
 						>
 							{videos.length > 0 && (

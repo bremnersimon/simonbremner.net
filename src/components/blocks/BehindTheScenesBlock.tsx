@@ -57,7 +57,7 @@ const BehindTheScenesBlock: React.FC<BehindTheScenesBlockProps> = ({
 				return "";
 			}
 
-			let imageBuilder = urlForImage(image);
+			let imageBuilder = urlForImage(image).format("webp");
 
 			if (options.width) {
 				imageBuilder = imageBuilder.width(options.width);
