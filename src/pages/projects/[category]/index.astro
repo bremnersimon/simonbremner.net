@@ -52,7 +52,6 @@ const pageTitle = `${categoryTitle}`;
 const pageDescription = `Explore my ${category} portfolio - ${categorySubtitle}`;
 
 const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
-
 // Convert Sanity posts to the ProjectsGrid format
 const projects = posts.map((post) => ({
   _id: post._id,
@@ -60,7 +59,7 @@ const projects = posts.map((post) => ({
   slug: post.slug,
   mainImage: {
     src: post.mainImage
-      ? urlForImage(post.mainImage).url()
+      ? urlForImage(post.mainImage).format("webp").width(700).url()
       : "/images/no-image.svg",
     alt: post.title,
   },
@@ -85,7 +84,4 @@ if (!projects || projects.length === 0) {
     title={`${categoryTitle} Projects`}
     subtitle={categorySubtitle}
   />
-  <!-- <Container>
-    <Cta client:load />
-  </Container> -->
 </PageLayout>

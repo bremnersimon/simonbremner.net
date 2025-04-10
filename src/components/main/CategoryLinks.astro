@@ -1,0 +1,23 @@
+---
+import { Icon } from "@/components/main/Icon";
+const categoryLinks = [
+	{ href: "/projects/photography", icon: "camera" },
+	{ href: "/projects/development", icon: "code" },
+	{ href: "/projects/design", icon: "pencil" },
+	{ href: "/projects/handcrafted", icon: "hammer" },
+];
+---
+
+<div
+  class="inline-flex items-center justify-center px-4 py-2 rounded-full border mb-8">
+  {
+    categoryLinks.map((link, index) => (
+      <div class="inline-flex items-center">
+        <a class="hover:text-primary transition-colors" href={link.href}>
+          <Icon name={link.icon} size={24} />
+        </a>
+        {index !== categoryLinks.length - 1 && <Icon name="dot" size={24} />}
+      </div>
+    ))
+  }
+</div>

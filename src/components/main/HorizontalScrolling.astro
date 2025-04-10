@@ -1,12 +1,12 @@
 ---
 import { Image } from "astro:assets";
+import BcTeaTree from "@/assets/bc-tea-tree.jpg";
+import BooneVista from "@/assets/boone-vista.jpg";
 import CK from "@/assets/c-k.jpg";
-import RavanelBridge from "@/assets/ravanel-bridge.jpg";
-import PineappleFountain from "@/assets/pineapple-fountain.jpg";
 import CatawbaKayak from "@/assets/catawba-kayak.jpg";
 import CatawbaRiver from "@/assets/catawba-river.jpg";
-import BooneVista from "@/assets/boone-vista.jpg";
-import BcTeaTree from "@/assets/bc-tea-tree.jpg";
+import PineappleFountain from "@/assets/pineapple-fountain.jpg";
+import RavanelBridge from "@/assets/ravanel-bridge.jpg";
 const images = [
   { image: CK },
   { image: BcTeaTree },
@@ -22,17 +22,17 @@ const images = [
   <div class="sticky top-0 overflow-hidden">
     <ul class="flex img-group">
       <li class="w-[300vw] h-screen flex-none img-container">
-        <div class="flex flex-row h-full w-full items-center">
+        <div class="flex flex-row h-full w-full items-center justify-center">
           <div
             class="image-item pointer-events-none object-cover aspect-[3/4] w-1/9">
           </div>
           {
             images.map((item, index) => (
               <Image
-                class="image-item pointer-events-none object-cover aspect-[3/4] w-1/9"
+                class="image-item pointer-events-none object-cover aspect-[3/4] w-1/9 rounded-md"
                 src={item.image}
                 alt={`Image ${index + 1}`}
-                loading="eager"
+                format="webp"
               />
             ))
           }
@@ -45,15 +45,25 @@ const images = [
   </div>
 </section>
 
+<style>
+  /* Initial styles for images */
+  .image-item {
+    opacity: 0.2; /* Start with low opacity */
+    transform: translateY(0px) scale(0.8); /* Start with smaller scale */
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out;
+  }
+</style>
+
 <script>
   import { animate, scroll } from "motion";
 
   document.addEventListener("astro:page-load", () => {
-    // First make all images visible but with varying opacity
+    // Select all image elements
     const imageItems = document.querySelectorAll(".image-item");
-    imageItems.forEach((img) => {
-      (img as HTMLElement).style.transition = "transform 0.5s ease-out"; // Add smooth transition for transforms
-    });
+
+    // No need to set transition property here since we do it in CSS
 
     // Calculate center position
     const calculateCenter = () => {
@@ -77,16 +87,17 @@ const images = [
         );
 
         // Opacity formula: closer to center = more visible
+        const opacity = 0 + 1 * (1 - normalizedDistance);
         const scale = 0.8 + 0.2 * (1 - normalizedDistance);
         const yOffset = -50 * (1 - normalizedDistance);
 
         // Apply styles
         (img as HTMLElement).style.transform =
           `translateY(${yOffset}px) scale(${scale})`;
+        (img as HTMLElement).style.opacity = opacity.toString();
       });
     };
 
-    // Horizontal scroll animation
     scroll(
       animate(".img-group", {
         transform: ["none", "translateX(-200vw)"],
@@ -115,7 +126,10 @@ const images = [
     }
 
     // Initial update and resize handling
-    updateOpacities();
+    // Small delay to ensure initial styles are applied properly
+    setTimeout(() => {
+      updateOpacities();
+    }, 100);
     window.addEventListener("resize", updateOpacities);
   });
 </script>

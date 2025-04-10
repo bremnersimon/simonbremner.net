@@ -1,18 +1,18 @@
 ---
 // src/pages/photography/[slug].astro
-import { Container } from "@/components/main/Container";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
+import Container from "@/components/main/Container.astro";
 import ScrollIndicator from "@/components/motion/ScrollIndicator";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
 
+import { AuthorSection } from "@/components/blocks/AuthorSection";
 // Import the content blocks
-import ContentRenderer from "@/components/blocks/ContentRenderer";
-import HeroSection from "@/components/blocks/HeroSection";
-import AuthorSection from "@/components/blocks/AuthorSection";
-import { ArrowLeft } from "lucide-react";
+import { ContentRenderer } from "@/components/blocks/ContentRenderer";
+import HeroSection from "@/components/blocks/HeroSection.astro";
 import { Separator } from "@/components/ui/separator";
 import PageLayout from "@/layouts/PageLayout.astro";
+import { ArrowLeft } from "lucide-react";
 
 // Define all possible paths for pre-rendering at build time
 export async function getStaticPaths() {
@@ -59,18 +59,36 @@ const publishedDate = formatDate(postData?.publishedAt);
 if (!postData) {
   return Astro.redirect("/404");
 }
+
+const mainImage = postData?.mainImage;
+const mainImageCaption = mainImage?.caption;
+const mainImageAlt = mainImage?.alt;
+const mainImageUrl = urlForImage(mainImage)
+  .width(1200)
+  .height(630)
+  .crop("center")
+  .format("webp")
+  .url();
+const authorImageUrl = urlForImage(postData?.author?.image)
+  .width(80)
+  .height(80)
+  .format("webp")
+  .url();
 ---
 
 <PageLayout
-  title={postData.title + " | Simon Bremner"}
-  description={postData.excerpt}>
+  title={postData.title}
+  description={postData.excerpt}
+  image={mainImageUrl}
+  pageType="article">
   <ScrollIndicator client:load>
     <article>
       <HeroSection
         title={postData.title}
-        mainImage={postData.mainImage}
+        mainImage={mainImageUrl}
+        mainImageAlt={mainImageAlt}
+        mainImageCaption={mainImageCaption}
         shootMetadata={postData.shootMetadata}
-        urlForImage={urlForImage}
       />
 
       <Container>
@@ -79,7 +97,7 @@ if (!postData) {
             author={postData.author}
             publishedDate={publishedDate}
             excerpt={postData.excerpt}
-            urlForImage={urlForImage}
+            authorImage={authorImageUrl}
           />
           <Separator className="my-8" />
 

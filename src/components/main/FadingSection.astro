@@ -1,12 +1,12 @@
 ---
+import { Image } from "astro:assets";
+import { Icon } from "@/components/main/Icon";
+import Link from "@/components/main/Link.astro";
 import { cn } from "@/lib/utils";
 import type { FadingSectionProps } from "@/types/types";
-import { Icon } from "@/components/main/Icon";
-import { Image } from "astro:assets";
-import Link from "@/components/main/Link.astro";
 
 interface Props {
-  sections: FadingSectionProps[];
+	sections: FadingSectionProps[];
 }
 
 const { sections } = Astro.props;
@@ -36,7 +36,7 @@ const { sections } = Astro.props;
               <Image
                 src={section.image}
                 alt={section.title}
-                class="w-full h-auto object-cover aspect-[4/5]"
+                class="w-full h-auto object-cover aspect-[4/5] rounded-md"
               />
             </div>
           </div>
@@ -46,7 +46,7 @@ const { sections } = Astro.props;
             class={`w-full p-4 ${section.imagePosition === "right" ? "lg:order-1" : "lg:order-2"}`}>
             <div>
               <h2
-                class="text-xl md:text-4xl lg:text-5xl text-foreground font-bold mb-6 animate-text"
+                class="text-4xl md:text-6xl lg:text-7xl text-foreground font-bold mb-6 animate-text"
                 data-delay="0.1">
                 {section.title}
               </h2>
@@ -54,7 +54,11 @@ const { sections } = Astro.props;
                 {section.content.map((paragraph) => (
                   <p class="mb-4 text-lg leading-loose">{paragraph}</p>
                 ))}
-                <Link variant="default" class="mt-4" href={section.button.href}>
+                <Link
+                  aria-label={`Link to ${section.button.label} page`}
+                  variant="default"
+                  class="mt-4"
+                  href={section.button.href}>
                   {section.button.label}{" "}
                   <Icon name={section.button.icon ? section.button.icon : ""} />
                 </Link>

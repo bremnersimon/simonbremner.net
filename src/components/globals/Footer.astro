@@ -1,16 +1,15 @@
 ---
-import { Container } from "../main/Container";
-import type { FooterProps } from "@/types";
 import { Image } from "astro:assets";
-const props = Astro.props as FooterProps;
-const { title = "Simon Bremner", year = 2025 } = props;
+import Container from "@/components/main/Container.astro";
+import type { FooterProps } from "@/types";
+const { year = 2025 } = Astro.props as FooterProps;
 const links = [
-  { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Photography", href: "/projects/photography" },
-  { title: "Design", href: "/projects/design" },
-  { title: "Development", href: "/projects/development" },
-  { title: "Handcrafted", href: "/projects/handcrafted" },
+	{ title: "Home", href: "/" },
+	{ title: "About", href: "/about" },
+	{ title: "Photography", href: "/projects/photography" },
+	{ title: "Design", href: "/projects/design" },
+	{ title: "Development", href: "/projects/development" },
+	{ title: "Handcrafted", href: "/projects/handcrafted" },
 ];
 ---
 
@@ -29,7 +28,9 @@ const links = [
           links.map((link) => (
             <ul>
               <li class="text-md md:text-sm mr-4">
-                <a href={link.href}>{link.title}</a>
+                <a href={link.href} aria-label={link.title}>
+                  {link.title}
+                </a>
               </li>
             </ul>
           ))

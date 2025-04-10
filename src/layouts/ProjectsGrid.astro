@@ -1,26 +1,26 @@
 ---
+import Container from "@/components/main/Container.astro";
+import ProjectCard from "@/components/main/ProjectCard";
 // Import necessary dependencies
 import { Button } from "@/components/ui/button";
-import { Container } from "@/components/main/Container";
-import ProjectCard from "@/components/main/ProjectCard";
 import type { ProjectCardProps } from "@/types/index";
 
 interface Props {
-  allProjects: ProjectCardProps[];
-  title?: string;
-  subtitle?: string;
-  categories?: string[];
-  defaultTab?: string;
-  projectsPerPage?: number;
-  hideTabsOnSubPages?: boolean;
+	allProjects: ProjectCardProps[];
+	title?: string;
+	subtitle?: string;
+	categories?: string[];
+	defaultTab?: string;
+	projectsPerPage?: number;
+	hideTabsOnSubPages?: boolean;
 }
 
 // Destructure the props with default values
 const {
-  allProjects = [],
-  title = "My Projects",
-  subtitle = "Check out what I've been working on",
-  projectsPerPage = 10,
+	allProjects = [],
+	title = "My Projects",
+	subtitle = "Check out what I've been working on",
+	projectsPerPage = 10,
 } = Astro.props;
 
 // Get initial visible projects for server render
@@ -71,7 +71,6 @@ const initialHasMore = allProjects.length > projectsPerPage;
         initialHasMore && (
           <div class="flex justify-center mt-12">
             <Button
-              client:load
               variant="outline"
               size="lg"
               id="load-more-button"

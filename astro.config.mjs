@@ -1,10 +1,12 @@
+import path from "node:path";
+import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
+import sanity from "@sanity/astro";
+import tailwindcss from "@tailwindcss/vite";
 // @ts-check
 import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
-import tailwindcss from "@tailwindcss/vite";
-import sanity from "@sanity/astro";
-import path from "node:path";
-import sitemap from "@astrojs/sitemap";
+
+import partytown from "@astrojs/partytown";
 
 export default defineConfig({
   site: "https://www.simonbremner.net",
@@ -17,6 +19,7 @@ export default defineConfig({
       useCdn: false,
     }),
     sitemap(),
+    partytown(),
   ],
   vite: {
     // @ts-ignore
