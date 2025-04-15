@@ -59,7 +59,7 @@ const publishedDate = formatDate(postData?.publishedAt);
 if (!postData) {
   return Astro.redirect("/404");
 }
-
+console.log(postData);
 const mainImage = postData?.mainImage;
 const mainImageCaption = mainImage?.caption;
 const mainImageAlt = mainImage?.alt;
@@ -80,6 +80,12 @@ const authorImageUrl = urlForImage(postData?.author?.image)
   title={postData.title}
   description={postData.excerpt}
   image={mainImageUrl}
+  article={{
+    publishedTime: postData.publishedAt,
+    modifiedTime: postData.updatedAt,
+    author: postData.author.name,
+    tags: postData.tags,
+  }}
   pageType="article">
   <ScrollIndicator client:load>
     <article>

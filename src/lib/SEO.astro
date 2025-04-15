@@ -3,12 +3,8 @@ import { getImage } from "astro:assets";
 // Import default images
 import defaultOgImage from "@/assets/main-og-image.jpg";
 import type { SEOProps } from "@/types/types";
-import type { GetImageResult } from "astro";
 
 type Props = SEOProps;
-
-// Get the base URL for canonical/full URLs
-const siteUrl = import.meta.env.BASE_URL;
 
 // Default values that can be overridden by props
 const SITE_NAME = "Portfolio | Simon Bremner";
@@ -16,53 +12,52 @@ const DEFAULT_DESCRIPTION = "A Creative Portfolio";
 
 // Destructure props with defaults
 const {
-	title,
-	description = DEFAULT_DESCRIPTION,
-	canonical = Astro.url.pathname,
-	pageType = "website",
-	image,
-	noindex = false,
-	nofollow = false,
-	article,
+  title,
+  description = DEFAULT_DESCRIPTION,
+  pageType = "website",
+  image,
+  noindex = false,
+  nofollow = false,
+  article,
 } = Astro.props;
 // Process the OG image
 let ogImage: string;
 const baseUrl =
-	import.meta.env.MODE === "development"
-		? "http://localhost:4321"
-		: import.meta.env.SITE;
+  import.meta.env.MODE === "development"
+    ? "http://localhost:4321"
+    : import.meta.env.SITE;
 
 if (image) {
-	// Case 1: Image is a string (URL/path)
-	if (typeof image === "string") {
-		// If it's already a full URL, use it directly
-		if (image.startsWith("http")) {
-			ogImage = image;
-		} else {
-			// Otherwise, it's a relative path, prepend the site URL
-			ogImage = new URL(image, baseUrl).toString();
-		}
-	}
-	// Case 2: Image is an imported asset
-	else {
-		const processedImage = await getImage({
-			src: image,
-			width: 1200,
-			height: 630,
-			format: "jpg",
-		});
-		ogImage = new URL(processedImage.src, baseUrl).toString();
-	}
+  // Case 1: Image is a string (URL/path)
+  if (typeof image === "string") {
+    // If it's already a full URL, use it directly
+    if (image.startsWith("http")) {
+      ogImage = image;
+    } else {
+      // Otherwise, it's a relative path, prepend the site URL
+      ogImage = new URL(image, baseUrl).toString();
+    }
+  }
+  // Case 2: Image is an imported asset
+  else {
+    const processedImage = await getImage({
+      src: image,
+      width: 1200,
+      height: 630,
+      format: "jpg",
+    });
+    ogImage = new URL(processedImage.src, baseUrl).toString();
+  }
 }
 // Case 3: No image provided, use default
 else {
-	const processedDefaultImage = await getImage({
-		src: defaultOgImage,
-		width: 1200,
-		height: 630,
-		format: "jpg",
-	});
-	ogImage = new URL(processedDefaultImage.src, baseUrl).toString();
+  const processedDefaultImage = await getImage({
+    src: defaultOgImage,
+    width: 1200,
+    height: 630,
+    format: "jpg",
+  });
+  ogImage = new URL(processedDefaultImage.src, baseUrl).toString();
 }
 // Create full canonical URL
 const canonicalURL = Astro.url.href;
@@ -71,7 +66,7 @@ const robotsDirectives = [];
 if (noindex) robotsDirectives.push("noindex");
 if (nofollow) robotsDirectives.push("nofollow");
 const robotsContent =
-	robotsDirectives.length > 0 ? robotsDirectives.join(", ") : "index, follow";
+  robotsDirectives.length > 0 ? robotsDirectives.join(", ") : "index, follow";
 ---
 
 <!-- Basic meta tags -->
