@@ -32,7 +32,7 @@ const CustomAccordionTrigger = ({
 	children: React.ReactNode;
 	className?: string;
 	index: number;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: <Any is needed for content block content>
 	[key: string]: any;
 }) => (
 	<AccordionTrigger
@@ -50,7 +50,7 @@ const CustomAccordionContent = ({
 }: {
 	children: React.ReactNode;
 	className?: string;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: <Any is needed for content block content>
 	[key: string]: any;
 }) => {
 	return (

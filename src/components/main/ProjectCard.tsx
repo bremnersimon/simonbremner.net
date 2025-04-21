@@ -7,6 +7,7 @@ import { useState } from "react";
 type CardProps = ProjectCardProps & {
 	id?: string;
 	aspectRatio?: "square" | "video";
+	showCategory?: boolean;
 };
 
 export default function ProjectCard({
