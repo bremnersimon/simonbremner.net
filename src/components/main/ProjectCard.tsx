@@ -36,8 +36,9 @@ export default function ProjectCard({
 				className="block outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
 			>
 				<div
-					className={`relative w-full overflow-hidden rounded-lg ${aspectRatio === "square" ? "aspect-square" : "aspect-video"
-						}`}
+					className={`relative w-full overflow-hidden rounded-lg ${
+						aspectRatio === "square" ? "aspect-square" : "aspect-video"
+					}`}
 				>
 					<img
 						src={mainImage?.src || "/images/chs-waterfront.jpg"}

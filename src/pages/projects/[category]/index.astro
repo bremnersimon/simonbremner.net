@@ -5,33 +5,33 @@ import { getAllPostsByType, urlForImage } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
 
 export function getStaticPaths() {
-  const categories = ["photography", "design", "development", "handcrafted"];
+	const categories = ["photography", "design", "development", "handcrafted"];
 
-  return categories.map((category) => ({
-    params: { category },
-  }));
+	return categories.map((category) => ({
+		params: { category },
+	}));
 }
 
 const { category } = Astro.params;
 
 if (!category) {
-  return Astro.redirect("/404");
+	return Astro.redirect("/404");
 }
 
 let posts: ProjectCardProps[] = [];
 if (!!category && category.length > 0) {
-  posts = await getAllPostsByType(
-    category as "photography" | "design" | "development" | "handcrafted"
-  );
+	posts = await getAllPostsByType(
+		category as "photography" | "design" | "development" | "handcrafted",
+	);
 }
 
 const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
 
 const categorySubtitles: { [key: string]: string } = {
-  photography: "Creative visual storytelling through my personal lens",
-  design: "Innovative visual solutions for modern brands",
-  development: "Custom software and web solutions",
-  handcrafted: "Unique handmade creations with attention to detail",
+	photography: "Creative visual storytelling through my personal lens",
+	design: "Innovative visual solutions for modern brands",
+	development: "Custom software and web solutions",
+	handcrafted: "Unique handmade creations with attention to detail",
 };
 
 const defaultCategorySubtitle = "Explore my portfolio of creative work";
@@ -43,23 +43,23 @@ const pageDescription = `Explore my ${category} portfolio - ${categorySubtitle}`
 
 const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
 const projects = posts.map((post) => ({
-  _id: post._id,
-  title: post.title,
-  slug: post.slug,
-  mainImage: {
-    src: post.mainImage
-      ? urlForImage(post.mainImage).format("webp").width(700).url()
-      : "/images/no-image.svg",
-    alt: post.title,
-  },
-  caption: post.caption,
-  category: categoryLabel,
-  tags: post.tags || [],
-  publishedAt: post.publishedAt,
+	_id: post._id,
+	title: post.title,
+	slug: post.slug,
+	mainImage: {
+		src: post.mainImage
+			? urlForImage(post.mainImage).format("webp").width(700).url()
+			: "/images/no-image.svg",
+		alt: post.title,
+	},
+	caption: post.caption,
+	category: categoryLabel,
+	tags: post.tags || [],
+	publishedAt: post.publishedAt,
 }));
 
 if (!projects || projects.length === 0) {
-  return Astro.redirect("/404");
+	return Astro.redirect("/404");
 }
 ---
 
