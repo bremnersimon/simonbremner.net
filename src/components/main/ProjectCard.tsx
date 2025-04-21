@@ -3,6 +3,7 @@ import type { ProjectCardProps } from "@/types";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
+import NoImage from "@/assets/images/no-image.svg";
 
 type CardProps = ProjectCardProps & {
 	id?: string;
@@ -36,12 +37,11 @@ export default function ProjectCard({
 				className="block outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
 			>
 				<div
-					className={`relative w-full overflow-hidden rounded-lg ${
-						aspectRatio === "square" ? "aspect-square" : "aspect-video"
-					}`}
+					className={`relative w-full overflow-hidden rounded-lg ${aspectRatio === "square" ? "aspect-square" : "aspect-video"
+						}`}
 				>
 					<img
-						src={mainImage?.src || "/images/chs-waterfront.jpg"}
+						src={mainImage?.src || NoImage.src}
 						alt={title}
 						className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
 					/>
