@@ -89,10 +89,7 @@ const GalleryBlock = ({
 								onKeyDown={() => handleImageClick(index)}
 							>
 								<img
-									src={urlForImage(image)
-										.format("webp")
-										.width(600)
-										.url()}
+									src={urlForImage(image).format("webp").width(600).url()}
 									alt={image.alt || `Gallery image ${index + 1}`}
 									className="w-full h-auto rounded-md hover:opacity-90 transition-opacity"
 								/>
