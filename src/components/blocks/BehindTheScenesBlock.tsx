@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shad-ui/card";
 import { urlForImage } from "@/lib/sanity.image";
 import { PortableText, type PortableTextProps } from "@portabletext/react";
 import type { FitMode } from "@sanity/image-url/lib/types/types";

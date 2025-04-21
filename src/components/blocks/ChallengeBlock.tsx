@@ -3,14 +3,12 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+} from "@/components/shad-ui/accordion";
+import { Badge } from "@/components/shad-ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shad-ui/card";
 import { PortableText } from "@portabletext/react";
 import { AnimatePresence, motion } from "motion/react";
-// src/components/blocks/ChallengeBlock.tsx
 import React from "react";
-import { textComponents } from "./shared/portable-text-components";
 
 interface Challenge {
 	problem?: string;
@@ -25,7 +23,6 @@ interface ChallengeBlockProps {
 	challenges?: Challenge[];
 }
 
-// Custom AccordionTrigger with left alignment and bolder text
 const CustomAccordionTrigger = ({
 	children,
 	className = "",
@@ -46,7 +43,6 @@ const CustomAccordionTrigger = ({
 	</AccordionTrigger>
 );
 
-// Custom AccordionContent with animation
 const CustomAccordionContent = ({
 	children,
 	className = "",

@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/shad-ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shad-ui/card";
 import { PortableText } from "@portabletext/react";
 // src/components/blocks/ProcessBlock.tsx
 import type React from "react";

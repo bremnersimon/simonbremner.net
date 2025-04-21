@@ -6,13 +6,13 @@ import {
 	NavigationMenuLink,
 	NavigationMenuList,
 	NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+} from "@/components/shad-ui/navigation-menu";
 import {
 	Sheet,
 	SheetClose,
 	SheetContent,
 	SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@/components/shad-ui/sheet";
 import { cn } from "@/lib/utils";
 import {
 	Briefcase,

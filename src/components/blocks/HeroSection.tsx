@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/shad-ui/badge";
 import type React from "react";
 
 interface MainImage {

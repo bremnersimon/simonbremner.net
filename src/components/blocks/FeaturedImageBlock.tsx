@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/shad-ui/badge";
+import { Card, CardContent } from "@/components/shad-ui/card";
 import { urlForImage } from "@/lib/sanity.image";
 import { cn } from "@/lib/utils";
 import type React from "react";

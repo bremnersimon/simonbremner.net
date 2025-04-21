@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shad-ui/card";
 import {
 	Table,
 	TableBody,
@@ -6,7 +6,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table";
+} from "@/components/shad-ui/table";
 // src/components/blocks/TechSpecsBlock.tsx
 import type React from "react";
 

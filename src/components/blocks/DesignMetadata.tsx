@@ -12,13 +12,13 @@ import {
 } from "lucide-react";
 // src/components/blocks/DesignMetadata.tsx
 import type React from "react";
-import { Badge } from "../ui/badge";
+import { Badge } from "../shad-ui/badge";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "../ui/tooltip";
+} from "../shad-ui/tooltip";
 
 // Define types for the component props
 interface DesignTool {

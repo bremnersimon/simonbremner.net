@@ -1,13 +1,13 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/shad-ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shad-ui/card";
 import {
 	Carousel,
 	CarouselContent,
 	CarouselItem,
 	CarouselNext,
 	CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from "@/components/shad-ui/carousel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shad-ui/tabs";
 import { urlForImage } from "@/lib/sanity.image";
 import { Image, MousePointer, Play } from "lucide-react";
 // src/components/blocks/DemoBlock.tsx
@@ -158,9 +158,8 @@ const DemoBlock: React.FC<DemoBlockProps> = ({
 						<TabsList
 							className="grid w-full max-w-md mx-auto mb-4"
 							style={{
-								gridTemplateColumns: `repeat(${
-									[videos.length > 0, images.length > 0].filter(Boolean).length
-								}, minmax(0, 1fr))`,
+								gridTemplateColumns: `repeat(${[videos.length > 0, images.length > 0].filter(Boolean).length
+									}, minmax(0, 1fr))`,
 							}}
 						>
 							{videos.length > 0 && (

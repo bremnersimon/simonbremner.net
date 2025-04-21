@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/shad-ui/badge";
 import type { ProjectCardProps } from "@/types";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
@@ -20,7 +20,6 @@ export default function ProjectCard({
 }: CardProps) {
 	const [isHovered, setIsHovered] = useState(false);
 
-	// Construct the project URL based on category and slug
 	const projectUrl = category
 		? `/projects/${category.toLowerCase()}/${slug.current}`
 		: "";
@@ -31,15 +30,13 @@ export default function ProjectCard({
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 		>
-			{/* Make the entire card clickable with a primary anchor tag */}
 			<a
 				href={projectUrl}
 				className="block outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
 			>
 				<div
-					className={`relative w-full overflow-hidden rounded-lg ${
-						aspectRatio === "square" ? "aspect-square" : "aspect-video"
-					}`}
+					className={`relative w-full overflow-hidden rounded-lg ${aspectRatio === "square" ? "aspect-square" : "aspect-video"
+						}`}
 				>
 					<img
 						src={mainImage?.src || "/images/chs-waterfront.jpg"}
@@ -47,7 +44,6 @@ export default function ProjectCard({
 						className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
 					/>
 
-					{/* Overlay with tags on hover/tap */}
 					<div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 md:group-focus-within:opacity-100 transition-opacity duration-300">
 						<div className="flex flex-col items-center justify-center relative w-full h-full">
 							{tags.length > 0 && (
@@ -90,7 +86,6 @@ export default function ProjectCard({
 				</div>
 			</a>
 
-			{/* Special handling for tap on mobile - show overlay when focused */}
 			<style>{`
                 @media (max-width: 768px) {
                     :global(.group:active .absolute) {

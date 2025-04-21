@@ -1,6 +1,6 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/shad-ui/badge";
+import { Button } from "@/components/shad-ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shad-ui/card";
 import { Github, Globe } from "lucide-react";
 // src/components/blocks/RepoLinkBlock.tsx
 import type React from "react";
