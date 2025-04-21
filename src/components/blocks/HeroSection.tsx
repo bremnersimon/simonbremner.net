@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/shad-ui/badge";
 import type React from "react";
 
 interface MainImage {
@@ -15,7 +15,11 @@ interface HeroSectionProps {
 	title: string;
 	mainImage?: MainImage;
 	shootMetadata?: ShootMetadata;
-	urlForImage?: (image: MainImage) => { format: (format: string) => { width: (width: number) => { url: () => string } } };
+	urlForImage?: (image: MainImage) => {
+		format: (format: string) => {
+			width: (width: number) => { url: () => string };
+		};
+	};
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({

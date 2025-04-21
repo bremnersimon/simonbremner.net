@@ -1,13 +1,7 @@
 {
 	"extends": "astro/tsconfigs/strict",
 	"include": [".astro/types.d.ts", "/types/index.d.ts", "env.d.ts", "**/*"],
-	"exclude": [
-		"dist",
-		"node_modules",
-		"src/pages/_shadcn-theme",
-		"src/pages/_shadcn-theme/**",
-		"src/lib/TagManager.astro"
-	],
+	"exclude": ["dist", "node_modules"],
 	"compilerOptions": {
 		"esModuleInterop": true,
 		"jsx": "react-jsx",

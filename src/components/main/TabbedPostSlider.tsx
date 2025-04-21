@@ -1,5 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/shad-ui/button";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/shad-ui/tabs";
 import { urlForImage } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
 import useEmblaCarousel from "embla-carousel-react";

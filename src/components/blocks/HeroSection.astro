@@ -1,21 +1,19 @@
 ---
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/shad-ui/badge";
 
 interface ShootMetadata {
-  theme?: string;
+	theme?: string;
 }
 
 interface HeroSectionProps {
-  title: string;
-  mainImage?: string;
-  mainImageAlt?: string;
-  shootMetadata?: ShootMetadata;
-  mainImageCaption?: string;
+	title: string;
+	mainImage?: string;
+	mainImageAlt?: string;
+	mainImageCaption?: string;
 }
 type Props = HeroSectionProps;
 
-const { title, mainImage, shootMetadata, mainImageAlt, mainImageCaption } =
-  Astro.props;
+const { title, mainImage, mainImageAlt, mainImageCaption } = Astro.props;
 ---
 
 <div class="relative h-[50vh] md:h-[70vh] mb-16">
@@ -39,17 +37,6 @@ const { title, mainImage, shootMetadata, mainImageAlt, mainImageCaption } =
   {/* Text container - explicitly positioned at bottom */}
   <div class="absolute inset-x-0 bottom-0 pb-8 pt-16">
     <div class="container max-w-5xl mx-auto px-4">
-      <div class="flex items-center mb-4">
-        {
-          shootMetadata?.theme && (
-            <Badge
-              variant="outline"
-              className="bg-primary/80 text-white border-primary/30 hover:bg-primary/90 ml-2 text-md">
-              {shootMetadata.theme}
-            </Badge>
-          )
-        }
-      </div>
       <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-white">
         {title}
       </h1>

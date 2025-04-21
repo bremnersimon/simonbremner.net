@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shad-ui/button";
 import { Moon, Sun, SunMoon } from "lucide-react";
 import { useEffect, useState } from "react";
 

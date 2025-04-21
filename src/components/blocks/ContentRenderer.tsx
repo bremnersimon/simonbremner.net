@@ -7,12 +7,6 @@ import { CodeBlock } from "./";
 import { DividerBlock } from "./";
 import { QuoteBlock } from "./";
 import { FeaturedImageBlock } from "./";
-import { TechSpecsBlock } from "./";
-import { BehindTheScenesBlock } from "./";
-import { ChallengeBlock } from "./";
-import { DemoBlock } from "./";
-import { ProcessBlock } from "./";
-import { RepoLinkBlock } from "./";
 import { StackBlock } from "./";
 
 // Type for all possible content blocks from Sanity
@@ -43,18 +37,6 @@ const ContentRenderer = ({ blocks = [] }) => {
 						return <QuoteBlock key={block._key} {...block} />;
 					case "featuredImageBlock":
 						return <FeaturedImageBlock key={block._key} {...block} />;
-					case "techSpecsBlock":
-						return <TechSpecsBlock key={block._key} {...block} />;
-					case "behindTheScenesBlock":
-						return <BehindTheScenesBlock key={block._key} {...block} />;
-					case "challengeBlock":
-						return <ChallengeBlock key={block._key} {...block} />;
-					case "demoBlock":
-						return <DemoBlock key={block._key} {...block} />;
-					case "processBlock":
-						return <ProcessBlock key={block._key} {...block} />;
-					case "repoLinkBlock":
-						return <RepoLinkBlock key={block._key} {...block} />;
 					case "stackBlock":
 						return <StackBlock key={block._key} {...block} />;
 					default:

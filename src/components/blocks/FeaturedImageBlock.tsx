@@ -1,8 +1,7 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/shad-ui/badge";
+import { Card, CardContent } from "@/components/shad-ui/card";
 import { urlForImage } from "@/lib/sanity.image";
 import { cn } from "@/lib/utils";
-// src/components/blocks/FeaturedImageBlock.tsx
 import type React from "react";
 
 interface FeaturedImageBlockProps {
@@ -59,7 +58,6 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
 	caption,
 	alt,
 }) => {
-	// Check if image exists in any valid form
 	if (!image) {
 		console.log("Image is null or undefined");
 		return null;
@@ -77,18 +75,15 @@ const FeaturedImageBlock: React.FC<FeaturedImageBlockProps> = ({
 		fullWidth: "max-h-[70vh]",
 	};
 
-	// Get the image URL using urlForImage for Sanity references
 	let imageUrl: string | undefined;
 	try {
 		if (image?.asset?.url) {
-			// Direct URL in asset
 			imageUrl = image.asset.url;
 		} else if (
 			image._type === "image" ||
 			image.asset?._ref ||
 			image.asset?._type === "reference"
 		) {
-			// This is a Sanity image reference
 			imageUrl = urlForImage(image).format("webp").width(1000).url();
 		}
 	} catch (error) {
