@@ -25,7 +25,7 @@ const AuthorSection: React.FC<AuthorSectionProps> = ({
 	author,
 	publishedDate,
 	excerpt,
-	authorImage
+	authorImage,
 }) => {
 	return (
 		<div className="mb-16">

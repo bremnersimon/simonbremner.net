@@ -1,23 +1,18 @@
 ---
-// src/pages/photography/[slug].astro
-import Container from "@/components/main/Container.astro";
-import ScrollIndicator from "@/components/motion/ScrollIndicator";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
-
 import { AuthorSection } from "@/components/blocks/AuthorSection";
-// Import the content blocks
 import { ContentRenderer } from "@/components/blocks/ContentRenderer";
 import HeroSection from "@/components/blocks/HeroSection.astro";
-import { Separator } from "@/components/ui/separator";
+import Container from "@/components/main/Container.astro";
+import ScrollIndicator from "@/components/motion/ScrollIndicator";
+import { Badge } from "@/components/shad-ui/badge";
+import { Button } from "@/components/shad-ui/button";
+import { Separator } from "@/components/shad-ui/separator";
 import PageLayout from "@/layouts/PageLayout.astro";
+import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
 import { ArrowLeft } from "lucide-react";
 
-// Define all possible paths for pre-rendering at build time
 export async function getStaticPaths() {
-  // Get all photography posts from Sanity
-  const postCategories = await client.fetch(`
+	const postCategories = await client.fetch(`
     *[_type in ["photography", "design", "development", "handcrafted"]]{
       "slug": slug.current,
       "category": _type,
@@ -25,61 +20,63 @@ export async function getStaticPaths() {
     }
   `);
 
-  // Create paths for photography posts
-  return postCategories?.map((post: { category: string; slug: string }) => ({
-    params: {
-      category: post?.category,
-      slug: post?.slug,
-    },
-    props: {
-      category: post?.category,
-    },
-  }));
+	return postCategories?.map((post: { category: string; slug: string }) => ({
+		params: {
+			category: post?.category,
+			slug: post?.slug,
+		},
+		props: {
+			category: post?.category,
+		},
+	}));
 }
 
-// Get the slug from the URL
 const { slug } = Astro.params;
 const { category } = Astro.props;
 
-// Fetch the complete photography post by ID with expanded references
 const postData = await fetchProjectById(category, slug);
 
-// Format the date for display
 const formatDate = (dateString: string) => {
-  if (!dateString) return "";
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+	if (!dateString) return "";
+	return new Date(dateString).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
 };
 
 const publishedDate = formatDate(postData?.publishedAt);
 
 if (!postData) {
-  return Astro.redirect("/404");
+	return Astro.redirect("/404");
 }
 
 const mainImage = postData?.mainImage;
 const mainImageCaption = mainImage?.caption;
 const mainImageAlt = mainImage?.alt;
 const mainImageUrl = urlForImage(mainImage)
-  .width(1200)
-  .height(630)
-  .crop("center")
-  .format("webp")
-  .url();
+	.width(1200)
+	.height(630)
+	.crop("center")
+	.format("webp")
+	.url();
 const authorImageUrl = urlForImage(postData?.author?.image)
-  .width(80)
-  .height(80)
-  .format("webp")
-  .url();
+	.width(80)
+	.height(80)
+	.format("webp")
+	.url();
 ---
 
 <PageLayout
   title={postData.title}
   description={postData.excerpt}
   image={mainImageUrl}
+  article={{
+    publishedTime: postData.publishedAt,
+    modifiedTime: postData.updatedAt,
+    author: postData.author.name,
+    tags: postData.tags,
+  }}
   pageType="article">
   <ScrollIndicator client:load>
     <article>
@@ -88,7 +85,6 @@ const authorImageUrl = urlForImage(postData?.author?.image)
         mainImage={mainImageUrl}
         mainImageAlt={mainImageAlt}
         mainImageCaption={mainImageCaption}
-        shootMetadata={postData.shootMetadata}
       />
 
       <Container>
@@ -101,7 +97,6 @@ const authorImageUrl = urlForImage(postData?.author?.image)
           />
           <Separator className="my-8" />
 
-          <!-- Content Blocks rendered using our ContentRenderer component -->
           {
             postData.content && postData.content.length > 0 && (
               <div class="mb-16">
@@ -109,7 +104,6 @@ const authorImageUrl = urlForImage(postData?.author?.image)
               </div>
             )
           }
-          <!-- Tags -->
           {
             postData.tags && postData.tags.length > 0 && (
               <div class="mb-12">
@@ -123,7 +117,6 @@ const authorImageUrl = urlForImage(postData?.author?.image)
             )
           }
 
-          <!-- Back Button -->
           <div class="mt-12 mb-24">
             <a href={`/projects/${category}`}>
               <Button variant="outline" className="gap-2 cursor-pointer">

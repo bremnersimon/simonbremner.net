@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/shad-ui/card";
 import { Quote } from "lucide-react";
 // src/components/blocks/QuoteBlock.tsx
 import type React from "react";

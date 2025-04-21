@@ -1,6 +1,6 @@
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { AspectRatio } from "@/components/shad-ui/aspect-ratio";
+import { Button } from "@/components/shad-ui/button";
+import { Dialog, DialogContent } from "@/components/shad-ui/dialog";
 import { urlForImage } from "@/lib/sanity";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -89,10 +89,7 @@ const GalleryBlock = ({
 								onKeyDown={() => handleImageClick(index)}
 							>
 								<img
-									src={urlForImage(image)
-										.format("webp")
-										.width(600)
-										.url()}
+									src={urlForImage(image).format("webp").width(600).url()}
 									alt={image.alt || `Gallery image ${index + 1}`}
 									className="w-full h-auto rounded-md hover:opacity-90 transition-opacity"
 								/>

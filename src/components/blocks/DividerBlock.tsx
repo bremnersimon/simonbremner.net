@@ -1,4 +1,4 @@
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/shad-ui/separator";
 import type React from "react";
 
 interface DividerBlockProps {
