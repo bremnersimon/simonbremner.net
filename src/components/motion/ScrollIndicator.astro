@@ -10,6 +10,8 @@
 
 <script>
   import { scroll, animate, spring } from "motion";
-  const progressAnimation = animate(".progress-bar", { right: ["100%", 0] });
-  scroll(progressAnimation);
+  document.addEventListener("astro:page-load", () => {
+    const progressAnimation = animate(".progress-bar", { right: ["100%", 0] });
+    scroll(progressAnimation);
+  });
 </script>
