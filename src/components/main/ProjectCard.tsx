@@ -1,5 +1,5 @@
-import { Badge } from "@/components/shad-ui/badge";
 import type { ProjectCardProps } from "@/types";
+import { Badge } from "@/components/shad-ui/badge";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
@@ -36,12 +36,11 @@ export default function ProjectCard({
 				className="block outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg"
 			>
 				<div
-					className={`relative w-full overflow-hidden rounded-lg ${
-						aspectRatio === "square" ? "aspect-square" : "aspect-video"
-					}`}
+					className={`relative w-full overflow-hidden rounded-lg ${aspectRatio === "square" ? "aspect-square" : "aspect-video"
+						}`}
 				>
 					<img
-						src={mainImage?.src || "/images/chs-waterfront.jpg"}
+						src={mainImage?.src || "/images/no-image.svg"}
 						alt={title}
 						className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
 					/>

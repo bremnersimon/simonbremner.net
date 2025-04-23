@@ -3,7 +3,7 @@ import { AuthorSection } from "@/components/blocks/AuthorSection";
 import { ContentRenderer } from "@/components/blocks/ContentRenderer";
 import HeroSection from "@/components/blocks/HeroSection.astro";
 import Container from "@/components/main/Container.astro";
-import ScrollIndicator from "@/components/motion/ScrollIndicator";
+import ScrollIndicator from "@/components/motion/ScrollIndicator.astro";
 import { Badge } from "@/components/shad-ui/badge";
 import { Button } from "@/components/shad-ui/button";
 import { Separator } from "@/components/shad-ui/separator";
@@ -12,7 +12,7 @@ import { client, fetchProjectById, urlForImage } from "@/lib/sanity";
 import { ArrowLeft } from "lucide-react";
 
 export async function getStaticPaths() {
-	const postCategories = await client.fetch(`
+  const postCategories = await client.fetch(`
     *[_type in ["photography", "design", "development", "handcrafted"]]{
       "slug": slug.current,
       "category": _type,
@@ -20,15 +20,15 @@ export async function getStaticPaths() {
     }
   `);
 
-	return postCategories?.map((post: { category: string; slug: string }) => ({
-		params: {
-			category: post?.category,
-			slug: post?.slug,
-		},
-		props: {
-			category: post?.category,
-		},
-	}));
+  return postCategories?.map((post: { category: string; slug: string }) => ({
+    params: {
+      category: post?.category,
+      slug: post?.slug,
+    },
+    props: {
+      category: post?.category,
+    },
+  }));
 }
 
 const { slug } = Astro.params;
@@ -37,34 +37,34 @@ const { category } = Astro.props;
 const postData = await fetchProjectById(category, slug);
 
 const formatDate = (dateString: string) => {
-	if (!dateString) return "";
-	return new Date(dateString).toLocaleDateString("en-US", {
-		year: "numeric",
-		month: "long",
-		day: "numeric",
-	});
+  if (!dateString) return "";
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 };
 
 const publishedDate = formatDate(postData?.publishedAt);
 
 if (!postData) {
-	return Astro.redirect("/404");
+  return Astro.redirect("/404");
 }
 
 const mainImage = postData?.mainImage;
 const mainImageCaption = mainImage?.caption;
 const mainImageAlt = mainImage?.alt;
 const mainImageUrl = urlForImage(mainImage)
-	.width(1200)
-	.height(630)
-	.crop("center")
-	.format("webp")
-	.url();
+  .width(1200)
+  .height(630)
+  .crop("center")
+  .format("webp")
+  .url();
 const authorImageUrl = urlForImage(postData?.author?.image)
-	.width(80)
-	.height(80)
-	.format("webp")
-	.url();
+  .width(80)
+  .height(80)
+  .format("webp")
+  .url();
 ---
 
 <PageLayout
@@ -78,7 +78,7 @@ const authorImageUrl = urlForImage(postData?.author?.image)
     tags: postData.tags,
   }}
   pageType="article">
-  <ScrollIndicator client:load>
+  <ScrollIndicator>
     <article>
       <HeroSection
         title={postData.title}
