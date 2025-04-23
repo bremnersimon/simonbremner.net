@@ -1,9 +1,8 @@
-import { Badge } from "@/components/shad-ui/badge";
 import type { ProjectCardProps } from "@/types";
+import { Badge } from "@/components/shad-ui/badge";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
-import NoImage from "@/assets/images/no-image.svg";
 
 type CardProps = ProjectCardProps & {
 	id?: string;
@@ -41,7 +40,7 @@ export default function ProjectCard({
 						}`}
 				>
 					<img
-						src={mainImage?.src || NoImage.src}
+						src={mainImage?.src || "/images/no-image.svg"}
 						alt={title}
 						className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
 					/>
