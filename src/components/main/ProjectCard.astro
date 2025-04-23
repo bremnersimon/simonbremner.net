@@ -1,0 +1,88 @@
+---
+import { ArrowRight } from "@lucide/astro";
+import { Badge } from "@/components/shad-ui/badge";
+import type { ProjectCardProps } from "@/types";
+import { Image } from "astro:assets";
+
+type Props = ProjectCardProps & {
+  id?: string;
+  aspectRatio?: "square" | "video";
+  showCategory?: boolean;
+};
+
+const {
+  title,
+  mainImage,
+  slug,
+  category,
+  tags = [],
+  aspectRatio = "square",
+  showCategory = true,
+} = Astro.props;
+
+const projectUrl = category
+  ? `/projects/${category.toLowerCase()}/${slug.current}`
+  : "";
+---
+
+<div class="group relative">
+  <a
+    href={projectUrl}
+    class="block outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg">
+    <div
+      class={`relative w-full overflow-hidden rounded-lg ${
+        aspectRatio === "square" ? "aspect-square" : "aspect-video"
+      }`}>
+      <Image
+        src={mainImage?.src || "/images/no-image.svg"}
+        alt={title}
+        class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+        format="webp"
+        inferSize
+        transition:name={mainImage?.src + title}
+      />
+
+      <div
+        class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 md:group-focus-within:opacity-100 transition-opacity duration-300">
+        <div
+          class="flex flex-col items-center justify-center relative w-full h-full">
+          {
+            tags?.length > 0 && (
+              <div class="absolute left-0 bottom-0 right-0 flex flex-wrap gap-2 justify-start p-4">
+                {tags?.map((tag) => (
+                  <Badge key={tag} variant="secondary" className="py-2 px-4">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 space-y-1">
+      {
+        showCategory && category && (
+          <div class="text-sm text-muted-foreground">
+            {category.slice(0, 1).toUpperCase() + category.slice(1)}
+          </div>
+        )
+      }
+
+      <div class="flex items-center justify-between">
+        <h3
+          class="text-lg font-medium group-hover:text-primary transition-colors duration-300">
+          {title}
+        </h3>
+
+        <div class="flex items-center justify-center h-8 w-8">
+          <ArrowRight
+            class="text-muted-foreground group-hover:text-primary group-hover:translate-x-2 transition-all"
+            size={16}
+          />
+        </div>
+      </div>
+    </div>
+  </a>
+</div>

@@ -8,13 +8,13 @@ import CatawbaRiver from "@/assets/catawba-river.jpg";
 import PineappleFountain from "@/assets/pineapple-fountain.jpg";
 import RavanelBridge from "@/assets/ravanel-bridge.jpg";
 const images = [
-	{ image: CK },
-	{ image: BcTeaTree },
-	{ image: PineappleFountain },
-	{ image: CatawbaKayak },
-	{ image: CatawbaRiver },
-	{ image: BooneVista },
-	{ image: RavanelBridge },
+  { image: CK },
+  { image: BcTeaTree },
+  { image: PineappleFountain },
+  { image: CatawbaKayak },
+  { image: CatawbaRiver },
+  { image: BooneVista },
+  { image: RavanelBridge },
 ];
 ---
 
@@ -98,15 +98,20 @@ const images = [
       });
     };
 
-    scroll(
-      animate(".img-group", {
-        transform: ["none", "translateX(-200vw)"],
-      }),
-      { target: document.querySelector(".img-group-container") || undefined }
-    );
+    // Horizontal scroll animation
+    const imgGroup = document.querySelector(".img-group");
+    const imgGroupContainer = document.querySelector(".img-group-container");
+
+    if (imgGroup && imgGroupContainer) {
+      scroll(
+        animate(imgGroup, {
+          transform: ["none", "translateX(-200vw)"],
+        }),
+        { target: imgGroupContainer }
+      );
+    }
 
     // Add scroll event listener to update opacities during scroll
-    const imgGroupContainer = document.querySelector(".img-group-container");
     if (imgGroupContainer) {
       imgGroupContainer.addEventListener("scroll", updateOpacities);
 

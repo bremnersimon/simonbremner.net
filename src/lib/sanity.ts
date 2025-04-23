@@ -3,34 +3,34 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 export const client = createClient({
-	projectId: "hzdtear2",
-	dataset: "production",
-	apiVersion: "2024-01-01",
-	useCdn: false,
+  projectId: "hzdtear2",
+  dataset: "production",
+  apiVersion: "2024-01-01",
+  useCdn: false,
 });
 
 const builder = imageUrlBuilder(client);
 
 // Helper function to build image URLs
 export function urlForImage(source: SanityImageSource) {
-	// Handle cases where source might be null or undefined
-	if (!source) {
-		return {
-			url: () => "",
-			width: () => urlForImage(source),
-			height: () => urlForImage(source),
-			fit: () => urlForImage(source),
-			auto: () => urlForImage(source),
-			crop: () => urlForImage(source),
-			format: () => urlForImage(source),
-		};
-	}
+  // Handle cases where source might be null or undefined
+  if (!source) {
+    return {
+      url: () => "",
+      width: () => urlForImage(source),
+      height: () => urlForImage(source),
+      fit: () => urlForImage(source),
+      auto: () => urlForImage(source),
+      crop: () => urlForImage(source),
+      format: () => urlForImage(source),
+    };
+  }
 
-	return builder.image(source);
+  return builder.image(source);
 }
 
 export async function getHomePageProjects() {
-	return await client.fetch(`{
+  return await client.fetch(`{
     "featuredProjects": *[
       _type in ["photography", "design", "development", "handcrafted"]
     ] {
@@ -41,16 +41,16 @@ export async function getHomePageProjects() {
       mainImage,
       tags,
       "category": _type
-    } | order(publishedAt desc)[0...10]
+    } | order(publishedAt desc)[0...12]
   }`);
 }
 
-// Utility function to fetch all photography post previews
 export async function getAllPostsByType(
-	type: "photography" | "design" | "development" | "handcrafted",
+  type: "photography" | "design" | "development" | "handcrafted",
+  limit = 24
 ) {
-	return await client.fetch(
-		`*[_type == $type]{
+  return await client.fetch(
+    `*[_type == $type]{
     _id,
     title,
     slug,
@@ -58,17 +58,17 @@ export async function getAllPostsByType(
     mainImage,
     tags,
     "category": _type
-  } | order(publishedAt desc)[0...24]`,
-		{ type },
-	);
+  } | order(publishedAt desc)[0...$limit]`,
+    { type, limit },
+  );
 }
 
 // Define project type constants
 export const PROJECT_TYPES = {
-	PHOTOGRAPHY: "photography",
-	DESIGN: "design",
-	DEVELOPMENT: "development",
-	HANDCRAFTED: "handcrafted",
+  PHOTOGRAPHY: "photography",
+  DESIGN: "design",
+  DEVELOPMENT: "development",
+  HANDCRAFTED: "handcrafted",
 };
 
 /**
@@ -79,12 +79,12 @@ export const PROJECT_TYPES = {
  * @returns The project data with all referenced blocks expanded
  */
 export async function fetchProjectById(projectType: string, slug: string) {
-	if (!projectType || !slug) {
-		throw new Error("Project type and slug are required");
-	}
+  if (!projectType || !slug) {
+    throw new Error("Project type and slug are required");
+  }
 
-	// Base query structure
-	const baseQuery = `
+  // Base query structure
+  const baseQuery = `
     *[_type == $projectType && slug.current == $slug][0]{
       _id,
       title,
@@ -107,9 +107,8 @@ export async function fetchProjectById(projectType: string, slug: string) {
       tags,
       
       // Type-specific fields
-      ${
-				projectType === PROJECT_TYPES.PHOTOGRAPHY
-					? `
+      ${projectType === PROJECT_TYPES.PHOTOGRAPHY
+      ? `
         location,
         shootMetadata{
           theme,
@@ -132,12 +131,11 @@ export async function fetchProjectById(projectType: string, slug: string) {
           technicalNotes
         },
       `
-					: ""
-			}
+      : ""
+    }
       
-      ${
-				projectType === PROJECT_TYPES.DESIGN
-					? `
+      ${projectType === PROJECT_TYPES.DESIGN
+      ? `
         designTeam[]->{
           name,
           image{
@@ -185,12 +183,11 @@ export async function fetchProjectById(projectType: string, slug: string) {
           }
         },
       `
-					: ""
-			}
+      : ""
+    }
       
-      ${
-				projectType === PROJECT_TYPES.DEVELOPMENT
-					? `
+      ${projectType === PROJECT_TYPES.DEVELOPMENT
+      ? `
         projectStatus,
         projectDuration,
         clientName,
@@ -206,12 +203,11 @@ export async function fetchProjectById(projectType: string, slug: string) {
         libraries[]-> {_id, name, description, icon{..., asset->}},
         hostingPlatform-> {_id, name, description, icon{..., asset->}},
       `
-					: ""
-			}
+      : ""
+    }
       
-      ${
-				projectType === PROJECT_TYPES.HANDCRAFTED
-					? `
+      ${projectType === PROJECT_TYPES.HANDCRAFTED
+      ? `
         craftMeta{
           materials,
           dimensions,
@@ -219,8 +215,8 @@ export async function fetchProjectById(projectType: string, slug: string) {
           timeToComplete
         },
       `
-					: ""
-			}
+      : ""
+    }
       
       // Content blocks - common for all project types with project-specific variations
       content[]{
@@ -373,15 +369,15 @@ export async function fetchProjectById(projectType: string, slug: string) {
     }
   `;
 
-	try {
-		return await client.fetch(baseQuery, {
-			projectType,
-			slug,
-		});
-	} catch (error) {
-		console.error(`Error fetching ${projectType} project:`, error);
-		throw error;
-	}
+  try {
+    return await client.fetch(baseQuery, {
+      projectType,
+      slug,
+    });
+  } catch (error) {
+    console.error(`Error fetching ${projectType} project:`, error);
+    throw error;
+  }
 }
 
 /**

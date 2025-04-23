@@ -5,13 +5,13 @@ import ravanelBridge from "@/assets/ravanel-bridge.jpg";
 import HomepageHero from "@/components/main/HomepageHero.astro";
 import HorizontalScrolling from "@/components/main/HorizontalScrolling.astro";
 import LargeText from "@/components/main/LargeText";
-import TabbedPostSlider from "@/components/main/TabbedPostSlider";
 import PageLayout from "@/layouts/PageLayout.astro";
 import { getHomePageProjects } from "@/lib/sanity";
 import type { ProjectCardProps } from "@/types";
+import RecentProjects from "@/components/main/RecentProjects.astro";
 
 const data: { featuredProjects: ProjectCardProps[] } =
-	await getHomePageProjects();
+  await getHomePageProjects();
 ---
 
 <PageLayout
@@ -36,18 +36,10 @@ const data: { featuredProjects: ProjectCardProps[] } =
     content={"Welcome to my portfolio—a site documenting my creative journey and professional evolution. Browse through these visual stories and technical experiments, shared for fellow enthusiasts and anyone seeking inspiration for their next expedition."}
   />
   <div id="projects" class="overflow-hidden">
-    <TabbedPostSlider
-      client:load
-      title="Recent Projects"
-      categories={[
-        "All",
-        "Photography",
-        "Design",
-        "Development",
-        "Handcrafted",
-      ]}
-      defaultTab="All"
+    <RecentProjects
       featuredProjects={data.featuredProjects}
+      title="Recent Projects"
+      subtitle="Explore my latest projects"
     />
   </div>
 </PageLayout>
