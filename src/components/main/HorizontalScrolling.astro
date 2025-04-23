@@ -99,15 +99,19 @@ const images = [
     };
 
     // Horizontal scroll animation
-    scroll(
-      animate(".img-group", {
-        transform: ["none", "translateX(-200vw)"],
-      }),
-      { target: document.querySelector(".img-group-container") || undefined }
-    );
+    const imgGroup = document.querySelector(".img-group");
+    const imgGroupContainer = document.querySelector(".img-group-container");
+
+    if (imgGroup && imgGroupContainer) {
+      scroll(
+        animate(imgGroup, {
+          transform: ["none", "translateX(-200vw)"],
+        }),
+        { target: imgGroupContainer }
+      );
+    }
 
     // Add scroll event listener to update opacities during scroll
-    const imgGroupContainer = document.querySelector(".img-group-container");
     if (imgGroupContainer) {
       imgGroupContainer.addEventListener("scroll", updateOpacities);
 
