@@ -9,7 +9,8 @@
 <slot />
 
 <script>
-  import { scroll, animate, spring } from "motion";
+  import { animate } from "motion/mini";
+  import { scroll } from "motion";
   document.addEventListener("astro:page-load", () => {
     const progressAnimation = animate(".progress-bar", { right: ["100%", 0] });
     scroll(progressAnimation);

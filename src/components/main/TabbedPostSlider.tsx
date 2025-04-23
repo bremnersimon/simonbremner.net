@@ -10,7 +10,7 @@ import type { ProjectCardProps } from "@/types";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import ProjectCard from "./ProjectCard";
+import ProjectCard from "@/components/main/ProjectCard.astro";
 
 interface PostSliderProps {
 	featuredProjects: ProjectCardProps[];
@@ -73,18 +73,18 @@ const PostCarousel = ({ projects }: { projects: ProjectCardProps[] }) => {
 		<div className="relative mx-auto">
 			<div className="" ref={emblaRef}>
 				<div className="flex gap-6">
-					{convertedProjects?.map((project) => (
+					{convertedProjects?.map((item) => (
 						<div
-							key={project._id}
+							key={item._id}
 							className="flex-[0_0_280px] sm:flex-[0_0_350px] md:flex-[0_0_400px] min-w-0"
 						>
 							<ProjectCard
-								_id={project._id}
-								title={project.title}
-								mainImage={project.mainImage}
-								slug={project.slug}
-								category={project.category}
-								tags={project.tags}
+								_id={item._id}
+								title={item.title}
+								mainImage={item.mainImage}
+								slug={item.slug}
+								category={item.category}
+								tags={item.tags}
 								aspectRatio="square"
 							/>
 						</div>

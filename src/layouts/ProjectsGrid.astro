@@ -1,26 +1,28 @@
 ---
 import Container from "@/components/main/Container.astro";
-import ProjectCard from "@/components/main/ProjectCard";
+import ProjectCard from "@/components/main/ProjectCard.astro";
 // Import necessary dependencies
 import { Button } from "@/components/shad-ui/button";
 import type { ProjectCardProps } from "@/types/index";
 
 interface Props {
-	allProjects: ProjectCardProps[];
-	title?: string;
-	subtitle?: string;
-	categories?: string[];
-	defaultTab?: string;
-	projectsPerPage?: number;
-	hideTabsOnSubPages?: boolean;
+  allProjects: ProjectCardProps[];
+  title?: string;
+  subtitle?: string;
+  categories?: string[];
+  defaultTab?: string;
+  projectsPerPage?: number;
+  hideTabsOnSubPages?: boolean;
+  id?: string;
 }
 
 // Destructure the props with default values
 const {
-	allProjects = [],
-	title = "My Projects",
-	subtitle = "Check out what I've been working on",
-	projectsPerPage = 10,
+  allProjects = [],
+  title = "My Projects",
+  subtitle = "Check out what I've been working on",
+  projectsPerPage = 10,
+  id = "projects-grid",
 } = Astro.props;
 
 // Get initial visible projects for server render
@@ -28,7 +30,7 @@ const initialVisibleProjects = allProjects.slice(0, projectsPerPage);
 const initialHasMore = allProjects.length > projectsPerPage;
 ---
 
-<section class="w-full py-20 md:py-40">
+<section class="w-full py-20">
   <Container>
     <div class="text-left mb-12">
       <h2 class="text-4xl md:text-6xl font-bold mb-4">{title}</h2>
@@ -46,7 +48,6 @@ const initialHasMore = allProjects.length > projectsPerPage;
               data-category={project.category?.toLowerCase()}>
               <ProjectCard
                 _id={project._id}
-                client:visible
                 title={project.title}
                 mainImage={project.mainImage}
                 slug={project.slug}
