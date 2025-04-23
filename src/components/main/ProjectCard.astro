@@ -2,6 +2,7 @@
 import { ArrowRight } from "@lucide/astro";
 import { Badge } from "@/components/shad-ui/badge";
 import type { ProjectCardProps } from "@/types";
+import { Image } from "astro:assets";
 
 type Props = ProjectCardProps & {
   id?: string;
@@ -32,10 +33,13 @@ const projectUrl = category
       class={`relative w-full overflow-hidden rounded-lg ${
         aspectRatio === "square" ? "aspect-square" : "aspect-video"
       }`}>
-      <img
+      <Image
         src={mainImage?.src || "/images/no-image.svg"}
         alt={title}
         class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+        format="webp"
+        inferSize
+        transition:name={mainImage?.src + title}
       />
 
       <div

@@ -22,7 +22,7 @@ let posts: ProjectCardProps[] = [];
 if (!!category && category.length > 0) {
   posts = await getAllPostsByType(
     category as "photography" | "design" | "development" | "handcrafted",
-    24
+    100
   );
 }
 

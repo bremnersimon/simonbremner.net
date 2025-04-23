@@ -37,7 +37,7 @@ const initialHasMore = allProjects.length > projectsPerPage;
       <p class="text-lg md:text-2xl text-muted-foreground">{subtitle}</p>
     </div>
 
-    <div id="project-grid-container">
+    <div id={id} class="project-grid-container">
       <div
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         id="projects-grid">
