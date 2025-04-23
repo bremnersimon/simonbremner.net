@@ -1,0 +1,62 @@
+---
+import { Image } from "astro:assets";
+
+interface AuthorImage {
+  _type?: string;
+  asset?: {
+    _ref: string;
+    _type: string;
+  };
+}
+
+interface Author {
+  name: string;
+  image?: AuthorImage;
+}
+
+interface AuthorSectionProps {
+  author?: Author;
+  publishedDate?: string;
+  excerpt?: string;
+  authorImage?: { src: string; alt: string };
+}
+type Props = AuthorSectionProps;
+
+const { author, publishedDate, excerpt, authorImage } = Astro.props;
+---
+
+<div class="mb-16">
+  {
+    author && (
+      <div class="flex items-center mb-6">
+        {author.image && (
+          <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+            <Image
+              src={authorImage?.src || "/images/no-image.svg"}
+              alt={author.name}
+              class="w-full h-full object-cover"
+              format="webp"
+              inferSize
+            />
+          </div>
+        )}
+        <div>
+          <div class="text-sm text-muted-foreground">
+            By <span class="font-medium">{author.name}</span>
+          </div>
+          {publishedDate && (
+            <div class="text-sm text-muted-foreground">{publishedDate}</div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  {
+    excerpt && (
+      <div class="text-xl font-medium italic mb-8 text-muted-foreground border-l-4 pl-4 border-primary">
+        {excerpt}
+      </div>
+    )
+  }
+</div>

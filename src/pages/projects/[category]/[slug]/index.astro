@@ -1,5 +1,5 @@
 ---
-import { AuthorSection } from "@/components/blocks/AuthorSection";
+import AuthorSection from "@/components/blocks/AuthorSection.astro";
 import { ContentRenderer } from "@/components/blocks/ContentRenderer";
 import HeroSection from "@/components/blocks/HeroSection.astro";
 import Container from "@/components/main/Container.astro";
@@ -93,7 +93,7 @@ const authorImageUrl = urlForImage(postData?.author?.image)
             author={postData.author}
             publishedDate={publishedDate}
             excerpt={postData.excerpt}
-            authorImage={authorImageUrl}
+            authorImage={{ src: authorImageUrl, alt: postData.author.name }}
           />
           <Separator className="my-8" />
 
