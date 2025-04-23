@@ -1,15 +1,16 @@
 ---
 import { Badge } from "@/components/shad-ui/badge";
+import { Image } from "astro:assets";
 
 interface ShootMetadata {
-	theme?: string;
+  theme?: string;
 }
 
 interface HeroSectionProps {
-	title: string;
-	mainImage?: string;
-	mainImageAlt?: string;
-	mainImageCaption?: string;
+  title: string;
+  mainImage?: string;
+  mainImageAlt?: string;
+  mainImageCaption?: string;
 }
 type Props = HeroSectionProps;
 
@@ -21,10 +22,13 @@ const { title, mainImage, mainImageAlt, mainImageCaption } = Astro.props;
   <div class="absolute inset-0">
     {
       mainImage && (
-        <img
+        <Image
           src={mainImage}
           alt={mainImageAlt || title}
           class="w-full h-full object-cover object-center opacity-90"
+          format="webp"
+          inferSize
+          transition:name={mainImage + title}
         />
       )
     }
