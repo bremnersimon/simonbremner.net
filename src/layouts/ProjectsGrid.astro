@@ -21,13 +21,8 @@ const {
   allProjects = [],
   title = "My Projects",
   subtitle = "Check out what I've been working on",
-  projectsPerPage = 10,
   id = "projects-grid",
 } = Astro.props;
-
-// Get initial visible projects for server render
-const initialVisibleProjects = allProjects.slice(0, projectsPerPage);
-const initialHasMore = allProjects.length > projectsPerPage;
 ---
 
 <section class="w-full py-20">
@@ -42,7 +37,7 @@ const initialHasMore = allProjects.length > projectsPerPage;
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         id="projects-grid">
         {
-          initialVisibleProjects.map((project) => (
+          allProjects.map((project) => (
             <div
               class="project-item opacity-0"
               data-category={project.category?.toLowerCase()}>
@@ -60,27 +55,13 @@ const initialHasMore = allProjects.length > projectsPerPage;
         }
 
         {
-          initialVisibleProjects.length === 0 && (
+          allProjects.length === 0 && (
             <div class="col-span-full min-h-[300px] flex items-center justify-center">
               <p class="text-muted-foreground">No projects in this category</p>
             </div>
           )
         }
       </div>
-
-      {
-        initialHasMore && (
-          <div class="flex justify-center mt-12">
-            <Button
-              variant="outline"
-              size="lg"
-              id="load-more-button"
-              className="min-w-[200px]">
-              Load More
-            </Button>
-          </div>
-        )
-      }
     </div>
   </Container>
 </section>
