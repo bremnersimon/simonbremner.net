@@ -1,8 +1,6 @@
 ---
 import Container from "@/components/main/Container.astro";
 import ProjectCard from "@/components/main/ProjectCard.astro";
-// Import necessary dependencies
-import { Button } from "@/components/shad-ui/button";
 import type { ProjectCardProps } from "@/types/index";
 
 interface Props {
@@ -16,7 +14,6 @@ interface Props {
   id?: string;
 }
 
-// Destructure the props with default values
 const {
   allProjects = [],
   title = "My Projects",

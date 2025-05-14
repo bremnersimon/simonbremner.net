@@ -4,7 +4,6 @@ import { Dialog, DialogContent } from "@/components/shad-ui/dialog";
 import { urlForImage } from "@/lib/sanity";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-// src/components/blocks/GalleryBlock.tsx
 import { useState } from "react";
 
 interface SanityImage {
@@ -47,7 +46,6 @@ const GalleryBlock = ({
 		setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
 	};
 
-	// Get the selected image for the lightbox
 	const selectedImage = images[selectedIndex];
 
 	return (
@@ -138,7 +136,7 @@ const GalleryBlock = ({
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogContent
 					className="max-w-screen-xl w-full p-0 overflow-hidden border-0"
-					closeButton={false} // Disable the default close button
+					closeButton={false}
 				>
 					<div className="relative bg-background/95 dark:bg-background/95 backdrop-blur-sm rounded-lg overflow-hidden w-full">
 						<Button

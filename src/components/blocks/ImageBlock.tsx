@@ -1,6 +1,5 @@
 import { Card, CardContent, CardFooter } from "@/components/shad-ui/card";
 import { cn } from "@/lib/utils";
-// src/components/blocks/ImageBlock.tsx
 import type React from "react";
 
 interface ImageBlockProps {
