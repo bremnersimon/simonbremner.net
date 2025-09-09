@@ -31,13 +31,15 @@ const {
 
     <div id={id} class="project-grid-container">
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        id="projects-grid">
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        id="projects-grid"
+      >
         {
           allProjects.map((project) => (
             <div
               class="project-item opacity-0"
-              data-category={project.category?.toLowerCase()}>
+              data-category={project.category?.toLowerCase()}
+            >
               <ProjectCard
                 _id={project._id}
                 title={project.title}
