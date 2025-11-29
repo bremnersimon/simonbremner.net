@@ -9,10 +9,10 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/check": "^0.9.4",
+		"@astrojs/check": "^0.9.6",
 		"@astrojs/partytown": "^2.1.4",
-		"@astrojs/react": "^4.2.7",
-		"@astrojs/sitemap": "^3.4.0",
+		"@astrojs/react": "^4.4.2",
+		"@astrojs/sitemap": "^3.6.0",
 		"@lucide/astro": "^0.503.0",
 		"@portabletext/react": "^3.2.1",
 		"@radix-ui/react-accordion": "^1.2.3",
@@ -37,7 +37,7 @@
 		"@types/react": "^19.0.10",
 		"@types/react-dom": "^19.0.4",
 		"@types/react-is": "^19.0.0",
-		"astro": "^5.7.13",
+		"astro": "^5.16.2",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"embla-carousel": "^8.6.0",
