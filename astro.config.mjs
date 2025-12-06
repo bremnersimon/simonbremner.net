@@ -3,12 +3,16 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import sanity from "@sanity/astro";
 import tailwindcss from "@tailwindcss/vite";
+import aws from "astro-sst";
 // @ts-check
 import { defineConfig } from "astro/config";
 
 import partytown from "@astrojs/partytown";
+import { profile } from "node:console";
 
 export default defineConfig({
+	output: "server",
+	adapter: aws(),
 	site: "https://www.simonbremner.net",
 	integrations: [
 		react(),
