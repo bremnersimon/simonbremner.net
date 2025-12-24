@@ -2,6 +2,13 @@
 import Container from "@/components/main/Container.astro";
 import { Button } from "@/components/shad-ui/button";
 import { Icon } from "./Icon";
+import HoverImageLink from "./HoverImageLink";
+
+// Import images for hover effects
+import designImage from "@/assets/brave-baby-poster.jpg";
+import photographyImage from "@/assets/catawba-river.jpg";
+import handcraftedImage from "@/assets/bc-tea-tree.jpg";
+import developmentImage from "@/assets/sb-code.jpg";
 
 type Cta = {
   text: string;
@@ -12,38 +19,58 @@ const { primaryCta, secondaryCta } = Astro.props as {
   primaryCta: Cta;
   secondaryCta: Cta;
 };
-const hoverImageStyles =
-  "w-[100px] absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 object-cover aspect-[3/4] transition-opacity";
 ---
 
 <Container>
   <div
-    class="flex flex-col items-start justify-center text-left w-full h-full pt-10 md:pt-40 max-w-5xl px-4 lg:px-0">
+    class="flex flex-col items-start justify-center text-left w-full h-full pt-10 md:pt-40 max-w-5xl px-4 lg:px-0"
+  >
     <h1
-      class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-relaxed leading-tight">
+      class="text-4xl md:text-5xl lg:text-6xl font-medium tracking-relaxed leading-tight"
+    >
       Hello, my name is <a
         href="/about"
-        class="underline hover:text-primary transition-colors relative group">
+        class="underline hover:text-primary transition-colors relative group"
+      >
         Simon Bremner
       </a>.
       <br />
       A
-      <a
+      <HoverImageLink
+        client:load
         href="/projects/design"
-        class="underline hover:text-primary transition-colors">Designer</a
-      >,
-      <a
-        href="/projects/development"
-        class="underline hover:text-primary transition-colors">Developer</a
-      >,
-      <a
-        href="/projects/photography"
-        class="underline hover:text-primary transition-colors">Photographer</a
-      >, and Maker of <a
-        href="/projects/handcrafted"
-        class="underline hover:text-primary transition-colors"
-        >Handcrafted Products</a
+        imageSrc={designImage.src}
+        imageAlt="Design projects preview"
+        className="underline hover:text-primary transition-colors"
       >
+        Designer
+      </HoverImageLink>,
+      <HoverImageLink
+        client:load
+        href="/projects/development"
+        imageSrc={developmentImage.src}
+        imageAlt="Development projects preview"
+        className="underline hover:text-primary transition-colors"
+      >
+        Developer
+      </HoverImageLink>,
+      <HoverImageLink
+        client:load
+        href="/projects/photography"
+        imageSrc={photographyImage.src}
+        imageAlt="Photography projects preview"
+        className="underline hover:text-primary transition-colors"
+      >
+        Photographer
+      </HoverImageLink>, and Maker of <HoverImageLink
+        client:load
+        href="/projects/handcrafted"
+        imageSrc={handcraftedImage.src}
+        imageAlt="Handcrafted products preview"
+        className="underline hover:text-primary transition-colors"
+      >
+        Handcrafted Products
+      </HoverImageLink>
     </h1>
     <div class="flex flex-col sm:flex-row gap-4 mt-10">
       {
