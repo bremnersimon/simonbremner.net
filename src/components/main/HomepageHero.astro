@@ -2,13 +2,6 @@
 import Container from "@/components/main/Container.astro";
 import { Button } from "@/components/shad-ui/button";
 import { Icon } from "./Icon";
-import HoverImageLink from "./HoverImageLink";
-
-// Import images for hover effects
-import designImage from "@/assets/brave-baby-poster.jpg";
-import photographyImage from "@/assets/catawba-river.jpg";
-import handcraftedImage from "@/assets/bc-tea-tree.jpg";
-import developmentImage from "@/assets/sb-code.jpg";
 
 type Cta = {
   text: string;
@@ -36,41 +29,29 @@ const { primaryCta, secondaryCta } = Astro.props as {
       </a>.
       <br />
       A
-      <HoverImageLink
-        client:load
+      <a
         href="/projects/design"
-        imageSrc={designImage.src}
-        imageAlt="Design projects preview"
-        className="underline hover:text-primary transition-colors"
+        class="underline hover:text-primary transition-colors"
       >
         Designer
-      </HoverImageLink>,
-      <HoverImageLink
-        client:load
+      </a>,
+      <a
         href="/projects/development"
-        imageSrc={developmentImage.src}
-        imageAlt="Development projects preview"
-        className="underline hover:text-primary transition-colors"
+        class="underline hover:text-primary transition-colors"
       >
         Developer
-      </HoverImageLink>,
-      <HoverImageLink
-        client:load
+      </a>,
+      <a
         href="/projects/photography"
-        imageSrc={photographyImage.src}
-        imageAlt="Photography projects preview"
-        className="underline hover:text-primary transition-colors"
+        class="underline hover:text-primary transition-colors"
       >
         Photographer
-      </HoverImageLink>, and Maker of <HoverImageLink
-        client:load
+      </a>, and Maker of <a
         href="/projects/handcrafted"
-        imageSrc={handcraftedImage.src}
-        imageAlt="Handcrafted products preview"
-        className="underline hover:text-primary transition-colors"
+        class="underline hover:text-primary transition-colors"
       >
         Handcrafted Products
-      </HoverImageLink>
+      </a>
     </h1>
     <div class="flex flex-col sm:flex-row gap-4 mt-10">
       {
