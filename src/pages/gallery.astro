@@ -1,0 +1,93 @@
+---
+import PageLayout from "@/layouts/PageLayout.astro";
+import Container from "@/components/main/Container.astro";
+import { getAllPhotos, getAllCategories, urlForImage } from "@/lib/sanity";
+import PhotoGallery from "@/components/main/PhotoGallery";
+
+// Fetch photos and categories
+const [photos, categories] = await Promise.all([
+  getAllPhotos(100),
+  getAllCategories()
+]);
+
+// Transform photos for display
+const galleryPhotos = photos.map((photo) => {
+  const dimensions = photo.image?.asset?.metadata?.dimensions;
+  const width = dimensions?.width || 800;
+  const height = dimensions?.height || 600;
+  const aspectRatio = dimensions?.aspectRatio || (width / height);
+  const orientation = width > height ? 'landscape' : width < height ? 'portrait' : 'square';
+  
+  return {
+    _id: photo._id,
+    title: photo.title,
+    slug: photo.slug,
+    altText: photo.altText,
+    description: photo.description,
+    image: {
+      src: photo.image 
+        ? urlForImage(photo.image).format("webp").width(1920).quality(90).url()
+        : "/images/no-image.svg",
+      thumbnail: photo.image
+        ? urlForImage(photo.image).format("webp").width(600).quality(85).url()  
+        : "/images/no-image.svg",
+      alt: photo.altText || photo.title,
+    },
+    dimensions: {
+      width,
+      height,
+      aspectRatio,
+      orientation
+    },
+    categories: photo.categories || [],
+    tags: photo.tags || [],  
+    dateTaken: photo.dateTaken,
+    location: photo.location,
+    featured: photo.featured,
+    camera: photo.camera || null,
+    lens: photo.lens || null,
+    focalLength: photo.focalLength || null,
+    aperture: photo.aperture || null,
+    shutterSpeed: photo.shutterSpeed || null,
+    iso: photo.iso || null,
+  };
+});
+
+const pageTitle = "Gallery | Simon Bremner";
+const pageDescription = "Explore my photography portfolio - a collection of visual stories captured through my lens.";
+---
+
+<PageLayout
+  title={pageTitle}
+  description={pageDescription}
+>
+  <section class="w-full py-20">
+    <Container>
+
+      <!-- Photo Gallery with integrated filtering -->
+      <PhotoGallery 
+        client:load 
+        photos={galleryPhotos}
+        categories={categories}
+      />
+    </Container>
+  </section>
+</PageLayout>
+
+<style>
+  /* View Transitions support */
+  html {
+    view-transition-name: none;
+  }
+  
+  /* Ensure smooth masonry layout */
+  .photo-item {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  /* Enhanced modal backdrop */
+  [data-slot="dialog-overlay"] {
+    backdrop-filter: blur(8px);
+  }
+</style>

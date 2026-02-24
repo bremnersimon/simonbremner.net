@@ -380,6 +380,132 @@ export async function fetchProjectById(projectType: string, slug: string) {
   }
 }
 
+// Gallery Functions for Photos
+export async function getAllPhotos(limit = 50) {
+  return await client.fetch(
+    `*[_type == "photo" && publishedAt <= now()] | order(
+      sortOrder asc,
+      dateTaken desc
+    )[0...$limit] {
+      _id,
+      title,
+      slug,
+      altText,
+      description,
+      image{
+        ...,
+        asset->{
+          ...,
+          metadata {
+            dimensions {
+              width,
+              height,
+              aspectRatio
+            }
+          }
+        }
+      },
+      categories[]->{
+        _id,
+        name,
+        slug,
+        color
+      },
+      tags,
+      dateTaken,
+      location,
+      featured,
+      publishedAt,
+      camera->{
+        _id,
+        name,
+        brand,
+        modelNumber
+      },
+      lens->{
+        _id,
+        name,
+        brand,
+        focalLength
+      },
+      focalLength,
+      aperture,
+      shutterSpeed,
+      iso
+    }`,
+    { limit }
+  );
+}
+
+export async function getAllCategories() {
+  return await client.fetch(
+    `*[_type == "category"] | order(sortOrder asc, name asc) {
+      _id,
+      name,
+      slug,
+      description,
+      color,
+      sortOrder
+    }`
+  );
+}
+
+export async function getPhotosByCategory(categorySlug: string, limit = 50) {
+  return await client.fetch(
+    `*[_type == "photo" && publishedAt <= now() && references(*[_type == "category" && slug.current == $categorySlug]._id)] | order(
+      sortOrder asc,
+      dateTaken desc
+    )[0...$limit] {
+      _id,
+      title,
+      slug,
+      altText,
+      description,
+      image{
+        ...,
+        asset->{
+          ...,
+          metadata {
+            dimensions {
+              width,
+              height,
+              aspectRatio
+            }
+          }
+        }
+      },
+      categories[]->{
+        _id,
+        name,
+        slug,
+        color
+      },
+      tags,
+      dateTaken,
+      location,
+      featured,
+      publishedAt,
+      camera->{
+        _id,
+        name,
+        brand,
+        modelNumber
+      },
+      lens->{
+        _id,
+        name,
+        brand,
+        focalLength
+      },
+      focalLength,
+      aperture,
+      shutterSpeed,
+      iso
+    }`,
+    { categorySlug, limit }
+  );
+}
+
 /**
  * Example usage:
  *
