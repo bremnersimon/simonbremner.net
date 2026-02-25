@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import Container from "@/components/main/Container.astro";
 import { getAllPhotos, getAllCategories, urlForImage } from "@/lib/sanity";
-import PhotoGallery from "@/components/main/PhotoGallery";
+import MasonrySanityGridSection from "@/components/webgl/MasonrySanityGridSection";
 
 // Fetch photos and categories
 const [photos, categories] = await Promise.all([
@@ -64,12 +64,15 @@ const pageDescription = "Explore my photography portfolio - a collection of visu
   <section class="w-full py-20">
     <Container>
 
-      <!-- Photo Gallery with integrated filtering -->
-      <PhotoGallery 
-        client:load 
-        photos={galleryPhotos}
-        categories={categories}
-      />
+      <!-- WebGL Masonry Gallery -->
+      <MasonrySanityGridSection client:load images={galleryPhotos.map(photo => ({
+        ...photo,
+        image: {
+          ...photo.image,
+          width: photo.dimensions?.width || 800,
+          height: photo.dimensions?.height || 600,
+        }
+      }))} />
     </Container>
   </section>
 </PageLayout>
