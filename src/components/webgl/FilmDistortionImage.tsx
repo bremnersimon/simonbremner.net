@@ -22,8 +22,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       return;
     }
 
-
-    const gl = canvas.getContext('webgl');
+    let gl = canvas.getContext('webgl');
     if (!gl) {
       setStatus('WebGL not supported');
       return;
@@ -61,7 +60,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
         
         // Create chromatic aberration radius around mouse
         float aberrationRadius = 0.25;
-        float aberrationStrength = smoothstep(aberrationRadius, 0.0, dist) * u_hover * 0.008;
+        float aberrationStrength = smoothstep(aberrationRadius, 0.0, dist) * u_hover * 0.002;
         
         // Sample RGB channels with slight offsets for chromatic aberration
         float r = texture2D(u_texture, uv + vec2(aberrationStrength, 0.0)).r;
@@ -130,6 +129,9 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
     const image = new Image();
     image.crossOrigin = 'anonymous';
     
+    let animationFrameId: number | null = null;
+    let cleanup = false;
+
     image.onload = () => {
       const texture = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -172,6 +174,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
 
       // Render loop
       function render() {
+        if (cleanup) return;
         // Smooth mouse interpolation for fluid movement
         mouseX += (targetMouseX - mouseX) * 0.15;
         mouseY += (targetMouseY - mouseY) * 0.15;
@@ -205,7 +208,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
         // Draw
         gl.drawArrays(gl.TRIANGLES, 0, 6);
         
-        requestAnimationFrame(render);
+        animationFrameId = requestAnimationFrame(render);
       }
       
       render();
@@ -217,22 +220,54 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
     
     image.src = src;
 
+    // Cleanup function to stop animation and release context
+    return () => {
+      cleanup = true;
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      // Remove canvas event listeners
+      canvas.onmousemove = null;
+      canvas.onmouseenter = null;
+      canvas.onmouseleave = null;
+      // Try to lose the WebGL context if possible
+      // @ts-ignore
+      const ext = gl.getExtension('WEBGL_lose_context');
+      if (ext) {
+        // @ts-ignore
+        ext.loseContext();
+      }
+      gl = null;
+    };
   }, [src]);
 
   return (
-    <div className={className} style={{ position: 'relative', width: '100%' }}>
-      <canvas 
+    <div
+      className={className}
+      style={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '90vw',
+        maxHeight: '80vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <canvas
         ref={canvasRef}
         width={width}
         height={height}
         className="block cursor-crosshair"
-        style={{ width: '100%', height: 'auto', display: 'block' }}
+        style={{
+          width: '100%',
+          height: 'auto',
+          maxWidth: '90vw',
+          maxHeight: '80vh',
+          display: 'block',
+        }}
       />
-      {/* Status overlay */}
-      <div className="absolute top-2 left-2 bg-black/90 text-white text-xs p-2 rounded-none font-mono">
-        <div>{status}</div>
-        <div className="text-green-400">Working: {isWorking ? '✅' : '❌'}</div>
-      </div>
+      {/* Status overlay removed */}
     </div>
   );
 };
