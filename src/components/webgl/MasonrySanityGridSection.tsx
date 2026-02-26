@@ -25,11 +25,13 @@ const MasonrySanityGridSection = ({ images }) => {
 
   return (
     <>
-      <MasonryGrid columns={2}>
-        {images.map((img, i) => (
+      <MasonryGrid columns={3}>
+        {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+        {images.map((img: { _id: any; image: { alt: any; src: string | undefined; width: string | number | undefined; height: string | number | undefined; }; title: any; location: any; city: string; country: any; }, i: number | React.SetStateAction<null>) => (
           <button
+          type="button"
             key={img._id || i}
-            className="overflow-hidden shadow-md relative mb-6 w-full focus:outline-none"
+            className="overflow-hidden shadow-md relative mb-6 w-full focus:outline-none cursor-pointer rounded-md"
             style={{ width: "100%" }}
             onClick={() => setSelectedIndex(i)}
             tabIndex={0}
