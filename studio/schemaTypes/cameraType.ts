@@ -27,7 +27,7 @@ export default defineType({
 			title: "Type",
 			type: "string",
 			options: {
-				list: ["DSLR", "Mirrorless", "Film", "Medium Format", "Other"],
+				list: ["DSLR", "Mirrorless", "Film", "Medium Format", "Drone", "Other"],
 			},
 		}),
 	],
