@@ -313,7 +313,9 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({
 
   return (
     <div
-      className={className}
+      className={`${className} transition-opacity duration-700 ease-in-out ${
+        isWorking ? 'opacity-100' : 'opacity-0'
+      }`}
       style={{
         position: 'relative',
         width: '100%',
