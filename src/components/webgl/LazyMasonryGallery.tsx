@@ -14,7 +14,8 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "../shad-ui/tooltip";
-import { Info, Loader2 } from "lucide-react";
+import { Info, Loader2, Plus } from "lucide-react";
+import { Button } from "../shad-ui/button";
 
 interface Photo {
   _id: string;
@@ -164,11 +165,11 @@ const LazyMasonryGallery = ({ initialImages, photosPerPage = 12 }: LazyMasonryGa
       {/* Load More Button */}
       {hasMore && (
         <div className="flex justify-center mt-16 mb-8">
-          <button
+          <Button
             type="button"
             onClick={loadMorePhotos}
             disabled={isLoading}
-            className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-lg hover:shadow-xl"
+            variant="ghost"
           >
             {isLoading ? (
               <>
@@ -178,10 +179,10 @@ const LazyMasonryGallery = ({ initialImages, photosPerPage = 12 }: LazyMasonryGa
             ) : (
               <>
                 Load More Photos
-                <span className="ml-2 text-sm opacity-75">({photosPerPage} more)</span>
+                <Plus className="ml-2 h-4 w-4" />
               </>
             )}
-          </button>
+          </Button>
         </div>
       )}
 
@@ -198,7 +199,8 @@ const LazyMasonryGallery = ({ initialImages, photosPerPage = 12 }: LazyMasonryGa
       <Dialog open={selectedIndex !== null} onOpenChange={open => !open && setSelectedIndex(null)}>
         <DialogContent className="w-screen h-screen max-w-none max-h-none p-0 m-0 flex items-center justify-center bg-background">
           {selected && (
-            <div 
+            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+<div 
               style={{
                 maxWidth: '90vw',
                 maxHeight: '90vh',
@@ -219,16 +221,19 @@ const LazyMasonryGallery = ({ initialImages, photosPerPage = 12 }: LazyMasonryGa
                     {selected.image.alt || selected.title || ''}
                   </DialogDescription>
                 </span>
-                <div className="flex flex-col items-center w-full">
-                  <div className="relative w-full flex justify-center">
-                    <FilmDistortionImage
-                      key={`modal-${selected._id || selectedIndex}`}
-                      src={selected.image.src}
-                      alt={selected.image.alt || selected.title}
-                      width={selected.image.width}
-                      height={selected.image.height}
-                      className="block cursor-hover"
-                    />
+                <div className="flex flex-col items-center w-full h-full">
+                  <div className="relative w-full h-full flex justify-center items-center" style={{ maxHeight: '80vh' }}>
+                    <div style={{ width: '100%', height: 'auto', maxHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <FilmDistortionImage
+                        key={`modal-${selected._id || selectedIndex}`}
+                        src={selected.image.src}
+                        alt={selected.image.alt || selected.title}
+                        width={selected.image.width}
+                        height={selected.image.height}
+                        className="block cursor-hover"
+                        style={{ maxHeight: '80vh', maxWidth: '100%', width: 'auto', height: 'auto' }}
+                      />
+                    </div>
                     <div className="absolute bottom-4 right-4 z-10">
                       <Tooltip>
                         <TooltipTrigger asChild>

@@ -7,10 +7,20 @@ interface FilmDistortionImageProps {
   width?: number;
   height?: number;
   className?: string;
+  fillContainer?: boolean;
+  style?: React.CSSProperties;
 }
 
 
-const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, width, height, className = '' }) => {
+const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ 
+  src, 
+  alt, 
+  width, 
+  height, 
+  className = '', 
+  fillContainer = false,
+  style = {}
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [status, setStatus] = useState('Initializing...');
   const [isWorking, setIsWorking] = useState(false);
@@ -34,15 +44,22 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
     
     let animationFrameId: number | null = null;
     let cleanup = false;
+    let resizeObserver: ResizeObserver | null = null;
 
     image.onload = () => {
-      // Use provided dimensions or fallback to image natural dimensions
-      const canvasWidth = width || image.naturalWidth;
-      const canvasHeight = height || image.naturalHeight;
-      
-      // Set canvas size based on image dimensions for natural aspect ratio
-      canvas.width = canvasWidth;
-      canvas.height = canvasHeight;
+      if (fillContainer && canvas.parentElement) {
+        // Fill the parent container
+        const container = canvas.parentElement;
+        const containerRect = container.getBoundingClientRect();
+        canvas.width = containerRect.width;
+        canvas.height = containerRect.height;
+      } else {
+        // Use provided dimensions or fallback to image natural dimensions
+        const canvasWidth = width || image.naturalWidth;
+        const canvasHeight = height || image.naturalHeight;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+      }
 
       // Vertex shader
       const vertexSource = `
@@ -55,19 +72,44 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
         }
       `;
 
-      // Chromatic aberration fragment shader
+      // Chromatic aberration fragment shader with object-fit: cover support
       const fragmentSource = `
         precision mediump float;
         uniform sampler2D u_texture;
         uniform vec2 u_mouse;
         uniform float u_hover;
+        uniform vec2 u_resolution;
+        uniform vec2 u_imageSize;
         varying vec2 v_texCoord;
         
         void main() {
           vec2 uv = v_texCoord;
+          
+          // Calculate aspect ratios for object-fit: cover behavior
+          float canvasAspect = u_resolution.x / u_resolution.y;
+          float imageAspect = u_imageSize.x / u_imageSize.y;
+          
+          vec2 scale = vec2(1.0);
+          if (canvasAspect > imageAspect) {
+            // Canvas is wider than image - scale by width
+            scale.y = canvasAspect / imageAspect;
+          } else {
+            // Canvas is taller than image - scale by height  
+            scale.x = imageAspect / canvasAspect;
+          }
+          
+          // Apply scaling and center the image
+          uv = (uv - 0.5) / scale + 0.5;
+          
+          // Clamp to avoid sampling outside texture
+          if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
+            gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+            return;
+          }
+          
           vec2 mouse = u_mouse;
           
-          // Distance from mouse cursor
+          // Distance from mouse cursor (on the transformed UV)
           float dist = distance(uv, mouse);
           
           // Create chromatic aberration radius around mouse
@@ -117,6 +159,8 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       const textureLocation = gl.getUniformLocation(program, 'u_texture');
       const mouseLocation = gl.getUniformLocation(program, 'u_mouse');
       const hoverLocation = gl.getUniformLocation(program, 'u_hover');
+      const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+      const imageSizeLocation = gl.getUniformLocation(program, 'u_imageSize');
 
       // Create buffers
       const positions = new Float32Array([
@@ -196,6 +240,8 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
         gl.uniform2f(mouseLocation, mouseX, mouseY);
         gl.uniform1f(hoverLocation, hoverValue);
         gl.uniform1i(textureLocation, 0);
+        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+        gl.uniform2f(imageSizeLocation, image.naturalWidth, image.naturalHeight);
         
         // Bind texture
         gl.activeTexture(gl.TEXTURE0);
@@ -217,6 +263,20 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       }
       
       render();
+      
+      // Handle resize for fillContainer mode
+      if (fillContainer && canvas.parentElement) {
+        resizeObserver = new ResizeObserver(() => {
+          const container = canvas.parentElement;
+          if (container) {
+            const containerRect = container.getBoundingClientRect();
+            canvas.width = containerRect.width;
+            canvas.height = containerRect.height;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+          }
+        });
+        resizeObserver.observe(canvas.parentElement);
+      }
     };
     
     image.onerror = () => {
@@ -230,6 +290,9 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       cleanup = true;
       if (animationFrameId !== null) {
         cancelAnimationFrame(animationFrameId);
+      }
+      if (resizeObserver) {
+        resizeObserver.disconnect();
       }
       // Remove canvas event listeners
       if (canvas) {
@@ -246,7 +309,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       }
       gl = null;
     };
-  }, [src, width, height]);
+  }, [src, width, height, fillContainer]);
 
   return (
     <div
@@ -254,6 +317,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       style={{
         position: 'relative',
         width: '100%',
+        height: fillContainer ? '100%' : 'auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -264,8 +328,11 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
         className="block cursor-crosshair cursor-hover"
         style={{
           width: '100%',
-          height: 'auto',
+          height: fillContainer ? '100%' : 'auto',
           display: 'block',
+          objectFit: fillContainer ? 'cover' : 'contain',
+          ...(style?.maxHeight && { maxHeight: style.maxHeight }),
+          ...(style?.maxWidth && { maxWidth: style.maxWidth }),
         }}
       />
     </div>

@@ -146,7 +146,7 @@ const CustomCursor: React.FC = () => {
     >
       <div
         className={`
-          min-w-8 min-h-8 rounded-full border border-white/50
+          hidden md:flex min-w-8 min-h-8 rounded-full border border-white/50
           bg-background/10 backdrop-blur-sm
           flex items-center justify-center
           transition-all duration-200 ease-out 

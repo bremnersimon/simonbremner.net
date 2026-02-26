@@ -3,8 +3,8 @@ import { getAllPhotos, urlForImage } from '@/lib/sanity';
 
 export const GET: APIRoute = async ({ url }) => {
   const searchParams = new URL(url).searchParams;
-  const offset = parseInt(searchParams.get('offset') || '0');
-  const limit = parseInt(searchParams.get('limit') || '12');
+  const offset = Number.parseInt(searchParams.get('offset') || '0');
+  const limit = Number.parseInt(searchParams.get('limit') || '12');
 
   try {
     const photos = await getAllPhotos(limit, offset);
@@ -25,10 +25,10 @@ export const GET: APIRoute = async ({ url }) => {
         description: photo.description,
         image: {
           src: photo.image 
-            ? urlForImage(photo.image).format("webp").width(1920).quality(90).url()
+            ? urlForImage(photo.image).format("webp").width(1920).url()
             : "/images/no-image.svg",
           thumbnail: photo.image
-            ? urlForImage(photo.image).format("webp").width(600).quality(85).url()  
+            ? urlForImage(photo.image).format("webp").width(600).url()  
             : "/images/no-image.svg",
           alt: photo.altText || photo.title,
           width,

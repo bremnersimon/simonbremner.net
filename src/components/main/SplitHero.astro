@@ -1,0 +1,86 @@
+---
+import { Image } from "astro:assets";
+import FilmDistortionImage from "@/components/webgl/FilmDistortionImage";
+import ravanelBridge from "@/assets/ravanel-bridge.jpg";
+import { Button } from "@/components/shad-ui/button";
+import { ArrowRight } from "lucide-react";
+
+type Cta = {
+  text: string;
+  href: string;
+};
+
+const { primaryCta, secondaryCta } = Astro.props as {
+  primaryCta?: Cta;
+  secondaryCta?: Cta;
+};
+---
+
+<section class="h-screen flex flex-col-reverse lg:flex-row">
+  <!-- Left Half - Hero Text -->
+  <div class="w-full lg:w-1/2 flex flex-col justify-center items-start px-4 lg:px-8 xl:px-16 py-16 lg:py-0 mt-10">
+    <div class="max-w-2xl">
+      <h1 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-medium tracking-relaxed leading-tight mb-8">
+        Hello, my name is
+        <a 
+          href="/about" 
+          class="underline hover:text-primary transition-colors relative group"
+        >
+          Simon Bremner
+        </a>. Welcome to my
+        <a 
+          href="/gallery" 
+          class="underline hover:text-primary transition-colors relative group"
+        >Photography Portfolio.</a>
+        
+      </h1>
+
+      <!-- CTAs -->
+      {(primaryCta || secondaryCta) && (
+        <div class="flex flex-col sm:flex-row gap-4">
+          {primaryCta && (
+            <a href={primaryCta.href} data-astro-reload>
+              <Button className="cursor-pointer" variant="ghost" size="lg">
+                {primaryCta.text}
+                <ArrowRight className="ml-2" />
+              </Button>
+            </a>
+          )}
+          {secondaryCta && (
+              <a href={secondaryCta.href} data-astro-reload>
+              <Button className="cursor-pointer" variant="ghost" size="lg">
+                {secondaryCta.text}
+                <ArrowRight className="ml-2" />
+              </Button>
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Right Half - WebGL Chromatic Aberration -->
+  <div class="w-full lg:w-1/2">
+    <!-- Mobile version: Full image without cropping -->
+    <div class="lg:hidden w-full h-auto">
+      <FilmDistortionImage 
+        client:load
+        src={ravanelBridge.src}
+        alt="Ravanel Bridge with chromatic aberration effect"
+        className="w-full h-auto"
+        fillContainer={false}
+      />
+    </div>
+    
+    <!-- Desktop version: Cropped to fill container -->
+    <div class="hidden lg:block w-full h-full">
+      <FilmDistortionImage 
+        client:load
+        src={ravanelBridge.src}
+        alt="Ravanel Bridge with chromatic aberration effect"
+        className="w-full h-full"
+        fillContainer={true}
+      />
+    </div>
+  </div>
+</section>
