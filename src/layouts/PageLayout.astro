@@ -10,7 +10,7 @@ import SEO from "@/lib/SEO.astro";
 import TagManager from "@/lib/TagManager.astro";
 import TagManagerBody from "@/lib/TagManagerBody.astro";
 import type { SEOProps } from "@/types/types";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter, ViewTransitions } from "astro:transitions";
 
 const year = new Date().getFullYear();
 
@@ -42,13 +42,13 @@ const {
     />
     <CommonHead title={title} description={description} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body
     class="text-foreground bg-background flex flex-col min-h-screen m-0 w-full h-full">
     <TagManagerBody />
     <CustomCursor client:only="react" transition:persist />
-    <Navbar client:load transition:animate="slide" />
+    <Navbar client:load transition:name="navbar" transition:persist />
     <main id="page-content" class="flex-grow" transition:animate="fade">
       <slot />
     </main>

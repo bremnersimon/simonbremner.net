@@ -1,11 +1,9 @@
 import { ThemeToggle } from "@/components/globals/ThemeToggle";
 import {
 	NavigationMenu,
-	NavigationMenuContent,
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
-	NavigationMenuTrigger,
 } from "@/components/shad-ui/navigation-menu";
 import {
 	Sheet,
@@ -13,23 +11,15 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from "@/components/shad-ui/sheet";
-import { cn } from "@/lib/utils";
 import {
-	ChevronRight,
-	GalleryVerticalEnd,
-	Home,
 	Menu,
-	User,
 	X,
 } from "lucide-react";
-import { useState } from "react";
+import { Button } from "../shad-ui/button";
 
 type NavbarProps = {
 	title: string;
-	href?: string;
-	description?: string;
-	main?: boolean;
-	children?: NavbarProps[];
+	href: string;
 };
 
 export const Navbar = () => {
@@ -48,20 +38,10 @@ export const Navbar = () => {
 		},
 	];
 
-	const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
-		{},
-	);
 
-	// Toggle dropdown state for mobile
-	const toggleDropdown = (title: string) => {
-		setOpenDropdowns((prev) => ({
-			...prev,
-			[title]: !prev[title],
-		}));
-	};
 
 	return (
-		<header className="bg-background/50 container mx-auto w-full px-4 lg:px-6 h-14 fixed top-4 right-0 left-0 z-20 border shadow-sm backdrop-blur-sm">
+		<header  className="bg-background/50 container mx-auto w-full px-4 lg:px-6 h-14 fixed top-4 right-0 left-0 z-20 border shadow-sm backdrop-blur-sm">
 			<div className="w-full h-full  flex items-center justify-between">
 				{/* Logo always visible */}
 				<div className="flex items-center">
@@ -100,47 +80,13 @@ export const Navbar = () => {
 						<NavigationMenuList>
 							{navigationLinks.map((link) => (
 								<NavigationMenuItem key={link.title}>
-									{link.children ? (
-										<>
-											<NavigationMenuTrigger className="bg-transparent hover:bg-accent/50">
-												{link.title}
-											</NavigationMenuTrigger>
-											<NavigationMenuContent>
-												<ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-													{link.children?.map((child) => (
-														<li
-															key={child.title}
-															className={
-																child?.main === true
-																	? "col-span-2"
-																	: "col-span-1"
-															}
-														>
-															<NavigationMenuLink asChild>
-																<a
-																	href={child.href}
-																	className={cn(
-																		"block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-																	)}
-																>
-																	<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-																		{child.description}
-																	</p>
-																</a>
-															</NavigationMenuLink>
-														</li>
-													))}
-												</ul>
-											</NavigationMenuContent>
-										</>
-									) : (
-										<NavigationMenuLink
-											href={link.href}
-											className="bg-transparent hover:bg-accent/50 flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium"
+
+									<NavigationMenuLink 
+										href={link.href}
+										className="bg-transparent hover:bg-transparent flex h-10 w-max items-center justify-center rounded-none hover:border-b hover:border-foreground focus:bg-transparent px-4 py-2 text-sm font-medium"
 										>
-											{link.title}
-										</NavigationMenuLink>
-									)}
+										{link.title}
+									</NavigationMenuLink>
 								</NavigationMenuItem>
 							))}
 						</NavigationMenuList>
@@ -174,49 +120,14 @@ export const Navbar = () => {
 								{/* Main mobile navigation */}
 								<nav className="flex flex-col divide-y">
 									{navigationLinks.map((link) => (
-										<div key={link.title}>
-											{link.children ? (
-												<>
-													<button
-														type="button"
-														onClick={() => toggleDropdown(link.title)}
-														className="flex items-center justify-between w-full p-4 text-foreground hover:bg-muted"
-													>
-														<div className="flex items-center gap-3">
-															<span>{link.title}</span>
-														</div>
-														<ChevronRight
-															className={`h-4 w-4 transition-transform ${openDropdowns[link.title] ? "rotate-90" : ""}`}
-														/>
-													</button>
-
-													{/* Collapsible submenu */}
-													{openDropdowns[link.title] && (
-														<div className="bg-muted/40 pl-4">
-															{link.children.map((child, childIndex) => (
-																<SheetClose key={child.title} asChild>
-																	<a
-																		href={child.href}
-																		className="flex items-center gap-2 p-3 pl-8 text-sm text-foreground hover:bg-muted"
-																	>
-																		{child.title}
-																	</a>
-																</SheetClose>
-															))}
-														</div>
-													)}
-												</>
-											) : (
-												<SheetClose asChild>
-													<a
-														href={link.href}
-														className="flex items-center gap-3 p-4 text-foreground hover:bg-muted"
-													>
-														<span>{link.title}</span>
-													</a>
-												</SheetClose>
-											)}
-										</div>
+										<SheetClose key={link.title} asChild>
+											<a
+												href={link.href}
+												className="flex items-center gap-3 p-4 text-foreground hover:bg-muted"
+											>
+												<span>{link.title}</span>
+											</a>
+										</SheetClose>
 									))}
 								</nav>
 
