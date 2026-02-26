@@ -35,6 +35,10 @@ type NavbarProps = {
 export const Navbar = () => {
 	const navigationLinks: NavbarProps[] = [
 		{
+			title: "Home",
+			href: "/",
+		},
+		{
 			title: "Gallery",
 			href: "/gallery",
 		},

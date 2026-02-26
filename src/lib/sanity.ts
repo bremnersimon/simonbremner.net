@@ -29,6 +29,15 @@ export function urlForImage(source: SanityImageSource) {
   return builder.image(source);
 }
 
+// Equipment queries
+export async function getLenses() {
+  return await client.fetch(`*[_type == "lens"] | order(brand asc, name asc)`);
+}
+
+export async function getCameras() {
+  return await client.fetch(`*[_type == "camera"] | order(brand asc, name asc)`);
+}
+
 export async function getHomePageProjects() {
   return await client.fetch(`{
     "featuredProjects": *[

@@ -10,7 +10,7 @@ interface FilmDistortionImageProps {
 }
 
 
-const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, width = 400, height = 400, className = '' }) => {
+const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, width, height, className = '' }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [status, setStatus] = useState('Initializing...');
   const [isWorking, setIsWorking] = useState(false);
@@ -28,104 +28,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       return;
     }
 
-    // Set canvas size based on props for natural aspect ratio
-    canvas.width = width;
-    canvas.height = height;
-
-    // Vertex shader
-    const vertexSource = `
-      attribute vec2 a_position;
-      attribute vec2 a_texCoord;
-      varying vec2 v_texCoord;
-      void main() {
-        gl_Position = vec4(a_position, 0.0, 1.0);
-        v_texCoord = a_texCoord;
-      }
-    `;
-
-    // Chromatic aberration fragment shader
-    const fragmentSource = `
-      precision mediump float;
-      uniform sampler2D u_texture;
-      uniform vec2 u_mouse;
-      uniform float u_hover;
-      varying vec2 v_texCoord;
-      
-      void main() {
-        vec2 uv = v_texCoord;
-        vec2 mouse = u_mouse;
-        
-        // Distance from mouse cursor
-        float dist = distance(uv, mouse);
-        
-        // Create chromatic aberration radius around mouse
-        float aberrationRadius = 0.25;
-        float aberrationStrength = smoothstep(aberrationRadius, 0.0, dist) * u_hover * 0.002;
-        
-        // Sample RGB channels with slight offsets for chromatic aberration
-        float r = texture2D(u_texture, uv + vec2(aberrationStrength, 0.0)).r;
-        float g = texture2D(u_texture, uv).g;
-        float b = texture2D(u_texture, uv - vec2(aberrationStrength, 0.0)).b;
-        
-        gl_FragColor = vec4(r, g, b, 1.0);
-      }
-    `;
-
-    // Shader creation (same as before)
-    function createShader(type: number, source: string) {
-      const shader = gl.createShader(type)!;
-      gl.shaderSource(shader, source);
-      gl.compileShader(shader);
-      
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        setStatus('Shader error: ' + gl.getShaderInfoLog(shader));
-        return null;
-      }
-      return shader;
-    }
-
-    const vertexShader = createShader(gl.VERTEX_SHADER, vertexSource);
-    const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentSource);
-
-    if (!vertexShader || !fragmentShader) return;
-
-    const program = gl.createProgram()!;
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      setStatus('Program error: ' + gl.getProgramInfoLog(program));
-      return;
-    }
-
-    // Get locations
-    const positionLocation = gl.getAttribLocation(program, 'a_position');
-    const texCoordLocation = gl.getAttribLocation(program, 'a_texCoord');
-    const textureLocation = gl.getUniformLocation(program, 'u_texture');
-    const mouseLocation = gl.getUniformLocation(program, 'u_mouse');
-    const hoverLocation = gl.getUniformLocation(program, 'u_hover');
-
-    // Create buffers (same as before)
-    const positions = new Float32Array([
-      -1, -1,   1, -1,   -1,  1,
-      -1,  1,   1, -1,    1,  1
-    ]);
-
-    const texCoords = new Float32Array([
-      0, 0,   1, 0,   0, 1,
-      0, 1,   1, 0,   1, 1
-    ]);
-
-    const positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
-
-    const texCoordBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, texCoords, gl.STATIC_DRAW);
-
-    // Load image
+    // Load image first to get natural dimensions
     const image = new Image();
     image.crossOrigin = 'anonymous';
     
@@ -133,6 +36,108 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
     let cleanup = false;
 
     image.onload = () => {
+      // Use provided dimensions or fallback to image natural dimensions
+      const canvasWidth = width || image.naturalWidth;
+      const canvasHeight = height || image.naturalHeight;
+      
+      // Set canvas size based on image dimensions for natural aspect ratio
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      // Vertex shader
+      const vertexSource = `
+        attribute vec2 a_position;
+        attribute vec2 a_texCoord;
+        varying vec2 v_texCoord;
+        void main() {
+          gl_Position = vec4(a_position, 0.0, 1.0);
+          v_texCoord = a_texCoord;
+        }
+      `;
+
+      // Chromatic aberration fragment shader
+      const fragmentSource = `
+        precision mediump float;
+        uniform sampler2D u_texture;
+        uniform vec2 u_mouse;
+        uniform float u_hover;
+        varying vec2 v_texCoord;
+        
+        void main() {
+          vec2 uv = v_texCoord;
+          vec2 mouse = u_mouse;
+          
+          // Distance from mouse cursor
+          float dist = distance(uv, mouse);
+          
+          // Create chromatic aberration radius around mouse
+          float aberrationRadius = 0.25;
+          float aberrationStrength = smoothstep(aberrationRadius, 0.0, dist) * u_hover * 0.002;
+          
+          // Sample RGB channels with slight offsets for chromatic aberration
+          float r = texture2D(u_texture, uv + vec2(aberrationStrength, 0.0)).r;
+          float g = texture2D(u_texture, uv).g;
+          float b = texture2D(u_texture, uv - vec2(aberrationStrength, 0.0)).b;
+          
+          gl_FragColor = vec4(r, g, b, 1.0);
+        }
+      `;
+
+      // Shader creation
+      function createShader(type: number, source: string) {
+        const shader = gl.createShader(type)!;
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          setStatus('Shader error: ' + gl.getShaderInfoLog(shader));
+          return null;
+        }
+        return shader;
+      }
+
+      const vertexShader = createShader(gl.VERTEX_SHADER, vertexSource);
+      const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentSource);
+
+      if (!vertexShader || !fragmentShader) return;
+
+      const program = gl.createProgram()!;
+      gl.attachShader(program, vertexShader);
+      gl.attachShader(program, fragmentShader);
+      gl.linkProgram(program);
+
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        setStatus('Program error: ' + gl.getProgramInfoLog(program));
+        return;
+      }
+
+      // Get locations
+      const positionLocation = gl.getAttribLocation(program, 'a_position');
+      const texCoordLocation = gl.getAttribLocation(program, 'a_texCoord');
+      const textureLocation = gl.getUniformLocation(program, 'u_texture');
+      const mouseLocation = gl.getUniformLocation(program, 'u_mouse');
+      const hoverLocation = gl.getUniformLocation(program, 'u_hover');
+
+      // Create buffers
+      const positions = new Float32Array([
+        -1, -1,   1, -1,   -1,  1,
+        -1,  1,   1, -1,    1,  1
+      ]);
+
+      const texCoords = new Float32Array([
+        0, 0,   1, 0,   0, 1,
+        0, 1,   1, 0,   1, 1
+      ]);
+
+      const positionBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+      const texCoordBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, texCoords, gl.STATIC_DRAW);
+
+      // Create texture
       const texture = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, texture);
       
@@ -227,9 +232,11 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
         cancelAnimationFrame(animationFrameId);
       }
       // Remove canvas event listeners
-      canvas.onmousemove = null;
-      canvas.onmouseenter = null;
-      canvas.onmouseleave = null;
+      if (canvas) {
+        canvas.onmousemove = null;
+        canvas.onmouseenter = null;
+        canvas.onmouseleave = null;
+      }
       // Try to lose the WebGL context if possible
       // @ts-ignore
       const ext = gl.getExtension('WEBGL_lose_context');
@@ -239,7 +246,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       }
       gl = null;
     };
-  }, [src]);
+  }, [src, width, height]);
 
   return (
     <div
@@ -247,8 +254,6 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '90vw',
-        maxHeight: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -256,18 +261,13 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
     >
       <canvas
         ref={canvasRef}
-        width={width}
-        height={height}
         className="block cursor-crosshair cursor-hover"
         style={{
           width: '100%',
           height: 'auto',
-          maxWidth: '90vw',
-          maxHeight: '80vh',
           display: 'block',
         }}
       />
-      {/* Status overlay removed */}
     </div>
   );
 };

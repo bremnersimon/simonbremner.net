@@ -8,27 +8,22 @@ type AboutHeroProps = {
 const { content } = Astro.props as AboutHeroProps;
 ---
 
-<div
-  class="grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-0 md:gap-8 py-20">
-  <div class="relative pb-10 md:pb-0">
-    <div
-      class="hidden lg:inline absolute bottom-[-30px] left-10 font-bold text-primary text-7xl z-10">
-      | Simon Bremner
-    </div>
-    <slot />
-  </div>
-
-  <div class="text-left mb-10 lg:mb-0">
+<div class="flex flex-col items-center justify-center gap-8 py-20">
+  <div class="text-center mb-10">
     <h1
-      class="text-4xl md:text-6xl lg:text-8xl font-bold text-left md:leading-tight lg:leading-30 relative">
+      class="text-2xl md:text-4xl lg:text-6xl font-bold text-center md:leading-tight lg:leading-30 relative">
       {content.headline}
     </h1>
     {
       content.paragraphs.map((paragraph) => (
-        <p class="text-muted-foreground text-lg md:text-lg lg:text-xl mt-4 leading-relaxed">
+        <p class="text-muted-foreground text-lg md:text-lg lg:text-xl mt-4 leading-relaxed max-w-4xl mx-auto">
           {paragraph}
         </p>
       ))
     }
+  </div>
+
+  <div class="relative w-full max-w-4xl">
+    <slot />
   </div>
 </div>

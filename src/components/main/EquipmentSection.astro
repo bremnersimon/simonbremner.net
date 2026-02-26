@@ -1,0 +1,51 @@
+---
+import type { Camera, Lens } from "@/types/sanity/sanity.types";
+import EquipmentCard from "./EquipmentCard.astro";
+
+type Props = {
+  cameras: Camera[];
+  lenses: Lens[];
+};
+
+const { cameras, lenses } = Astro.props;
+---
+
+<div class="space-y-16">
+  <!-- Section Heading -->
+  <!-- <div class="text-center">
+    <h2 class="text-2xl md:text-3xl font-medium text-foreground mb-3">
+      My Equipment
+    </h2>
+    <p class="text-muted-foreground max-w-2xl mx-auto">
+      A list of all the equipment I've owned and used over the years.
+    </p>
+  </div> -->
+
+  <!-- Cameras Section -->
+  {cameras.length > 0 && (
+    <div class="space-y-6">
+      <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
+        Cameras
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {cameras.map((camera) => (
+          <EquipmentCard item={camera} type="camera" />
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Lenses Section -->
+  {lenses.length > 0 && (
+    <div class="space-y-6">
+      <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
+        Lenses
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {lenses.map((lens) => (
+          <EquipmentCard item={lens} type="lens" />
+        ))}
+      </div>
+    </div>
+  )}
+</div>
