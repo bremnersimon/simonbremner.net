@@ -88,7 +88,7 @@ const CustomCursor: React.FC = () => {
   return (
     <div
       className={`
-        fixed top-0 left-0 pointer-events-none z-100
+        fixed top-0 left-0 pointer-events-none z-100 mix-blend-difference
         transition-all duration-200 ease-out origin-center -translate-1/2
         
       `}
@@ -100,7 +100,7 @@ const CustomCursor: React.FC = () => {
       <div
         className={`
          min-w-8 min-h-8 rounded-full border border-white/50
-          backdrop-blur-xs bg-background/10
+         bg-background/10
           flex items-center justify-center
           transition-all duration-200 ease-out 
           ${cursor.isVisible ? 'opacity-100' : 'opacity-0'}

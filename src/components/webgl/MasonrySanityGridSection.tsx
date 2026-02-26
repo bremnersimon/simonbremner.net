@@ -78,10 +78,6 @@ const MasonrySanityGridSection = ({ images }: { images: any[] }) => {
       <Dialog open={selectedIndex !== null} onOpenChange={open => !open && setSelectedIndex(null)}>
         <DialogContent className="w-screen h-screen max-w-none max-h-none p-0 m-0 flex items-center justify-center bg-background">
           {selected && (
-            <div 
-              className="flex items-center justify-center w-full h-full cursor-pointer"
-              onClick={() => setSelectedIndex(null)}
-            >
               <div 
                 style={{
                   maxWidth: '90vw',
@@ -179,7 +175,6 @@ const MasonrySanityGridSection = ({ images }: { images: any[] }) => {
                     </div>
                   </div>
                 </>
-              </div>
               {/* <DialogClose className="absolute top-4 right-4 z-30 bg-black/60 hover:bg-black/80 text-white rounded-full p-2 focus:outline-none">
                 <span className="sr-only">Close</span>
                 <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
