@@ -31,7 +31,7 @@ const MasonrySanityGridSection = ({ images }) => {
           <button
           type="button"
             key={img._id || i}
-            className="overflow-hidden shadow-md relative mb-6 w-full focus:outline-none cursor-pointer rounded-md"
+            className="overflow-hidden shadow-md relative mb-6 w-full focus:outline-none cursor-hover rounded-md"
             style={{ width: "100%" }}
             onClick={() => setSelectedIndex(i)}
             tabIndex={0}

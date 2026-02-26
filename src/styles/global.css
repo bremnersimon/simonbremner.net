@@ -121,5 +121,11 @@
 
 	body {
 		@apply bg-background text-foreground;
+		cursor: none; /* Hide default cursor */
+	}
+
+	/* Hide cursor on interactive elements */
+	a, button, [role="button"], .cursor-hover {
+		cursor: none !important;
 	}
 }
