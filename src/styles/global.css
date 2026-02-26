@@ -129,3 +129,42 @@
 		cursor: none !important;
 	}
 }
+
+/* View Transitions for Custom Cursor */
+::view-transition-old(custom-cursor),
+::view-transition-new(custom-cursor) {
+	animation-duration: 0ms;
+	animation-name: none;
+}
+
+/* Enhanced View Transition Animations */
+::view-transition-old(root) {
+	animation: fade-out 250ms ease-in-out;
+}
+
+::view-transition-new(root) {
+	animation: fade-in 250ms ease-in-out;
+}
+
+@keyframes fade-out {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Ensure cursor remains visible during transitions */
+[style*="view-transition-name: custom-cursor"] {
+	z-index: 9999 !important;
+}

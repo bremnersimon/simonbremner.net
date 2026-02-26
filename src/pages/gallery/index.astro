@@ -2,11 +2,12 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import Container from "@/components/main/Container.astro";
 import { getAllPhotos, getAllCategories, urlForImage } from "@/lib/sanity";
-import MasonrySanityGridSection from "@/components/webgl/MasonrySanityGridSection";
+import LazyMasonryGallery from "@/components/webgl/LazyMasonryGallery";
 
-// Fetch photos and categories
+// Initial load - Start with fewer photos for faster initial page load
+const initialPhotosPerPage = 12;
 const [photos, categories] = await Promise.all([
-  getAllPhotos(100),
+  getAllPhotos(initialPhotosPerPage, 0), // Load first 12 photos
   getAllCategories()
 ]);
 
@@ -26,12 +27,14 @@ const galleryPhotos = photos.map((photo) => {
     description: photo.description,
     image: {
       src: photo.image 
-        ? urlForImage(photo.image).format("webp").width(1920).quality(90).url()
+        ? urlForImage(photo.image).format("webp").width(1920).url()
         : "/images/no-image.svg",
       thumbnail: photo.image
-        ? urlForImage(photo.image).format("webp").width(600).quality(85).url()  
+        ? urlForImage(photo.image).format("webp").width(600).url()  
         : "/images/no-image.svg",
       alt: photo.altText || photo.title,
+      width,
+      height,
     },
     dimensions: {
       width,
@@ -63,16 +66,12 @@ const pageDescription = "Explore my photography portfolio - a collection of visu
 >
   <section class="w-full py-20">
     <Container>
-
-      <!-- WebGL Masonry Gallery -->
-      <MasonrySanityGridSection client:load images={galleryPhotos.map(photo => ({
-        ...photo,
-        image: {
-          ...photo.image,
-          width: photo.dimensions?.width || 800,
-          height: photo.dimensions?.height || 600,
-        }
-      }))} />
+      <!-- Lazy Loading WebGL Masonry Gallery -->
+      <LazyMasonryGallery 
+        client:load 
+        initialImages={galleryPhotos} 
+        photosPerPage={12}
+      />
     </Container>
   </section>
 </PageLayout>

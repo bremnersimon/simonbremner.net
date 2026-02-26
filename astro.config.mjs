@@ -8,12 +8,15 @@ import aws from "astro-sst";
 import { defineConfig } from "astro/config";
 
 import partytown from "@astrojs/partytown";
-import { profile } from "node:console";
 
 export default defineConfig({
 	output: "server",
 	adapter: aws(),
 	site: "https://www.simonbremner.net",
+	prefetch: {
+		prefetchAll: true,
+		defaultStrategy: 'viewport'
+	},
 	integrations: [
 		react(),
 		sanity({
