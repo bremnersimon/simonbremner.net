@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import MasonryGrid from "./MasonryGrid";
 import FilmDistortionImage from "./FilmDistortionImage";
 import {
@@ -16,22 +17,40 @@ import {
 import { Info } from "lucide-react";
 
 // This component fetches Sanity images from the Astro-provided prop
-const MasonrySanityGridSection = ({ images }) => {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const MasonrySanityGridSection = ({ images }: { images: any[] }) => {
   if (!images || images.length === 0) {
     return <div>No images found.</div>;
   }
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [columns, setColumns] = useState(1);
   const selected = selectedIndex !== null ? images[selectedIndex] : null;
+
+  useEffect(() => {
+    const updateColumns = () => {
+      if (window.innerWidth >= 1024) {
+        setColumns(3); // lg: 3 columns
+      } else if (window.innerWidth >= 768) {
+        setColumns(2); // md: 2 columns
+      } else {
+        setColumns(1); // mobile: 1 column
+      }
+    };
+
+    updateColumns();
+    window.addEventListener('resize', updateColumns);
+    return () => window.removeEventListener('resize', updateColumns);
+  }, []);
 
   return (
     <>
-      <MasonryGrid columns={3}>
+      <MasonryGrid columns={columns}>
         {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
         {images.map((img: { _id: any; image: { alt: any; src: string | undefined; width: string | number | undefined; height: string | number | undefined; }; title: any; location: any; city: string; country: any; }, i: number | React.SetStateAction<null>) => (
           <button
           type="button"
             key={img._id || i}
-            className="overflow-hidden shadow-md relative mb-6 w-full focus:outline-none cursor-hover rounded-md"
+            className="overflow-hidden shadow-md relative w-full focus:outline-none cursor-hover"
             style={{ width: "100%" }}
             onClick={() => setSelectedIndex(i)}
             tabIndex={0}
@@ -49,7 +68,7 @@ const MasonrySanityGridSection = ({ images }) => {
             {/* Location overlay */}
             {(img.location || img.title || img.city || img.country) && (
               <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-3 py-1 rounded shadow">
-                {img.location || img.title || `${img.city ? img.city + ', ' : ''}${img.country || ''}`}
+                {img.location || img.title || `${img.city ? `${img.city}, ` : ''}${img.country || ''}`}
               </div>
             )}
           </button>
@@ -59,15 +78,21 @@ const MasonrySanityGridSection = ({ images }) => {
       <Dialog open={selectedIndex !== null} onOpenChange={open => !open && setSelectedIndex(null)}>
         <DialogContent className="w-screen h-screen max-w-none max-h-none p-0 m-0 flex items-center justify-center bg-background">
           {selected && (
-            <div className="flex items-center justify-center w-full h-full">
-              <div style={{
-                maxWidth: '90vw',
-                maxHeight: '90vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: 'auto',
-              }}>
+            <div 
+              className="flex items-center justify-center w-full h-full cursor-pointer"
+              onClick={() => setSelectedIndex(null)}
+            >
+              <div 
+                style={{
+                  maxWidth: '90vw',
+                  maxHeight: '90vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: 'auto',
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
                 {/* Accessibility: DialogTitle and DialogDescription */}
                 <>
                   <span style={{position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(1px, 1px, 1px, 1px)', whiteSpace: 'nowrap'}}>
@@ -86,7 +111,7 @@ const MasonrySanityGridSection = ({ images }) => {
                         alt={selected.image.alt || selected.title}
                         width={selected.image.width}
                         height={selected.image.height}
-                        className="block rounded-md"
+                        className="block cursor-hover"
                       />
                       <div className="absolute bottom-4 right-4 z-10">
                         <Tooltip>

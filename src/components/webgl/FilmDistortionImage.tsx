@@ -258,7 +258,7 @@ const FilmDistortionImage: React.FC<FilmDistortionImageProps> = ({ src, alt, wid
         ref={canvasRef}
         width={width}
         height={height}
-        className="block cursor-crosshair"
+        className="block cursor-crosshair cursor-hover"
         style={{
           width: '100%',
           height: 'auto',
