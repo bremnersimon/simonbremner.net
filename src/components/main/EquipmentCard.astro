@@ -1,0 +1,53 @@
+---
+import type { Camera, Lens } from "@/types/sanity/sanity.types";
+
+type Props = {
+  item: Camera | Lens;
+  type: "camera" | "lens";
+};
+
+const { item, type } = Astro.props;
+
+// Helper function to format lens display
+function formatLensInfo(lens: Lens) {
+  const focal = lens.focalLength?.max 
+    ? `${lens.focalLength.min}-${lens.focalLength.max}`
+    : lens.focalLength?.min;
+  
+  return {
+    specs: [focal, lens.maxAperture].filter(Boolean).join(" • "),
+  };
+}
+
+// Helper function to format camera display
+function formatCameraInfo(camera: Camera) {
+  return {
+    specs: [camera.modelNumber, camera.type].filter(Boolean).join(" • "),
+  };
+}
+
+const isLens = type === "lens";
+const displayInfo = isLens 
+  ? formatLensInfo(item as Lens) 
+  : formatCameraInfo(item as Camera);
+---
+
+<div class="group p-6 border border-border rounded-lg transition-colors hover:bg-muted/20">
+  <div class="space-y-2">
+    <h3 class="font-medium text-foreground">
+      {item.name}
+    </h3>
+    
+    {item.brand && (
+      <p class="text-sm text-muted-foreground">
+        {item.brand}
+      </p>
+    )}
+    
+    {displayInfo.specs && (
+      <p class="text-sm text-muted-foreground font-mono">
+        {displayInfo.specs}
+      </p>
+    )}
+  </div>
+</div>

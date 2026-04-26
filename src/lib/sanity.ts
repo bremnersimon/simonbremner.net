@@ -29,6 +29,15 @@ export function urlForImage(source: SanityImageSource) {
   return builder.image(source);
 }
 
+// Equipment queries
+export async function getLenses() {
+  return await client.fetch(`*[_type == "lens"] | order(brand asc, name asc)`);
+}
+
+export async function getCameras() {
+  return await client.fetch(`*[_type == "camera"] | order(brand asc, name asc)`);
+}
+
 export async function getHomePageProjects() {
   return await client.fetch(`{
     "featuredProjects": *[
@@ -378,6 +387,136 @@ export async function fetchProjectById(projectType: string, slug: string) {
     console.error(`Error fetching ${projectType} project:`, error);
     throw error;
   }
+}
+
+// Gallery Functions for Photos
+export async function getAllPhotos(limit = 50, offset = 0) {
+  const endIndex = offset + limit - 1;
+  return await client.fetch(
+    `*[_type == "photo"] | order(
+      sortOrder asc,
+      dateTaken desc
+    )[$offset..$endIndex] {
+      _id,
+      title,
+      slug,
+      altText,
+      description,
+      image{
+        ...,
+        asset->{
+          ...,
+          metadata {
+            dimensions {
+              width,
+              height,
+              aspectRatio
+            }
+          }
+        }
+      },
+      categories[]->{
+        _id,
+        name,
+        slug,
+        color
+      },
+      tags,
+      dateTaken,
+      location,
+      featured,
+      publishedAt,
+      camera->{
+        _id,
+        name,
+        brand,
+        modelNumber
+      },
+      lens->{
+        _id,
+        name,
+        brand,
+        focalLength
+      },
+      focalLength,
+      aperture,
+      shutterSpeed,
+      iso
+    }`,
+    { 
+      offset,
+      endIndex
+    }
+  );
+}
+
+export async function getAllCategories() {
+  return await client.fetch(
+    `*[_type == "category"] | order(sortOrder asc, name asc) {
+      _id,
+      name,
+      slug,
+      description,
+      color,
+      sortOrder
+    }`
+  );
+}
+
+export async function getPhotosByCategory(categorySlug: string, limit = 50) {
+  return await client.fetch(
+    `*[_type == "photo" && publishedAt <= now() && references(*[_type == "category" && slug.current == $categorySlug]._id)] | order(
+      sortOrder asc,
+      dateTaken desc
+    )[0...$limit] {
+      _id,
+      title,
+      slug,
+      altText,
+      description,
+      image{
+        ...,
+        asset->{
+          ...,
+          metadata {
+            dimensions {
+              width,
+              height,
+              aspectRatio
+            }
+          }
+        }
+      },
+      categories[]->{
+        _id,
+        name,
+        slug,
+        color
+      },
+      tags,
+      dateTaken,
+      location,
+      featured,
+      publishedAt,
+      camera->{
+        _id,
+        name,
+        brand,
+        modelNumber
+      },
+      lens->{
+        _id,
+        name,
+        brand,
+        focalLength
+      },
+      focalLength,
+      aperture,
+      shutterSpeed,
+      iso
+    }`,
+    { categorySlug, limit }
+  );
 }
 
 /**

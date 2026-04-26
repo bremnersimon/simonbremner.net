@@ -1,45 +1,15 @@
 ---
-import { Image } from "astro:assets";
 import MainOgImage from "@/assets/main-og-image.jpg";
-import ravanelBridge from "@/assets/ravanel-bridge.jpg";
-import HomepageHero from "@/components/main/HomepageHero.astro";
-import HorizontalScrolling from "@/components/main/HorizontalScrolling.astro";
-import LargeText from "@/components/main/LargeText";
+import SplitHero from "@/components/main/SplitHero.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
-import { getHomePageProjects } from "@/lib/sanity";
-import type { ProjectCardProps } from "@/types";
-import RecentProjects from "@/components/main/RecentProjects.astro";
-
-const data: { featuredProjects: ProjectCardProps[] } =
-  await getHomePageProjects();
 ---
 
 <PageLayout
   title="Home | Simon Bremner"
   description="Welcome to my portfolio"
   image={MainOgImage}>
-  <HomepageHero />
-  <Image
-    class="block lg:hidden pt-20"
-    src={ravanelBridge}
-    alt="Ravanel Bridge"
-    width={700}
-    height={500}
-    priority={true}
-    loading="eager"
-    format="webp"
+  <SplitHero 
+    primaryCta={{ text: "Gallery", href: "/gallery "}}
+    secondaryCta={{ text: "About Me", href: "/about" }}
   />
-  <HorizontalScrolling />
-  <LargeText
-    className="py-24"
-    client:load
-    content={"Welcome to my portfolio—a site documenting my creative journey and professional evolution. Browse through these visual stories and technical experiments, shared for fellow enthusiasts and anyone seeking inspiration for their next expedition."}
-  />
-  <div id="projects" class="overflow-hidden">
-    <RecentProjects
-      featuredProjects={data.featuredProjects}
-      title="Recent Projects"
-      subtitle="Explore my latest projects"
-    />
-  </div>
 </PageLayout>

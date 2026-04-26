@@ -1,6 +1,11 @@
 packages:
-  - '.'
-  - 'studio'
+  - .
+  - studio
+
+ignoredBuiltDependencies:
+  - aws-sdk
+  - esbuild
+  - sharp
 
 onlyBuiltDependencies:
   - '@biomejs/biome'

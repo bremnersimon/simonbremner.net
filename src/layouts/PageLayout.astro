@@ -4,11 +4,13 @@ import "highlight.js/styles/github-dark.css";
 import MainOgImage from "@/assets/main-og-image.jpg";
 import Footer from "@/components/globals/Footer.astro";
 import { Navbar } from "@/components/globals/Navbar";
+import CustomCursor from "@/components/globals/CustomCursor";
 import CommonHead from "@/lib/CommonHead.astro";
 import SEO from "@/lib/SEO.astro";
 import TagManager from "@/lib/TagManager.astro";
 import TagManagerBody from "@/lib/TagManagerBody.astro";
 import type { SEOProps } from "@/types/types";
+import { ClientRouter, ViewTransitions } from "astro:transitions";
 
 const year = new Date().getFullYear();
 
@@ -40,14 +42,16 @@ const {
     />
     <CommonHead title={title} description={description} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <ClientRouter />
   </head>
   <body
     class="text-foreground bg-background flex flex-col min-h-screen m-0 w-full h-full">
     <TagManagerBody />
-    <Navbar client:load />
-    <main id="page-content" class="flex-grow">
+    <CustomCursor client:only="react" transition:persist />
+    <Navbar client:load transition:name="navbar" transition:persist />
+    <main id="page-content" class="flex-grow" transition:animate="fade">
       <slot />
     </main>
-    <Footer title={title} year={year} />
+    <Footer title={title} year={year} transition:animate="none" />
   </body>
 </html>
