@@ -114,9 +114,27 @@ export default defineType({
     ],
     preview: {
         select: {
-            title: "title",
-            subtitle: "location",
+            dateTaken: "dateTaken",
+            location: "location",
             media: "image",
+        },
+        prepare(selection) {
+            const { dateTaken, location, media } = selection;
+            
+            // Format the date into a readable format
+            const formattedDate = dateTaken 
+                ? new Date(dateTaken).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short", 
+                    day: "numeric"
+                  })
+                : "No date";
+
+            return {
+                title: formattedDate,
+                subtitle: location,
+                media: media,
+            };
         },
     },
     orderings: [

@@ -391,11 +391,12 @@ export async function fetchProjectById(projectType: string, slug: string) {
 
 // Gallery Functions for Photos
 export async function getAllPhotos(limit = 50, offset = 0) {
+  const endIndex = offset + limit - 1;
   return await client.fetch(
-    `*[_type == "photo" && publishedAt <= now()] | order(
+    `*[_type == "photo"] | order(
       sortOrder asc,
       dateTaken desc
-    )[$offset...$endIndex] {
+    )[$offset..$endIndex] {
       _id,
       title,
       slug,
@@ -444,7 +445,7 @@ export async function getAllPhotos(limit = 50, offset = 0) {
     }`,
     { 
       offset,
-      endIndex: offset + limit - 1
+      endIndex
     }
   );
 }
