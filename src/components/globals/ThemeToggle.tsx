@@ -63,6 +63,7 @@ export function ThemeToggle() {
 	return (
 		<Button
 			type="button"
+			className="cursor-pointer focus:outline-none"
 			variant="ghost"
 			size="icon"
 			onClick={toggleTheme}

@@ -448,7 +448,7 @@ const LazyMasonryGallery = ({
 								key={imgKey}
 								ref={(el) => registerButton(el, imgKey)}
 								data-img-id={imgKey}
-								className="overflow-hidden shadow-md relative w-full focus:outline-none transition-transform hover:scale-[1.02] focus:scale-[1.02]"
+								className="overflow-hidden cursor-pointer shadow-md relative w-full focus:outline-none transition-transform hover:scale-[1.02] focus:scale-[1.02]"
 								style={{ width: "100%" }}
 								onClick={() => setSelectedIndex(i)}
 								tabIndex={0}
