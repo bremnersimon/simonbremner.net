@@ -11,10 +11,7 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from "@/components/shad-ui/sheet";
-import {
-	Menu,
-	X,
-} from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "../shad-ui/button";
 
 type NavbarProps = {
@@ -25,12 +22,8 @@ type NavbarProps = {
 export const Navbar = () => {
 	const navigationLinks: NavbarProps[] = [
 		{
-			title: "Home",
-			href: "/",
-		},
-		{
 			title: "Gallery",
-			href: "/gallery",
+			href: "/",
 		},
 		{
 			title: "About",
@@ -38,10 +31,8 @@ export const Navbar = () => {
 		},
 	];
 
-
-
 	return (
-		<header  className="bg-background/50 container mx-auto w-full px-4 lg:px-6 h-14 fixed top-4 right-0 left-0 z-20 border shadow-sm backdrop-blur-sm">
+		<header className="bg-background/50 container mx-auto w-full px-4 lg:px-6 h-14 fixed top-4 right-0 left-0 z-20 border shadow-sm backdrop-blur-sm">
 			<div className="w-full h-full  flex items-center justify-between">
 				{/* Logo always visible */}
 				<div className="flex items-center">
@@ -70,7 +61,6 @@ export const Navbar = () => {
 							</g>
 						</svg>
 						{/* <span className="font-bold text-lg">Simon Bremner</span> */}
-						
 					</a>
 				</div>
 
@@ -80,11 +70,10 @@ export const Navbar = () => {
 						<NavigationMenuList>
 							{navigationLinks.map((link) => (
 								<NavigationMenuItem key={link.title}>
-
-									<NavigationMenuLink 
+									<NavigationMenuLink
 										href={link.href}
 										className="bg-transparent hover:bg-transparent flex h-10 w-max items-center justify-center rounded-none hover:border-b hover:border-foreground focus:bg-transparent px-4 py-2 text-sm font-medium"
-										>
+									>
 										{link.title}
 									</NavigationMenuLink>
 								</NavigationMenuItem>
@@ -99,7 +88,7 @@ export const Navbar = () => {
 
 					{/* Mobile Menu (Sheet from shadcn/ui) */}
 					<Sheet>
-						<SheetTrigger className="md:hidden cursor-hover" aria-label="Open mobile menu">
+						<SheetTrigger className="md:hidden" aria-label="Open mobile menu">
 							<Menu className="h-6 w-6" />
 						</SheetTrigger>
 						<SheetContent side="right" className="w-full max-w-xs p-0">

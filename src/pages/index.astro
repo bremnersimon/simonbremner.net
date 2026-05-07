@@ -1,15 +1,108 @@
 ---
-import MainOgImage from "@/assets/main-og-image.jpg";
-import SplitHero from "@/components/main/SplitHero.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
+import Container from "@/components/main/Container.astro";
+import { getAllPhotos, getAllCategories, urlForImage } from "@/lib/sanity";
+import LazyMasonryGallery from "@/components/webgl/LazyMasonryGallery";
+import { Button } from "@/components/shad-ui/button";
+
+const initialPhotosPerPage = 12;
+const [photos] = await Promise.all([
+    getAllPhotos(initialPhotosPerPage, 0),
+    getAllCategories(),
+]);
+
+const galleryPhotos = photos.map((photo: Record<string, any>) => {
+    const dimensions = photo.image?.asset?.metadata?.dimensions;
+    const width = dimensions?.width || 800;
+    const height = dimensions?.height || 600;
+    const aspectRatio = dimensions?.aspectRatio || width / height;
+    const orientation =
+        width > height ? "landscape" : width < height ? "portrait" : "square";
+
+    return {
+        _id: photo._id,
+        title: photo.title,
+        slug: photo.slug,
+        altText: photo.altText,
+        description: photo.description,
+        image: {
+            src: photo.image
+                ? urlForImage(photo.image).format("webp").width(1920).url()
+                : "/images/no-image.svg",
+            thumbnail: photo.image
+                ? urlForImage(photo.image).format("webp").width(600).url()
+                : "/images/no-image.svg",
+            alt: photo.altText || photo.title,
+            width,
+            height,
+        },
+        dimensions: {
+            width,
+            height,
+            aspectRatio,
+            orientation,
+        },
+        categories: photo.categories || [],
+        tags: photo.tags || [],
+        dateTaken: photo.dateTaken,
+        location: photo.location,
+        featured: photo.featured,
+        camera: photo.camera || null,
+        lens: photo.lens || null,
+        focalLength: photo.focalLength || null,
+        aperture: photo.aperture || null,
+        shutterSpeed: photo.shutterSpeed || null,
+        iso: photo.iso || null,
+    };
+});
 ---
 
 <PageLayout
-  title="Home | Simon Bremner"
-  description="Welcome to my portfolio"
-  image={MainOgImage}>
-  <SplitHero 
-    primaryCta={{ text: "Gallery", href: "/gallery "}}
-    secondaryCta={{ text: "About Me", href: "/about" }}
-  />
+    title="Simon Bremner"
+    description="Explore my photography portfolio - a collection of visual stories captured through my lens."
+>
+    <!-- Hero -->
+    <section
+        class="w-full flex flex-col items-center justify-center min-h-[60vh] text-center px-4 pt-24 pb-12"
+    >
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-8">
+            Simon Bremner Gallery
+        </h1>
+        <div
+            class="flex flex-col sm:flex-row gap-4 items-center justify-center"
+        >
+            <a href="#gallery">
+                <Button size="lg">View Gallery</Button>
+            </a>
+            <a href="/about">
+                <Button size="lg" variant="outline">About Me</Button>
+            </a>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="w-full py-20">
+        <Container>
+            <LazyMasonryGallery
+                client:load
+                initialImages={galleryPhotos}
+                photosPerPage={12}
+            />
+        </Container>
+    </section>
 </PageLayout>
+
+<style>
+    html {
+        view-transition-name: none;
+    }
+
+    .photo-item {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    [data-slot="dialog-overlay"] {
+        backdrop-filter: blur(8px);
+    }
+</style>

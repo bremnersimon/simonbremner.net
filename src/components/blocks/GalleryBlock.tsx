@@ -56,7 +56,7 @@ const GalleryBlock = ({
 						{images.map((image, index) => (
 							<div
 								key={image._key}
-								className="overflow-hidden rounded-md cursor-pointer cursor-hover group"
+								className="overflow-hidden rounded-md cursor-pointer group"
 								onClick={() => handleImageClick(index)}
 								onKeyDown={() => handleImageClick(index)}
 							>
@@ -82,7 +82,7 @@ const GalleryBlock = ({
 						{images.map((image, index) => (
 							<div
 								key={image._key}
-								className="break-inside-avoid mb-4 cursor-pointer cursor-hover"
+								className="break-inside-avoid mb-4 cursor-pointer"
 								onClick={() => handleImageClick(index)}
 								onKeyDown={() => handleImageClick(index)}
 							>
@@ -102,7 +102,7 @@ const GalleryBlock = ({
 							{images.map((image, index) => (
 								<div
 									key={image._key}
-									className="shrink-0 w-[85%] sm:w-[45%] md:w-[30%] snap-center cursor-hover"
+									className="shrink-0 w-[85%] sm:w-[45%] md:w-[30%] snap-center"
 									onClick={() => handleImageClick(index)}
 									onKeyDown={() => handleImageClick(index)}
 								>

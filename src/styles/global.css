@@ -121,20 +121,7 @@
 
 	body {
 		@apply bg-background text-foreground;
-		cursor: none; /* Hide default cursor */
 	}
-
-	/* Hide cursor on interactive elements */
-	a, button, [role="button"], .cursor-hover {
-		cursor: none !important;
-	}
-}
-
-/* View Transitions for Custom Cursor */
-::view-transition-old(custom-cursor),
-::view-transition-new(custom-cursor) {
-	animation-duration: 0ms;
-	animation-name: none;
 }
 
 /* Enhanced View Transition Animations */
@@ -162,9 +149,4 @@
 	to {
 		opacity: 1;
 	}
-}
-
-/* Ensure cursor remains visible during transitions */
-[style*="view-transition-name: custom-cursor"] {
-	z-index: 9999 !important;
 }
