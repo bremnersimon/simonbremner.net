@@ -553,7 +553,7 @@ const LazyMasonryGallery = ({
 												type="button"
 												variant="ghost"
 												size="icon"
-												className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
+												className="absolute cursor-pointer left-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
 												onClick={goToPreviousImage}
 												disabled={!canGoPrevious}
 												aria-label="Previous image"
@@ -593,7 +593,7 @@ const LazyMasonryGallery = ({
 												type="button"
 												variant="ghost"
 												size="icon"
-												className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
+												className="absolute cursor-pointer right-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
 												onClick={() => {
 													void goToNextImage();
 												}}
