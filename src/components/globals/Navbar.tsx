@@ -41,26 +41,25 @@ export const Navbar = () => {
 					</a>
 				</div>
 
-				{/* Desktop Navigation - hidden on mobile */}
-				<div className="hidden md:flex">
-					<NavigationMenu>
-						<NavigationMenuList>
-							{navigationLinks.map((link) => (
-								<NavigationMenuItem key={link.title}>
-									<NavigationMenuLink
-										href={link.href}
-										className="bg-transparent hover:bg-transparent flex h-10 w-max items-center justify-center rounded-none hover:border-b hover:border-foreground focus:bg-transparent px-4 py-2 text-sm font-medium"
-									>
-										{link.title}
-									</NavigationMenuLink>
-								</NavigationMenuItem>
-							))}
-						</NavigationMenuList>
-					</NavigationMenu>
-				</div>
-
-				{/* Right side controls (theme toggle + mobile menu) */}
+				{/* Right side controls (nav links + theme toggle + mobile menu) */}
 				<div className="flex items-center gap-2">
+					{/* Desktop Navigation - hidden on mobile */}
+					<div className="hidden md:flex">
+						<NavigationMenu>
+							<NavigationMenuList>
+								{navigationLinks.map((link) => (
+									<NavigationMenuItem key={link.title}>
+										<NavigationMenuLink
+											href={link.href}
+											className="bg-transparent hover:bg-transparent flex h-10 w-max items-center justify-center rounded-none hover:border-b hover:border-foreground focus:bg-transparent px-4 py-2 text-sm font-medium"
+										>
+											{link.title}
+										</NavigationMenuLink>
+									</NavigationMenuItem>
+								))}
+							</NavigationMenuList>
+						</NavigationMenu>
+					</div>
 					<ThemeToggle />
 
 					{/* Mobile Menu (Sheet from shadcn/ui) */}
