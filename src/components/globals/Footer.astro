@@ -1,11 +1,9 @@
 ---
-import { Image } from "astro:assets";
 import Container from "@/components/main/Container.astro";
 import type { FooterProps } from "@/types";
 const { year = 2025 } = Astro.props as FooterProps;
 const links = [
-  { title: "Home", href: "/" },
-  {title: "Gallery", href: "/gallery"},
+  { title: "Gallery", href: "/" },
   { title: "About", href: "/about" },
 ];
 ---
@@ -14,9 +12,7 @@ const links = [
   <Container>
     <div class="flex flex-col gap-4 py-6 px-4 md:px-0">
       <div class="flex flex-col items-start">
-        <Image src="/images/icon.svg" width={32} height={32} alt="Logo" />
-        <span class="text-lg font-bold text-foreground mt-2">Simon Bremner</span
-        >
+        <a href="/" class="text-2xl font-thin">Simon Bremner</a>
         <span class="text-sm text-muted-foreground max-w-sm">
           Graphic Designer | Developer | Photographer
         </span>

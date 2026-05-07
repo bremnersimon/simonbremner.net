@@ -1,47 +1,59 @@
 ---
 import ogImage from "@/assets/about-og-image.jpg";
 import headshot from "@/assets/sb-headshot.jpg";
-import AboutHero from "@/components/main/AboutHero.astro";
+import FilmDistortionImage from "@/components/webgl/FilmDistortionImage.tsx";
+import AnimatedHero from "@/components/main/AnimatedHero.astro";
 import Container from "@/components/main/Container.astro";
 import EquipmentSection from "@/components/main/EquipmentSection.astro";
-import FilmDistortionImage from "@/components/webgl/FilmDistortionImage.tsx";
 import PageLayout from "@/layouts/PageLayout.astro";
 import { getCameras, getLenses } from "@/lib/sanity";
 import type { AboutHeroTextProps } from "@/types/types";
 import type { Camera, Lens } from "@/types/sanity/sanity.types";
 
 const heroText: AboutHeroTextProps = {
-	headline: "Simon Bremner",
-	paragraphs: [
-		"Hello, my name is Simon Bremner. I'm an amateur photographer that pays the bills through Graphic Design and Developing apps and websites. This site is a showcase of all three of these diciplines. I hope you enjoy it.",
-	],
+  headline: "About",
+  paragraphs: [
+    "Hello, my name is Simon Bremner, and I'm A Graphic Designer and Developer. This site is a personal project showcasing my design, development, and photography skills. I hope you enjoy.",
+  ],
 };
 
 // Fetch equipment data
 const [cameras, lenses] = await Promise.all([
-	getCameras() as Promise<Camera[]>,
-	getLenses() as Promise<Lens[]>,
+  getCameras() as Promise<Camera[]>,
+  getLenses() as Promise<Lens[]>,
 ]);
 ---
 
 <PageLayout
   title="About Me | Simon Bremner"
   description="About me"
-  image={ogImage}>
-  <Container className="px-10 lg:px-0 mt-4">
-    <AboutHero content={heroText}>
+  image={ogImage}
+>
+  <Container className="px-6 lg:px-0 mt-4">
+    <AnimatedHero
+      headline={heroText.headline}
+      paragraphs={heroText.paragraphs}
+      containerClassName="flex flex-col items-start justify-center gap-8 py-20"
+      textContainerClassName="mb-6"
+      headlineClassName="font-thin [line-height:0.88] [letter-spacing:0.015em] text-[3.25rem] sm:text-[4.75rem] md:text-[6.5rem] lg:text-[8.5rem] xl:text-[10.5rem] 2xl:text-[12rem]"
+      paragraphClassName="text-muted-foreground text-sm sm:text-base mt-4 leading-relaxed max-w-md"
+      mediaClassName="w-full"
+    >
       <FilmDistortionImage
         client:load
         src={headshot.src}
-        alt="Headshot"
+        alt="Portrait of Simon Bremner"
+        className="block w-full h-auto"
       />
-    </AboutHero>
+    </AnimatedHero>
   </Container>
-  
+
   {/* Equipment Section */}
-  {(cameras.length > 0 || lenses.length > 0) && (
-    <Container className="py-16 lg:py-24">
-      <EquipmentSection cameras={cameras} lenses={lenses} />
-    </Container>
-  )}
+  {
+    (cameras.length > 0 || lenses.length > 0) && (
+      <Container className="py-16 lg:py-24">
+        <EquipmentSection cameras={cameras} lenses={lenses} />
+      </Container>
+    )
+  }
 </PageLayout>

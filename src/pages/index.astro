@@ -1,17 +1,44 @@
 ---
 import PageLayout from "@/layouts/PageLayout.astro";
 import Container from "@/components/main/Container.astro";
-import { getAllPhotos, getAllCategories, urlForImage } from "@/lib/sanity";
+import AnimatedHero from "@/components/main/AnimatedHero.astro";
+import { getAllPhotos, urlForImage } from "@/lib/sanity";
 import LazyMasonryGallery from "@/components/webgl/LazyMasonryGallery";
-import { Button } from "@/components/shad-ui/button";
+
+type GalleryPhotoSource = {
+    _id: string;
+    title: string;
+    slug: { current: string } | string;
+    altText?: string;
+    description?: string;
+    image?: {
+        asset?: {
+            metadata?: {
+                dimensions?: {
+                    width?: number;
+                    height?: number;
+                    aspectRatio?: number;
+                };
+            };
+        };
+    };
+    categories?: unknown[];
+    tags?: string[];
+    dateTaken?: string;
+    location?: string;
+    featured?: boolean;
+    camera?: unknown;
+    lens?: unknown;
+    focalLength?: string | null;
+    aperture?: string | null;
+    shutterSpeed?: string | null;
+    iso?: number | null;
+};
 
 const initialPhotosPerPage = 12;
-const [photos] = await Promise.all([
-    getAllPhotos(initialPhotosPerPage, 0),
-    getAllCategories(),
-]);
+const photos = await getAllPhotos(initialPhotosPerPage, 0);
 
-const galleryPhotos = photos.map((photo: Record<string, any>) => {
+const galleryPhotos = photos.map((photo: GalleryPhotoSource) => {
     const dimensions = photo.image?.asset?.metadata?.dimensions;
     const width = dimensions?.width || 800;
     const height = dimensions?.height || 600;
@@ -61,28 +88,16 @@ const galleryPhotos = photos.map((photo: Record<string, any>) => {
     title="Simon Bremner"
     description="Explore my photography portfolio - a collection of visual stories captured through my lens."
 >
-    <!-- Hero -->
-    <section
-        class="w-full flex flex-col items-center justify-center min-h-[60vh] text-center px-4 pt-24 pb-12"
-    >
-        <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-8">
-            Simon Bremner Gallery
-        </h1>
-        <div
-            class="flex flex-col sm:flex-row gap-4 items-center justify-center"
-        >
-            <a href="#gallery">
-                <Button size="lg">View Gallery</Button>
-            </a>
-            <a href="/about">
-                <Button size="lg" variant="outline">About Me</Button>
-            </a>
-        </div>
-    </section>
-
-    <!-- Gallery -->
-    <section id="gallery" class="w-full py-20">
+    <section id="gallery" class="w-full pt-24 pb-20">
         <Container>
+            <AnimatedHero
+                headline="Gallery"
+                ariaLabel="Gallery"
+                uppercase
+                noWrap
+                containerClassName="mb-[clamp(1.25rem,3vw,2.5rem)] w-full overflow-clip"
+                headlineClassName="font-thin [line-height:0.88] [letter-spacing:0.015em] text-[3.25rem] sm:text-[4.75rem] md:text-[6.5rem] lg:text-[8.5rem] xl:text-[10.5rem] 2xl:text-[12rem]"
+            />
             <LazyMasonryGallery
                 client:load
                 initialImages={galleryPhotos}
