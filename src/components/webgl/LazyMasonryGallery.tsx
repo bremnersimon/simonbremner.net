@@ -295,6 +295,10 @@ const LazyMasonryGallery = ({
 		}
 	}, [selectedIndex, images.length, hasMore, loadMorePhotos]);
 
+	const handleManualLoadMore = useCallback(() => {
+		void loadMorePhotos();
+	}, [loadMorePhotos]);
+
 	// Stable ref so the observer always calls the latest loadMorePhotos without
 	// needing to be torn down and recreated every time offset changes.
 	const loadMorePhotosRef = useRef(loadMorePhotos);
@@ -483,13 +487,21 @@ const LazyMasonryGallery = ({
 				/>
 			</div>
 
-			{/* Loading indicator below the grid */}
-			{hasMore && isLoading && (
-				<div className="flex justify-center items-center mt-8 mb-4">
-					<div className="inline-flex items-center text-muted-foreground">
-						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-						Loading photos...
-					</div>
+			{hasMore && (
+				<div className="mt-8 mb-4 flex flex-col items-center gap-3">
+					<Button
+						type="button"
+						variant="outline"
+						onClick={handleManualLoadMore}
+						disabled={isLoading}
+						className="min-w-40"
+					>
+						{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+						{isLoading ? "Loading..." : "Load more"}
+					</Button>
+					{/* <p className="text-center text-xs text-muted-foreground">
+						If scrolling skips auto-load, use Load more.
+					</p> */}
 				</div>
 			)}
 

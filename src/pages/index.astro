@@ -4,6 +4,7 @@ import Container from "@/components/main/Container.astro";
 import AnimatedHero from "@/components/main/AnimatedHero.astro";
 import { getAllPhotos, urlForImage } from "@/lib/sanity";
 import LazyMasonryGallery from "@/components/webgl/LazyMasonryGallery";
+import ogImage from "@/assets/main-og-image.jpg";
 
 type GalleryPhotoSource = {
     _id: string;
@@ -87,6 +88,7 @@ const galleryPhotos = photos.map((photo: GalleryPhotoSource) => {
 <PageLayout
     title="Gallery | Simon Bremner"
     description="A photography gallery."
+    image={ogImage}
 >
     <section id="gallery" class="w-full pt-24 pb-20">
         <Container>
@@ -101,7 +103,7 @@ const galleryPhotos = photos.map((photo: GalleryPhotoSource) => {
             <LazyMasonryGallery
                 client:load
                 initialImages={galleryPhotos}
-                photosPerPage={12}
+                photosPerPage={15}
             />
         </Container>
     </section>

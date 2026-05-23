@@ -12,7 +12,7 @@ import partytown from "@astrojs/partytown";
 export default defineConfig({
 	output: "server",
 	adapter: aws(),
-	site: "https://www.simonbremner.net",
+	site: "https://simonbremner.net",
 	prefetch: {
 		prefetchAll: true,
 		defaultStrategy: 'viewport'
