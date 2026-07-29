@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import "highlight.js/styles/github-dark.css";
-import { ClientRouter, ViewTransitions } from "astro:transitions";
 import MainOgImage from "@/assets/main-og-image.jpg";
 import Footer from "@/components/globals/Footer.astro";
 import { Navbar } from "@/components/globals/Navbar";
@@ -16,13 +15,13 @@ const year = new Date().getFullYear();
 type Props = SEOProps;
 
 const {
-	title = "Portfolio | Simon Bremner",
-	description = "A Creative Portfolio",
-	pageType = "website",
-	noindex = false,
-	nofollow = false,
-	image,
-	article,
+  title = "Portfolio | Simon Bremner",
+  description = "A Creative Portfolio",
+  pageType = "website",
+  noindex = false,
+  nofollow = false,
+  image,
+  article,
 } = Astro.props;
 ---
 
@@ -40,14 +39,14 @@ const {
       article={article ? article : undefined}
     />
     <CommonHead title={title} description={description} />
+    <slot name="head" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <ClientRouter />
   </head>
   <body
     class="text-foreground bg-background flex flex-col min-h-screen m-0 w-full h-full"
   >
     <TagManagerBody />
-    <Navbar client:load transition:name="navbar" transition:persist />
+    <Navbar client:idle transition:name="navbar" transition:persist />
     <main id="page-content" class="flex-grow" transition:animate="fade">
       <slot />
     </main>

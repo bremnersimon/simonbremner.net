@@ -7,9 +7,10 @@ import { getAllPhotos } from "@/lib/sanity";
 import LazyMasonryGallery from "@/components/webgl/LazyMasonryGallery";
 import ogImage from "@/assets/main-og-image.jpg";
 
-const initialPhotosPerPage = 12;
+const initialPhotosPerPage = 6;
 const photos = await getAllPhotos(initialPhotosPerPage, 0);
 const galleryPhotos = photos.map(mapGalleryPhoto);
+const lcpPhoto = galleryPhotos[0];
 ---
 
 <PageLayout
@@ -17,6 +18,22 @@ const galleryPhotos = photos.map(mapGalleryPhoto);
     description="A photography gallery."
     image={ogImage}
 >
+    {
+        lcpPhoto && (
+            <Fragment slot="head">
+                <link
+                    rel="preload"
+                    as="image"
+                    href={lcpPhoto.image.src}
+                    imagesrcset={
+                        lcpPhoto.image.srcSetAvif || lcpPhoto.image.srcSetWebp
+                    }
+                    imagesizes={lcpPhoto.image.sizes}
+                    fetchpriority="high"
+                />
+            </Fragment>
+        )
+    }
     <section id="gallery" class="w-full pt-24 pb-20">
         <Container>
             <AnimatedHero
@@ -28,7 +45,7 @@ const galleryPhotos = photos.map(mapGalleryPhoto);
                 headlineClassName="font-thin [line-height:0.88] [letter-spacing:0.015em] text-[3.25rem] sm:text-[4.75rem] md:text-[6.5rem] lg:text-[8.5rem] xl:text-[10.5rem] 2xl:text-[12rem]"
             />
             <LazyMasonryGallery
-                client:load
+                client:visible={{ rootMargin: "600px" }}
                 initialImages={galleryPhotos}
                 photosPerPage={15}
             />

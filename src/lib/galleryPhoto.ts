@@ -1,10 +1,11 @@
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { urlForImage } from "@/lib/sanity";
 
-const GRID_IMAGE_WIDTHS = [480, 768, 1024, 1365, 1600] as const;
-const GRID_DEFAULT_WIDTH = 1024;
+const GRID_IMAGE_WIDTHS = [360, 480, 640, 768, 1024, 1365] as const;
+const GRID_DEFAULT_WIDTH = 768;
 const MODAL_WIDTH = 2200;
 const THUMBNAIL_WIDTH = 600;
+const PLACEHOLDER_WIDTH = 40;
 
 const GRID_SIZES = "(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw";
 
@@ -48,6 +49,8 @@ export interface GalleryPhoto {
 		src: string;
 		modalSrc: string;
 		thumbnail: string;
+		placeholder: string;
+		srcSetAvif: string;
 		srcSetWebp: string;
 		sizes: string;
 		alt: string;
@@ -127,13 +130,16 @@ export const mapGalleryPhoto = (photo: GalleryPhotoSource): GalleryPhoto => {
 	const safeImage = photo.image as SanityImageSource;
 
 	const src = hasImage
-		? buildImageVariant(safeImage, GRID_DEFAULT_WIDTH, "webp", 72)
+		? buildImageVariant(safeImage, GRID_DEFAULT_WIDTH, "webp", 66)
 		: "/images/no-image.svg";
 	const modalSrc = hasImage
 		? buildImageVariant(safeImage, MODAL_WIDTH, "webp", 80)
 		: "/images/no-image.svg";
 	const thumbnail = hasImage
 		? buildImageVariant(safeImage, THUMBNAIL_WIDTH, "webp", 68)
+		: "/images/no-image.svg";
+	const placeholder = hasImage
+		? buildImageVariant(safeImage, PLACEHOLDER_WIDTH, "webp", 32)
 		: "/images/no-image.svg";
 
 	return {
@@ -146,7 +152,9 @@ export const mapGalleryPhoto = (photo: GalleryPhotoSource): GalleryPhoto => {
 			src,
 			modalSrc,
 			thumbnail,
-			srcSetWebp: hasImage ? buildSrcSet(safeImage, "webp", 72) : "",
+			placeholder,
+			srcSetAvif: hasImage ? buildSrcSet(safeImage, "avif", 52) : "",
+			srcSetWebp: hasImage ? buildSrcSet(safeImage, "webp", 66) : "",
 			sizes: GRID_SIZES,
 			alt,
 			width,

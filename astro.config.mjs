@@ -22,8 +22,8 @@ export default defineConfig({
 		sanity({
 			projectId: "hzdtear2",
 			dataset: "production",
-			apiVersion: "2024-01-01",
-			useCdn: false,
+			apiVersion: "2026-07-30",
+			useCdn: true,
 		}),
 		sitemap(),
 		partytown(),
