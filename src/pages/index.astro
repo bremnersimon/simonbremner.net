@@ -2,87 +2,14 @@
 import PageLayout from "@/layouts/PageLayout.astro";
 import Container from "@/components/main/Container.astro";
 import AnimatedHero from "@/components/main/AnimatedHero.astro";
-import { getAllPhotos, urlForImage } from "@/lib/sanity";
+import { mapGalleryPhoto } from "@/lib/galleryPhoto";
+import { getAllPhotos } from "@/lib/sanity";
 import LazyMasonryGallery from "@/components/webgl/LazyMasonryGallery";
 import ogImage from "@/assets/main-og-image.jpg";
 
-type GalleryPhotoSource = {
-    _id: string;
-    title: string;
-    slug: { current: string } | string;
-    altText?: string;
-    description?: string;
-    image?: {
-        asset?: {
-            metadata?: {
-                dimensions?: {
-                    width?: number;
-                    height?: number;
-                    aspectRatio?: number;
-                };
-            };
-        };
-    };
-    categories?: unknown[];
-    tags?: string[];
-    dateTaken?: string;
-    location?: string;
-    featured?: boolean;
-    camera?: unknown;
-    lens?: unknown;
-    focalLength?: string | null;
-    aperture?: string | null;
-    shutterSpeed?: string | null;
-    iso?: number | null;
-};
-
 const initialPhotosPerPage = 12;
 const photos = await getAllPhotos(initialPhotosPerPage, 0);
-
-const galleryPhotos = photos.map((photo: GalleryPhotoSource) => {
-    const dimensions = photo.image?.asset?.metadata?.dimensions;
-    const width = dimensions?.width || 800;
-    const height = dimensions?.height || 600;
-    const aspectRatio = dimensions?.aspectRatio || width / height;
-    const orientation =
-        width > height ? "landscape" : width < height ? "portrait" : "square";
-
-    return {
-        _id: photo._id,
-        title: photo.title,
-        slug: photo.slug,
-        altText: photo.altText,
-        description: photo.description,
-        image: {
-            src: photo.image
-                ? urlForImage(photo.image).format("webp").width(1920).url()
-                : "/images/no-image.svg",
-            thumbnail: photo.image
-                ? urlForImage(photo.image).format("webp").width(600).url()
-                : "/images/no-image.svg",
-            alt: photo.altText || photo.title,
-            width,
-            height,
-        },
-        dimensions: {
-            width,
-            height,
-            aspectRatio,
-            orientation,
-        },
-        categories: photo.categories || [],
-        tags: photo.tags || [],
-        dateTaken: photo.dateTaken,
-        location: photo.location,
-        featured: photo.featured,
-        camera: photo.camera || null,
-        lens: photo.lens || null,
-        focalLength: photo.focalLength || null,
-        aperture: photo.aperture || null,
-        shutterSpeed: photo.shutterSpeed || null,
-        iso: photo.iso || null,
-    };
-});
+const galleryPhotos = photos.map(mapGalleryPhoto);
 ---
 
 <PageLayout
@@ -110,10 +37,6 @@ const galleryPhotos = photos.map((photo: GalleryPhotoSource) => {
 </PageLayout>
 
 <style>
-    html {
-        view-transition-name: none;
-    }
-
     .photo-item {
         page-break-inside: avoid;
         break-inside: avoid;

@@ -1,7 +1,6 @@
 ---
 import ogImage from "@/assets/about-og-image.jpg";
 import headshot from "@/assets/sb-headshot.jpg";
-import FilmDistortionImage from "@/components/webgl/FilmDistortionImage.tsx";
 import AnimatedHero from "@/components/main/AnimatedHero.astro";
 import Container from "@/components/main/Container.astro";
 import EquipmentSection from "@/components/main/EquipmentSection.astro";
@@ -40,11 +39,15 @@ const [cameras, lenses] = await Promise.all([
       paragraphClassName="text-muted-foreground text-sm sm:text-base mt-4 leading-relaxed max-w-md"
       mediaClassName="w-full"
     >
-      <FilmDistortionImage
-        client:load
+      <img
         src={headshot.src}
         alt="Portrait of Simon Bremner"
-        className="block w-full h-auto"
+        class="block w-full h-auto"
+        width={headshot.width}
+        height={headshot.height}
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
       />
     </AnimatedHero>
   </Container>
