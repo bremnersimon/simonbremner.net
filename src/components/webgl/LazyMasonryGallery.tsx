@@ -583,7 +583,7 @@ const LazyMasonryGallery = ({
 										)}
 
 										{isModalImageReady && (
-											<div className="absolute bottom-4 right-4 z-10">
+											<div className="hidden md:block absolute bottom-4 right-4 z-10">
 												<Tooltip>
 													<TooltipTrigger asChild>
 														<button
