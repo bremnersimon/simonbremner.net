@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, Info, Loader2 } from "lucide-react";
+import type { GalleryPhoto } from "@/lib/galleryPhoto";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../shad-ui/button";
@@ -11,55 +12,8 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "../shad-ui/tooltip";
 import MasonryGrid from "./MasonryGrid";
 
-interface Photo {
-	_id: string;
-	title: string;
-	slug: { current: string };
-	altText: string;
-	description?: string;
-	image: {
-		src: string;
-		thumbnail: string;
-		alt: string;
-		width: number;
-		height: number;
-	};
-	dimensions: {
-		width: number;
-		height: number;
-		aspectRatio: number;
-		orientation: "landscape" | "portrait" | "square";
-	};
-	categories: Array<{
-		_id: string;
-		name: string;
-		slug: { current: string };
-		color?: string;
-	}>;
-	tags: string[];
-	dateTaken?: string;
-	location?: string;
-	featured: boolean;
-	camera?: {
-		_id: string;
-		name: string;
-		brand?: string;
-		modelNumber?: string;
-	} | null;
-	lens?: {
-		_id: string;
-		name: string;
-		brand?: string;
-		lensFocalLength?: string;
-	} | null;
-	focalLength?: string | null;
-	aperture?: string | null;
-	shutterSpeed?: string | null;
-	iso?: number | null;
-}
-
 interface LazyMasonryGalleryProps {
-	initialImages: Photo[];
+	initialImages: GalleryPhoto[];
 	photosPerPage?: number;
 }
 
@@ -67,49 +21,22 @@ const LazyMasonryGallery = ({
 	initialImages,
 	photosPerPage = 20,
 }: LazyMasonryGalleryProps) => {
-	const [images, setImages] = useState<Photo[]>(initialImages || []);
+	const [images, setImages] = useState<GalleryPhoto[]>(initialImages || []);
 	const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 	const [columns, setColumns] = useState(1);
 	const [isLoading, setIsLoading] = useState(false);
 	const [hasMore, setHasMore] = useState(true);
 	const [offset, setOffset] = useState(initialImages?.length || 0);
 	const [isModalImageReady, setIsModalImageReady] = useState(false);
-	const [visibleIds, setVisibleIds] = useState<Set<string>>(new Set());
+	const [loadedIds, setLoadedIds] = useState<Set<string>>(new Set());
 	const [measuredRatios, setMeasuredRatios] = useState<Record<string, number>>(
 		{},
 	);
 	const isFetchingRef = useRef(false);
 	const sentinelRef = useRef<HTMLDivElement>(null);
 	const lastFetchAtRef = useRef(0);
-	const imageObserverRef = useRef<IntersectionObserver | null>(null);
 	const resizeObserverRef = useRef<ResizeObserver | null>(null);
 	const itemElementsRef = useRef(new Map<string, HTMLButtonElement>());
-
-	const ensureImageObserver = useCallback(() => {
-		if (!imageObserverRef.current) {
-			imageObserverRef.current = new IntersectionObserver(
-				(entries) => {
-					for (const entry of entries) {
-						if (entry.isIntersecting) {
-							const key = (entry.target as HTMLElement).dataset.imgId;
-							if (key) {
-								setVisibleIds((prev) => {
-									if (prev.has(key)) return prev;
-									const next = new Set(prev);
-									next.add(key);
-									return next;
-								});
-								imageObserverRef.current?.unobserve(entry.target);
-							}
-						}
-					}
-				},
-				{ threshold: 0.05, rootMargin: "0px 0px 80px 0px" },
-			);
-		}
-
-		return imageObserverRef.current;
-	}, []);
 
 	const updateMeasuredRatio = useCallback(
 		(id: string, width: number, height: number) => {
@@ -136,7 +63,6 @@ const LazyMasonryGallery = ({
 			const existing = itemElementsRef.current.get(id);
 
 			if (existing && existing !== el) {
-				imageObserverRef.current?.unobserve(existing);
 				resizeObserverRef.current?.unobserve(existing);
 				itemElementsRef.current.delete(id);
 			}
@@ -147,13 +73,10 @@ const LazyMasonryGallery = ({
 
 			itemElementsRef.current.set(id, el);
 
-			const imageObserver = ensureImageObserver();
-			imageObserver.observe(el);
-
 			resizeObserverRef.current?.observe(el);
 			updateMeasuredRatio(id, el.clientWidth, el.clientHeight);
 		},
-		[ensureImageObserver, updateMeasuredRatio],
+		[updateMeasuredRatio],
 	);
 
 	useEffect(() => {
@@ -181,7 +104,6 @@ const LazyMasonryGallery = ({
 
 	useEffect(() => {
 		return () => {
-			imageObserverRef.current?.disconnect();
 			itemElementsRef.current.clear();
 		};
 	}, []);
@@ -351,7 +273,7 @@ const LazyMasonryGallery = ({
 			},
 			{
 				threshold: 0.01,
-				rootMargin: "0px 0px 500px 0px",
+				rootMargin: "0px 0px 400px 0px",
 			},
 		);
 
@@ -404,7 +326,7 @@ const LazyMasonryGallery = ({
 
 		setIsModalImageReady(false);
 		const image = new Image();
-		image.src = selected.image.src;
+		image.src = selected.image.modalSrc || selected.image.src;
 
 		if (image.complete) {
 			setIsModalImageReady(true);
@@ -445,7 +367,9 @@ const LazyMasonryGallery = ({
 				>
 					{images.map((img, i) => {
 						const imgKey = img._id || String(i);
-						const isVisible = visibleIds.has(imgKey);
+						const prioritizeImage = i < Math.max(columns * 2, 4);
+						const isLoaded = loadedIds.has(imgKey);
+						const hasResponsiveSources = Boolean(img.image.srcSetWebp);
 						return (
 							<button
 								type="button"
@@ -453,20 +377,53 @@ const LazyMasonryGallery = ({
 								ref={(el) => registerButton(el, imgKey)}
 								data-img-id={imgKey}
 								className="overflow-hidden cursor-pointer shadow-md relative w-full focus:outline-none transition-transform hover:scale-[1.02] focus:scale-[1.02]"
-								style={{ width: "100%" }}
+								style={{
+									width: "100%",
+									aspectRatio: `${img.dimensions.width} / ${img.dimensions.height}`,
+									backgroundColor: "hsl(var(--muted))",
+								}}
 								onClick={() => setSelectedIndex(i)}
 								tabIndex={0}
 								aria-label={img.image.alt || img.title || `View photo ${i + 1}`}
 							>
-								<img
-									src={img.image.src}
-									alt={img.image.alt || img.title || `Photo ${i + 1}`}
-									width={img.image.width}
-									height={img.image.height}
-									className="w-full object-cover transition-opacity duration-700 ease-in-out"
-									style={{ display: "block", opacity: isVisible ? 1 : 0 }}
-									loading="lazy"
-								/>
+								<picture>
+									{hasResponsiveSources && img.image.srcSetWebp && (
+										<source
+											srcSet={img.image.srcSetWebp}
+											sizes={img.image.sizes}
+											type="image/webp"
+										/>
+									)}
+									<img
+										src={img.image.src}
+										alt={img.image.alt || img.title || `Photo ${i + 1}`}
+										width={img.image.width}
+										height={img.image.height}
+										className="h-full w-full object-cover transition-opacity duration-300 ease-out"
+										style={{
+											display: "block",
+											opacity: prioritizeImage || isLoaded ? 1 : 0,
+										}}
+										loading={prioritizeImage ? "eager" : "lazy"}
+										decoding="async"
+										fetchPriority={i === 0 ? "high" : "auto"}
+										onLoad={() => {
+											if (prioritizeImage) return;
+											setLoadedIds((prev) => {
+												if (prev.has(imgKey)) return prev;
+												const next = new Set(prev);
+												next.add(imgKey);
+												return next;
+											});
+										}}
+										onError={(event) => {
+											const target = event.currentTarget;
+											if (target.src !== img.image.thumbnail) {
+												target.src = img.image.thumbnail;
+											}
+										}}
+									/>
+								</picture>
 								{(img.location || img.title) && (
 									<div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-3 py-1 rounded shadow backdrop-blur-sm">
 										{img.location || img.title}
@@ -586,7 +543,7 @@ const LazyMasonryGallery = ({
 											}}
 										>
 											<img
-												src={selected.image.src}
+												src={selected.image.modalSrc || selected.image.src}
 												alt={selected.image.alt || selected.title}
 												width={selected.image.width}
 												height={selected.image.height}
