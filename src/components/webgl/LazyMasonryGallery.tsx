@@ -445,7 +445,14 @@ const LazyMasonryGallery = ({
 				>
 					{images.map((img, i) => {
 						const imgKey = img._id || String(i);
+<<<<<<< Updated upstream
 						const isVisible = visibleIds.has(imgKey);
+=======
+						const prioritizeImage = i < Math.max(columns * 2, 4);
+						const isLoaded = loadedIds.has(imgKey);
+						const imageOpacity = prioritizeImage || isLoaded ? 1 : 0;
+						const hasResponsiveSources = Boolean(img.image.srcSetWebp);
+>>>>>>> Stashed changes
 						return (
 							<button
 								type="button"
@@ -459,6 +466,7 @@ const LazyMasonryGallery = ({
 								aria-label={img.image.alt || img.title || `View photo ${i + 1}`}
 							>
 								<img
+<<<<<<< Updated upstream
 									src={img.image.src}
 									alt={img.image.alt || img.title || `Photo ${i + 1}`}
 									width={img.image.width}
@@ -467,6 +475,65 @@ const LazyMasonryGallery = ({
 									style={{ display: "block", opacity: isVisible ? 1 : 0 }}
 									loading="lazy"
 								/>
+=======
+									src={img.image.placeholder}
+									alt=""
+									aria-hidden="true"
+									className="absolute inset-0 h-full w-full object-cover scale-105 blur-xl"
+									style={{
+										opacity: isLoaded ? 0 : prioritizeImage ? 0.78 : 0.9,
+										transition: "opacity 160ms ease-out",
+									}}
+									loading={prioritizeImage ? "eager" : "lazy"}
+									fetchPriority={i === 0 ? "high" : "low"}
+									decoding="async"
+								/>
+								<picture>
+									{hasResponsiveSources && img.image.srcSetAvif && (
+										<source
+											srcSet={img.image.srcSetAvif}
+											sizes={img.image.sizes}
+											type="image/avif"
+										/>
+									)}
+									{hasResponsiveSources && img.image.srcSetWebp && (
+										<source
+											srcSet={img.image.srcSetWebp}
+											sizes={img.image.sizes}
+											type="image/webp"
+										/>
+									)}
+									<img
+										src={img.image.src}
+										alt={img.image.alt || img.title || `Photo ${i + 1}`}
+										width={img.image.width}
+										height={img.image.height}
+										className="h-full w-full object-cover transition-opacity duration-300 ease-out"
+										style={{
+											display: "block",
+											opacity: imageOpacity,
+											transitionDuration: prioritizeImage ? "120ms" : "180ms",
+										}}
+										loading={prioritizeImage ? "eager" : "lazy"}
+										decoding="async"
+										fetchPriority={i === 0 ? "high" : "auto"}
+										onLoad={() => {
+											setLoadedIds((prev) => {
+												if (prev.has(imgKey)) return prev;
+												const next = new Set(prev);
+												next.add(imgKey);
+												return next;
+											});
+										}}
+										onError={(event) => {
+											const target = event.currentTarget;
+											if (target.src !== img.image.thumbnail) {
+												target.src = img.image.thumbnail;
+											}
+										}}
+									/>
+								</picture>
+>>>>>>> Stashed changes
 								{(img.location || img.title) && (
 									<div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-3 py-1 rounded shadow backdrop-blur-sm">
 										{img.location || img.title}
