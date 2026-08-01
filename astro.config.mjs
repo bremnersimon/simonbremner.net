@@ -4,10 +4,14 @@ import sitemap from "@astrojs/sitemap";
 import sanity from "@sanity/astro";
 import tailwindcss from "@tailwindcss/vite";
 import aws from "astro-sst";
+import {loadEnv} from "vite";
 // @ts-check
 import { defineConfig } from "astro/config";
 
 import partytown from "@astrojs/partytown";
+
+const { PROJECT_ID, DATA_SET } = loadEnv(process.env.NODE_ENV, process.cwd(), "");
+
 
 export default defineConfig({
 	output: "server",
@@ -20,10 +24,10 @@ export default defineConfig({
 	integrations: [
 		react(),
 		sanity({
-			projectId: "hzdtear2",
-			dataset: "production",
-			apiVersion: "2024-01-01",
-			useCdn: false,
+			projectId: PROJECT_ID,
+			dataset: DATA_SET,
+			apiVersion: "2026-07-30",
+			useCdn: true,
 		}),
 		sitemap(),
 		partytown(),
