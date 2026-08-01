@@ -424,11 +424,11 @@ const LazyMasonryGallery = ({
 										}}
 									/>
 								</picture>
-								{(img.location || img.title) && (
+								{/* {(img.location || img.title) && (
 									<div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-3 py-1 rounded shadow backdrop-blur-sm">
 										{img.location || img.title}
 									</div>
-								)}
+								)} */}
 							</button>
 						);
 					})}
