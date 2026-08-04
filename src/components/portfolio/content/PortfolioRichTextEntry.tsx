@@ -62,7 +62,7 @@ const textComponents = {
 
 export function PortfolioRichTextEntry({ value }: PortfolioRichTextEntryProps) {
 	return (
-		<div className="rounded-lg border border-border/60 bg-card/30 px-5 py-4">
+		<div className="mx-auto w-full max-w-[800px] px-5">
 			<PortableText value={[value]} components={textComponents} />
 		</div>
 	);

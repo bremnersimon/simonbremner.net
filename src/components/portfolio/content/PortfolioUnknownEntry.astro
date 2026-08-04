@@ -1,11 +1,16 @@
 ---
 interface Props {
-	typeName?: string;
+    typeName?: string;
 }
 
 const { typeName = "unknown" } = Astro.props;
 ---
 
-<div class="rounded-lg border border-dashed border-border bg-muted/20 p-4" aria-label="Unknown content block">
-	<p class="text-sm text-muted-foreground">Unsupported content type: {typeName}</p>
+<div
+    class="rounded-lg border border-dashed border-border bg-muted/20 p-4"
+    aria-label="Unknown content block"
+>
+    <p class="text-sm text-muted-foreground">
+        Unsupported content type: {typeName}
+    </p>
 </div>

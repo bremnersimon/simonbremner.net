@@ -33,7 +33,13 @@ export function getPortfolioCategoryDisplay(categories: string[] = []) {
 	return getPortfolioCategoryLabels(categories).join(" & ");
 }
 
-type PortfolioTransitionPart = "card" | "image" | "category" | "title" | "tags";
+type PortfolioTransitionPart =
+	| "card"
+	| "image"
+	| "category"
+	| "title"
+	| "introduction"
+	| "tags";
 
 export function getPortfolioTransitionName(
 	slug: string | undefined,

@@ -1,11 +1,9 @@
 ---
 import Container from "@/components/main/Container.astro";
-import PortfolioBrandSection from "@/components/portfolio/PortfolioBrandSection.astro";
-import PortfolioColoursSection from "@/components/portfolio/PortfolioColoursSection.astro";
 import PortfolioContentRenderer from "@/components/portfolio/PortfolioContentRenderer.astro";
-import PortfolioIntroductionSection from "@/components/portfolio/PortfolioIntroductionSection.astro";
-import { PortfolioPreviewCard } from "@/components/portfolio/PortfolioPreviewCard";
+import { Separator } from "@/components/shad-ui/separator";
 import PageLayout from "@/layouts/PageLayout.astro";
+import { getPortfolioTransitionName } from "@/lib/portfolio";
 import { getPortfolioPostBySlug, urlForImage } from "@/lib/sanity";
 import type { PortfolioPost } from "@/types/portfolio";
 
@@ -26,6 +24,10 @@ const seoTitle = post?.headline
     ? `${post.headline} | Portfolio`
     : "Portfolio | Simon Bremner";
 const seoDescription = post?.introduction || "Portfolio project";
+const imageTransitionName = getPortfolioTransitionName(
+    post?.slug?.current,
+    "image",
+);
 ---
 
 <PageLayout
@@ -33,44 +35,64 @@ const seoDescription = post?.introduction || "Portfolio project";
     description={seoDescription}
     pageType="article"
     image={heroImageUrl}
-    mainTransition="none"
 >
     <section class="w-full pb-16 pt-24">
         <Container>
             {
                 post ? (
                     <div class="space-y-10">
-                        <PortfolioPreviewCard
-                            headline={post.headline}
-                            categories={post.category}
-                            serviceTags={post.serviceTags}
-                            imageUrl={heroImageUrl}
-                            imageAlt={
-                                post.heroImage?.alt ||
-                                post.headline ||
-                                "Portfolio image"
-                            }
-                            slug={post.slug?.current}
-                            headingTag="h1"
-                            loading="eager"
-                            contentClassName="space-y-4 p-5 sm:p-6"
-                        />
+                        {heroImageUrl ? (
+                            <div
+                                class="overflow-hidden"
+                                style={
+                                    imageTransitionName
+                                        ? `view-transition-name: ${imageTransitionName};`
+                                        : undefined
+                                }
+                            >
+                                <img
+                                    src={heroImageUrl}
+                                    alt={
+                                        post.heroImage?.alt ||
+                                        post.headline ||
+                                        "Portfolio image"
+                                    }
+                                    class="h-[320px] w-full object-cover sm:h-[420px] md:h-[560px]"
+                                    loading="eager"
+                                />
+                            </div>
+                        ) : (
+                            <div class="flex h-[320px] items-center justify-center border border-border/60 sm:h-[420px] md:h-[560px]">
+                                <p class="text-xs text-muted-foreground">
+                                    No image
+                                </p>
+                            </div>
+                        )}
 
-                        <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
-                            <div>
-                                <PortfolioIntroductionSection
-                                    introduction={post.introduction}
-                                />
-                            </div>
-                            <div class="space-y-6">
-                                <PortfolioColoursSection
-                                    colors={post.colorsUsed}
-                                />
-                                <PortfolioBrandSection
-                                    brandLogo={post.brandLogo}
-                                />
-                            </div>
-                        </div>
+                        <header class="mx-auto w-full max-w-[800px] space-y-5 px-5">
+                            {(post.serviceTags || []).length > 0 && (
+                                <ul
+                                    class="flex flex-wrap gap-2"
+                                    aria-label="Portfolio tags"
+                                >
+                                    {(post.serviceTags || []).map((tag) => (
+                                        <li class="border border-foreground px-3 py-1.5 text-xs uppercase tracking-[0.12em] text-foreground">
+                                            {tag}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                            <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+                                {post.headline || "Untitled"}
+                            </h1>
+
+                            {post.introduction && (
+                                <p class="max-w-prose text-base leading-relaxed text-foreground/90">
+                                    {post.introduction}
+                                </p>
+                            )}
+                            <Separator />
+                        </header>
 
                         <PortfolioContentRenderer content={post.content} />
                     </div>

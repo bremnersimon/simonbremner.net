@@ -83,6 +83,7 @@ export async function getPortfolioPosts(limit = 24) {
       introduction,
       category,
       serviceTags,
+      colorsUsed,
       publishedAt,
       heroImage{
         ...,

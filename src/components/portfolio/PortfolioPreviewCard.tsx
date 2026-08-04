@@ -1,102 +1,71 @@
-import { getPortfolioCategoryDisplay, getPortfolioTransitionName } from "@/lib/portfolio";
+import { getPortfolioTransitionName } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
 
 type PortfolioPreviewCardProps = {
 	headline?: string;
-	categories?: string[];
-	serviceTags?: string[];
 	imageUrl?: string;
 	imageAlt?: string;
 	href?: string;
 	slug?: string;
 	headingTag?: "h1" | "h2";
 	className?: string;
-	contentClassName?: string;
+	imageClassName?: string;
 	loading?: "eager" | "lazy";
 };
 
 export function PortfolioPreviewCard({
 	headline,
-	categories = [],
-	serviceTags = [],
 	imageUrl,
 	imageAlt,
 	href,
 	slug,
 	headingTag = "h2",
 	className,
-	contentClassName,
+	imageClassName,
 	loading = "lazy",
 }: PortfolioPreviewCardProps) {
 	const HeadingTag = headingTag;
-	const categoryLabel = getPortfolioCategoryDisplay(categories);
-	const cardTransitionName = getPortfolioTransitionName(slug, "card");
 	const imageTransitionName = getPortfolioTransitionName(slug, "image");
-	const categoryTransitionName = getPortfolioTransitionName(slug, "category");
-	const titleTransitionName = getPortfolioTransitionName(slug, "title");
-	const tagsTransitionName = getPortfolioTransitionName(slug, "tags");
 	const card = (
 		<article
 			className={cn(
-				"border border-border px-4 py-6 transition-colors duration-300 sm:px-5",
-				href && "group-hover:border-foreground/40",
+				"space-y-3 transition-colors duration-300",
+				href,
 				className,
 			)}
-			style={cardTransitionName ? { viewTransitionName: cardTransitionName } : undefined}
 		>
-			<div className="grid gap-5 md:grid-cols-[minmax(0,360px)_minmax(0,1fr)] md:items-start lg:gap-8">
+			<div className="space-y-3 group">
 				<div
-					className="overflow-hidden"
+					className="relative overflow-hidden"
 					style={imageTransitionName ? { viewTransitionName: imageTransitionName } : undefined}
 				>
 					{imageUrl ? (
-						<img
-							src={imageUrl}
-							alt={imageAlt || headline || "Portfolio image"}
-							className="h-64 w-full object-cover md:h-[260px]"
-							loading={loading}
-						/>
+						<>
+							<img
+								src={imageUrl}
+								alt={imageAlt || headline || "Portfolio image"}
+								className={cn(
+									"h-[320px] w-full object-cover sm:h-[420px] group-hover:scale-[1.02] transition-transform duration-300",
+									imageClassName,
+								)}
+								loading={loading}
+							/>
+						</>
 					) : (
-						<div className="flex h-64 items-center justify-center border border-border/60 md:h-[260px]">
+						<div className="flex h-[320px] items-center justify-center border border-border/60 sm:h-[420px] md:h-full md:min-h-[420px]">
 							<p className="text-xs text-muted-foreground">No image</p>
 						</div>
 					)}
 				</div>
 
-				<div className={cn("space-y-5", contentClassName)}>
-					{categoryLabel && (
-						<p
-							className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground"
-							aria-label="Portfolio categories"
-							style={categoryTransitionName ? { viewTransitionName: categoryTransitionName } : undefined}
-						>
-							{categoryLabel}
-						</p>
-					)}
-
-					<HeadingTag
-						className="text-2xl font-semibold tracking-tight sm:text-3xl"
-						style={titleTransitionName ? { viewTransitionName: titleTransitionName } : undefined}
-					>
+				<div className="flex items-start justify-between gap-4 border-b border-border pb-2">
+					<HeadingTag className="text-xs font-medium uppercase tracking-[0.1em] text-foreground/90 sm:text-sm">
 						{headline || "Untitled"}
 					</HeadingTag>
-
-					{serviceTags.length > 0 && (
-						<ul
-							className="flex flex-wrap gap-x-4 gap-y-2"
-							aria-label="Portfolio tags"
-							style={tagsTransitionName ? { viewTransitionName: tagsTransitionName } : undefined}
-						>
-							{serviceTags.map((tag) => (
-								<li
-									key={tag}
-									className="text-sm text-muted-foreground"
-								>
-									{tag}
-								</li>
-							))}
-						</ul>
-					)}
+					<span className="group-hover:opacity-100 opacity-100 md:opacity-0 shrink-0 text-[10px] uppercase tracking-[0.12em] text-foreground/80 sm:text-xs transition-opacity duration-300">
+						view project
+						<span aria-hidden="true"> -&gt;</span>
+					</span>
 				</div>
 			</div>
 		</article>
@@ -107,7 +76,7 @@ export function PortfolioPreviewCard({
 	}
 
 	return (
-		<a href={href} className="group block h-full">
+		<a href={href} className="group block h-full border-foreground">
 			{card}
 		</a>
 	);

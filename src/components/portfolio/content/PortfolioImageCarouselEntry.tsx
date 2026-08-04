@@ -17,7 +17,7 @@ export function PortfolioImageCarouselEntry({
 }: PortfolioImageCarouselEntryProps) {
 	if (!images.length) {
 		return (
-			<div className="rounded-lg border border-dashed border-border bg-muted/20 p-6">
+			<div className="p-6">
 				<p className="text-sm text-muted-foreground">Carousel has no images.</p>
 			</div>
 		);
@@ -25,7 +25,7 @@ export function PortfolioImageCarouselEntry({
 
 	return (
 		<section
-			className="space-y-3 rounded-lg border border-border/60 bg-card/30 p-3"
+			className="mx-auto w-full max-w-[1100px] px-5"
 			aria-label="Image carousel block"
 		>
 			<Carousel
@@ -39,7 +39,7 @@ export function PortfolioImageCarouselEntry({
 							className="basis-[84%] sm:basis-1/2 lg:basis-1/3"
 						>
 							<article className="space-y-2">
-								<div className="overflow-hidden rounded-md border border-border/50">
+								<div className="overflow-hidden">
 									<img
 										src={urlForImage(image)
 											.width(900)
