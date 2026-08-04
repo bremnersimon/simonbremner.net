@@ -1,4 +1,5 @@
 ---
+import Container from "@/components/main/Container.astro";
 import PortfolioBrandSection from "@/components/portfolio/PortfolioBrandSection.astro";
 import PortfolioColoursSection from "@/components/portfolio/PortfolioColoursSection.astro";
 import PortfolioContentRenderer from "@/components/portfolio/PortfolioContentRenderer.astro";
@@ -10,56 +11,80 @@ import type { PortfolioPost } from "@/types/portfolio";
 
 const slug = Astro.params.slug;
 const post = slug
-	? ((await getPortfolioPostBySlug(slug)) as PortfolioPost | null)
-	: null;
+    ? ((await getPortfolioPostBySlug(slug)) as PortfolioPost | null)
+    : null;
 
 if (!post) {
-	Astro.response.status = 404;
+    Astro.response.status = 404;
 }
 
 const heroImageUrl = post?.heroImage?.asset
-	? urlForImage(post.heroImage).width(1800).fit("max").format("webp").url()
-	: undefined;
+    ? urlForImage(post.heroImage).width(1800).fit("max").format("webp").url()
+    : undefined;
 
 const seoTitle = post?.headline
-	? `${post.headline} | Portfolio`
-	: "Portfolio | Simon Bremner";
+    ? `${post.headline} | Portfolio`
+    : "Portfolio | Simon Bremner";
 const seoDescription = post?.introduction || "Portfolio project";
 ---
 
-<PageLayout title={seoTitle} description={seoDescription} pageType="article" image={heroImageUrl} mainTransition="none">
-	<section class="mx-auto w-full max-w-6xl px-4 pb-16 pt-28 sm:px-6 lg:px-8">
-		{post ? (
-			<div class="space-y-10">
-				<PortfolioPreviewCard
-					headline={post.headline}
-					categories={post.category}
-					serviceTags={post.serviceTags}
-					imageUrl={heroImageUrl}
-					imageAlt={post.heroImage?.alt || post.headline || "Portfolio image"}
-					slug={post.slug?.current}
-					headingTag="h1"
-					loading="eager"
-					contentClassName="space-y-4 p-5 sm:p-6"
-				/>
+<PageLayout
+    title={seoTitle}
+    description={seoDescription}
+    pageType="article"
+    image={heroImageUrl}
+    mainTransition="none"
+>
+    <section class="w-full pb-16 pt-24">
+        <Container>
+            {
+                post ? (
+                    <div class="space-y-10">
+                        <PortfolioPreviewCard
+                            headline={post.headline}
+                            categories={post.category}
+                            serviceTags={post.serviceTags}
+                            imageUrl={heroImageUrl}
+                            imageAlt={
+                                post.heroImage?.alt ||
+                                post.headline ||
+                                "Portfolio image"
+                            }
+                            slug={post.slug?.current}
+                            headingTag="h1"
+                            loading="eager"
+                            contentClassName="space-y-4 p-5 sm:p-6"
+                        />
 
-				<div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
-					<div>
-						<PortfolioIntroductionSection introduction={post.introduction} />
-					</div>
-					<div class="space-y-6">
-						<PortfolioColoursSection colors={post.colorsUsed} />
-						<PortfolioBrandSection brandLogo={post.brandLogo} />
-					</div>
-				</div>
+                        <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+                            <div>
+                                <PortfolioIntroductionSection
+                                    introduction={post.introduction}
+                                />
+                            </div>
+                            <div class="space-y-6">
+                                <PortfolioColoursSection
+                                    colors={post.colorsUsed}
+                                />
+                                <PortfolioBrandSection
+                                    brandLogo={post.brandLogo}
+                                />
+                            </div>
+                        </div>
 
-				<PortfolioContentRenderer content={post.content} />
-			</div>
-		) : (
-			<div class="rounded-lg border border-dashed border-border p-10 text-center">
-				<h1 class="text-2xl font-semibold">Portfolio post not found</h1>
-				<p class="mt-2 text-sm text-muted-foreground">This post does not exist or is unavailable.</p>
-			</div>
-		)}
-	</section>
+                        <PortfolioContentRenderer content={post.content} />
+                    </div>
+                ) : (
+                    <div class="rounded-lg border border-dashed border-border p-10 text-center">
+                        <h1 class="text-2xl font-semibold">
+                            Portfolio post not found
+                        </h1>
+                        <p class="mt-2 text-sm text-muted-foreground">
+                            This post does not exist or is unavailable.
+                        </p>
+                    </div>
+                )
+            }
+        </Container>
+    </section>
 </PageLayout>
