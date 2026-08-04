@@ -1,13 +1,7 @@
-import author from "./authorType";
 import cameraType from "./cameraType";
 import categoryType from "./categoryType";
-import designType from "./designType";
-import developmentType from "./developmentType";
-import handcraftedType from "./handcraftedType";
 import lensType from "./lensType";
-import photographyType from "./photographyType";
 import photoType from "./photoType";
-import softwareType from "./softwareType";
 
 import codeBlock from "./blocks/codeBlock";
 import dividerBlock from "./blocks/dividerBlock";
@@ -22,25 +16,8 @@ import textBlock from "./blocks/textBlock";
 
 export const schemaTypes = [
 	// Document types
-	photographyType,
 	photoType,
 	categoryType,
-	designType,
-	developmentType,
-	handcraftedType,
-	author,
 	cameraType,
 	lensType,
-	softwareType,
-
-	// Content Blocks
-	headlineBlock,
-	textBlock,
-	imageBlock,
-	galleryBlock,
-	codeBlock,
-	stackBlock,
-	dividerBlock,
-	quoteBlock,
-	featuredImageBlock,
 ];
