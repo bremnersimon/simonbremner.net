@@ -80,65 +80,69 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 		setActiveTags([]);
 	}
 
+	const resetButtonClassName =
+		"h-10 w-10 shrink-0 rounded-none border-0 px-0 text-lg leading-none text-foreground transition-colors hover:bg-transparent disabled:cursor-not-allowed disabled:text-foreground/40";
+
 	return (
-		<div className="space-y-8">
-			<div className="space-y-6 rounded-2xl border border-border/70 bg-card/30 p-4 sm:p-5">
-				<div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-					<label htmlFor="portfolio-search" className="max-w-md space-y-2">
-						<span className="text-sm font-medium">Search portfolio</span>
+		<div className="space-y-10">
+			<div className="space-y-5">
+				<div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_220px_40px] md:items-end">
+					<label htmlFor="portfolio-search" className="block space-y-2">
+						<span className="text-xs uppercase tracking-[0.18em] text-foreground">
+							Search
+						</span>
 						<Input
 							id="portfolio-search"
 							type="search"
 							value={search}
 							onChange={(event) => setSearch(event.target.value)}
 							placeholder="Search by title, introduction, or tag"
-							className="h-10"
+							className="h-10 rounded-none border-0 border-b border-foreground px-0 text-foreground shadow-none focus-visible:ring-0"
 						/>
 					</label>
 
-					<div className="flex items-center justify-between gap-3 lg:justify-end">
-						<p className="text-sm text-muted-foreground">
-							{filteredPosts.length}{" "}
-							{filteredPosts.length === 1 ? "project" : "projects"}
-						</p>
-						{hasActiveFilters && (
-							<Button
-								type="button"
-								variant="outline"
-								size="sm"
-								onClick={resetFilters}
-							>
-								Reset filters
-							</Button>
-						)}
+					<div className="space-y-2">
+						<span className="text-xs uppercase tracking-[0.18em] text-foreground">
+							Category
+						</span>
+						<Select
+							value={activeCategory ?? "all"}
+							onValueChange={(value) =>
+								setActiveCategory(value === "all" ? null : value)
+							}
+						>
+							<SelectTrigger className="h-10 w-full rounded-none border-0 border-b border-foreground px-0 text-foreground shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0">
+								<SelectValue placeholder="All categories" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">All</SelectItem>
+								{categories.map((category) => (
+									<SelectItem key={category} value={category}>
+										{getPortfolioCategoryLabel(category)}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
 					</div>
-				</div>
 
-				<div className="space-y-3">
-					<p className="text-sm font-medium">Category</p>
-					<Select
-						value={activeCategory ?? "all"}
-						onValueChange={(value) =>
-							setActiveCategory(value === "all" ? null : value)
-						}
+					<Button
+						type="button"
+						variant="ghost"
+						size="icon"
+						className={resetButtonClassName}
+						disabled={!hasActiveFilters}
+						onClick={resetFilters}
+						aria-label="Reset filters"
 					>
-						<SelectTrigger className="h-10 w-full sm:w-[240px]">
-							<SelectValue placeholder="All categories" />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectItem value="all">All</SelectItem>
-							{categories.map((category) => (
-								<SelectItem key={category} value={category}>
-									{getPortfolioCategoryLabel(category)}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
+						X
+					</Button>
 				</div>
 
 				<div className="space-y-3">
-					<p className="text-sm font-medium">Tags</p>
-					<div className="flex flex-wrap gap-1.5">
+					<p className="text-xs uppercase tracking-[0.18em] text-foreground">
+						Tags
+					</p>
+					<div className="flex flex-wrap gap-x-4 gap-y-2">
 						{tags.map((tag) => {
 							const isActive = activeTags.includes(tag);
 
@@ -146,8 +150,12 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 								<Button
 									key={tag}
 									type="button"
-									variant={isActive ? "secondary" : "outline"}
-									className="h-7 rounded-full px-2.5 text-[11px]"
+									variant="ghost"
+									className={
+										isActive
+											? "h-auto rounded-none border border-foreground bg-foreground px-3 py-1.5 text-xs tracking-[0.08em] text-background shadow-none transition-colors hover:bg-foreground/90"
+											: "h-auto rounded-none border border-foreground bg-transparent px-3 py-1.5 text-xs tracking-[0.08em] text-foreground shadow-none transition-colors hover:bg-transparent"
+									}
 									aria-pressed={isActive}
 									onClick={() => toggleTag(tag)}
 								>
@@ -160,7 +168,7 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 			</div>
 
 			{filteredPosts.length > 0 ? (
-				<ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+				<ul className="space-y-8">
 					{filteredPosts.map((post) => (
 						<li key={post._id} className="h-full">
 							<PortfolioPreviewCard
@@ -176,7 +184,7 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 					))}
 				</ul>
 			) : (
-				<div className="rounded-2xl border border-dashed border-border p-10 text-center">
+				<div className="border-t border-border py-10 text-center">
 					<p className="text-sm text-muted-foreground">
 						No portfolio projects match the current filters.
 					</p>

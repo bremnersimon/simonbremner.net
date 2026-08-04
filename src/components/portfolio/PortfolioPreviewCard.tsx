@@ -1,4 +1,4 @@
-import { getPortfolioCategoryLabels, getPortfolioTransitionName } from "@/lib/portfolio";
+import { getPortfolioCategoryDisplay, getPortfolioTransitionName } from "@/lib/portfolio";
 import { cn } from "@/lib/utils";
 
 type PortfolioPreviewCardProps = {
@@ -29,7 +29,7 @@ export function PortfolioPreviewCard({
 	loading = "lazy",
 }: PortfolioPreviewCardProps) {
 	const HeadingTag = headingTag;
-	const categoryLabels = getPortfolioCategoryLabels(categories);
+	const categoryLabel = getPortfolioCategoryDisplay(categories);
 	const cardTransitionName = getPortfolioTransitionName(slug, "card");
 	const imageTransitionName = getPortfolioTransitionName(slug, "image");
 	const categoryTransitionName = getPortfolioTransitionName(slug, "category");
@@ -38,71 +38,66 @@ export function PortfolioPreviewCard({
 	const card = (
 		<article
 			className={cn(
-				"overflow-hidden rounded-2xl border border-border/70 bg-card/40 transition-colors duration-300",
-				href && "group-hover:bg-muted/25",
+				"border border-border px-4 py-6 transition-colors duration-300 sm:px-5",
+				href && "group-hover:border-foreground/40",
 				className,
 			)}
 			style={cardTransitionName ? { viewTransitionName: cardTransitionName } : undefined}
 		>
-			<div
-				className="overflow-hidden border-b border-border/70 bg-muted/20"
-				style={imageTransitionName ? { viewTransitionName: imageTransitionName } : undefined}
-			>
-				{imageUrl ? (
-					<img
-						src={imageUrl}
-						alt={imageAlt || headline || "Portfolio image"}
-						className="aspect-[4/3] w-full object-cover"
-						loading={loading}
-					/>
-				) : (
-					<div className="flex aspect-[4/3] items-center justify-center bg-muted/25">
-						<p className="text-xs text-muted-foreground">No image</p>
-					</div>
-				)}
-			</div>
-
-			<div className={cn("space-y-4 p-4 sm:p-5", contentClassName)}>
-				{categoryLabels.length > 0 && (
-					<ul
-						className="flex flex-wrap gap-2"
-						aria-label="Portfolio categories"
-						style={categoryTransitionName ? { viewTransitionName: categoryTransitionName } : undefined}
-					>
-						{categoryLabels.map((label) => (
-							<li
-								key={label}
-								className="rounded-full border border-border px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground"
-							>
-								{label}
-							</li>
-						))}
-					</ul>
-				)}
-
-				<HeadingTag
-					className="text-lg font-semibold tracking-tight sm:text-xl"
-					style={titleTransitionName ? { viewTransitionName: titleTransitionName } : undefined}
+			<div className="grid gap-5 md:grid-cols-[minmax(0,360px)_minmax(0,1fr)] md:items-start lg:gap-8">
+				<div
+					className="overflow-hidden"
+					style={imageTransitionName ? { viewTransitionName: imageTransitionName } : undefined}
 				>
-					{headline || "Untitled"}
-				</HeadingTag>
+					{imageUrl ? (
+						<img
+							src={imageUrl}
+							alt={imageAlt || headline || "Portfolio image"}
+							className="h-64 w-full object-cover md:h-[260px]"
+							loading={loading}
+						/>
+					) : (
+						<div className="flex h-64 items-center justify-center border border-border/60 md:h-[260px]">
+							<p className="text-xs text-muted-foreground">No image</p>
+						</div>
+					)}
+				</div>
 
-				{serviceTags.length > 0 && (
-					<ul
-						className="flex flex-wrap gap-2"
-						aria-label="Portfolio tags"
-						style={tagsTransitionName ? { viewTransitionName: tagsTransitionName } : undefined}
+				<div className={cn("space-y-5", contentClassName)}>
+					{categoryLabel && (
+						<p
+							className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground"
+							aria-label="Portfolio categories"
+							style={categoryTransitionName ? { viewTransitionName: categoryTransitionName } : undefined}
+						>
+							{categoryLabel}
+						</p>
+					)}
+
+					<HeadingTag
+						className="text-2xl font-semibold tracking-tight sm:text-3xl"
+						style={titleTransitionName ? { viewTransitionName: titleTransitionName } : undefined}
 					>
-						{serviceTags.map((tag) => (
-							<li
-								key={tag}
-								className="rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground"
-							>
-								{tag}
-							</li>
-						))}
-					</ul>
-				)}
+						{headline || "Untitled"}
+					</HeadingTag>
+
+					{serviceTags.length > 0 && (
+						<ul
+							className="flex flex-wrap gap-x-4 gap-y-2"
+							aria-label="Portfolio tags"
+							style={tagsTransitionName ? { viewTransitionName: tagsTransitionName } : undefined}
+						>
+							{serviceTags.map((tag) => (
+								<li
+									key={tag}
+									className="text-sm text-muted-foreground"
+								>
+									{tag}
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
 			</div>
 		</article>
 	);

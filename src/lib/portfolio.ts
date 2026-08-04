@@ -13,12 +13,27 @@ export function getPortfolioCategoryLabels(categories: string[] = []) {
 	return categories.map(getPortfolioCategoryLabel);
 }
 
-type PortfolioTransitionPart =
-	| "card"
-	| "image"
-	| "category"
-	| "title"
-	| "tags";
+export function getPortfolioCategoryDisplay(categories: string[] = []) {
+	const categorySet = new Set(categories);
+	const hasDesign = categorySet.has("design");
+	const hasDevelopment = categorySet.has("development");
+
+	if (hasDesign && hasDevelopment) {
+		return "Design & Development";
+	}
+
+	if (hasDesign) {
+		return "Design";
+	}
+
+	if (hasDevelopment) {
+		return "Development";
+	}
+
+	return getPortfolioCategoryLabels(categories).join(" & ");
+}
+
+type PortfolioTransitionPart = "card" | "image" | "category" | "title" | "tags";
 
 export function getPortfolioTransitionName(
 	slug: string | undefined,
