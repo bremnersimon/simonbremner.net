@@ -125,13 +125,13 @@
 }
 
 /* Enhanced View Transition Animations */
-::view-transition-old(root) {
+/* ::view-transition-old(root) {
 	animation: fade-out 250ms ease-in-out;
 }
 
 ::view-transition-new(root) {
 	animation: fade-in 250ms ease-in-out;
-}
+} */
 
 @keyframes fade-out {
 	from {
