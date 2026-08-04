@@ -26,6 +26,10 @@ export const Navbar = () => {
 			href: "/",
 		},
 		{
+			title: "Portfolio",
+			href: "/portfolio",
+		},
+		{
 			title: "About",
 			href: "/about",
 		},

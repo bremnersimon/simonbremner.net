@@ -1,0 +1,27 @@
+---
+import { urlForImage } from "@/lib/sanity";
+import type { PortfolioImage } from "@/types/portfolio";
+
+interface Props {
+	brandLogo?: PortfolioImage;
+}
+
+const { brandLogo } = Astro.props;
+const brandLogoUrl = brandLogo?.asset
+	? urlForImage(brandLogo).width(260).fit("max").url()
+	: "";
+---
+
+<section class="space-y-3" aria-label="Brand section">
+	<h2 class="text-lg font-semibold">Brand</h2>
+	{brandLogoUrl ? (
+		<img
+			src={brandLogoUrl}
+			alt={brandLogo?.alt || "Brand logo"}
+			class="h-auto max-h-20 w-auto object-contain"
+			loading="lazy"
+		/>
+	) : (
+		<p class="text-sm text-muted-foreground">No brand logo provided.</p>
+	)}
+</section>

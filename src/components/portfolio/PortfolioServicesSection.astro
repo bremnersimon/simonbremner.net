@@ -1,0 +1,20 @@
+---
+interface Props {
+	serviceTags?: string[];
+}
+
+const { serviceTags = [] } = Astro.props;
+---
+
+<section class="space-y-3" aria-label="Services section">
+	<h2 class="text-lg font-semibold">Services</h2>
+	{serviceTags.length > 0 ? (
+		<ul class="space-y-1 text-sm text-muted-foreground">
+			{serviceTags.map((service) => (
+				<li>{service}</li>
+			))}
+		</ul>
+	) : (
+		<p class="text-sm text-muted-foreground">No services listed.</p>
+	)}
+</section>

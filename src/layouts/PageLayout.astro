@@ -18,6 +18,7 @@ const {
   title = "Portfolio | Simon Bremner",
   description = "A Creative Portfolio",
   pageType = "website",
+  mainTransition = "fade",
   noindex = false,
   nofollow = false,
   image,
@@ -47,7 +48,7 @@ const {
   >
     <TagManagerBody />
     <Navbar client:idle transition:name="navbar" transition:persist />
-    <main id="page-content" class="flex-grow" transition:animate="fade">
+    <main id="page-content" class="flex-grow" transition:animate={mainTransition}>
       <slot />
     </main>
     <Footer title={title} year={year} transition:animate="none" />

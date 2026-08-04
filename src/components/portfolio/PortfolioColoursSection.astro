@@ -1,0 +1,29 @@
+---
+import type { PortfolioColorSwatch } from "@/types/portfolio";
+
+interface Props {
+	colors?: PortfolioColorSwatch[];
+}
+
+const { colors = [] } = Astro.props;
+---
+
+<section class="space-y-3" aria-label="Colours section">
+	<h2 class="text-lg font-semibold">Colours</h2>
+	{colors.length > 0 ? (
+		<ul class="flex flex-wrap gap-3">
+			{colors.map((color) => (
+				<li class="flex items-center gap-2 rounded-full border border-border px-2 py-1">
+					<span
+						class="size-4 rounded-full border border-border"
+						style={`background-color: ${color.hex || "#000000"}`}
+						aria-hidden="true"
+					/>
+					<span class="text-xs text-muted-foreground">{color.name || color.hex || "Colour"}</span>
+				</li>
+			))}
+		</ul>
+	) : (
+		<p class="text-sm text-muted-foreground">No colours listed.</p>
+	)}
+</section>

@@ -74,6 +74,67 @@ export async function getAllPostsByType(
 	);
 }
 
+export async function getPortfolioPosts(limit = 24) {
+	return await client.fetch(
+		`*[_type == "portfolio"] | order(publishedAt desc)[0...$limit]{
+      _id,
+      headline,
+      slug,
+      introduction,
+      category,
+      serviceTags,
+      publishedAt,
+      heroImage{
+        ...,
+        asset->
+      }
+    }`,
+		{ limit },
+	);
+}
+
+export async function getPortfolioPostBySlug(slug: string) {
+	if (!slug) {
+		throw new Error("Portfolio slug is required");
+	}
+
+	return await client.fetch(
+		`*[_type == "portfolio" && slug.current == $slug][0]{
+      _id,
+      headline,
+      slug,
+      category,
+      introduction,
+      publishedAt,
+      serviceTags,
+      colorsUsed,
+      brandLogo{
+        ...,
+        asset->
+      },
+      heroImage{
+        ...,
+        asset->
+      },
+      content[]{
+        ...,
+        _type == "image" => {
+          ...,
+          asset->
+        },
+        _type == "imageCarousel" => {
+          ...,
+          images[]{
+            ...,
+            asset->
+          }
+        }
+      }
+    }`,
+		{ slug },
+	);
+}
+
 // Define project type constants
 export const PROJECT_TYPES = {
 	PHOTOGRAPHY: "photography",
