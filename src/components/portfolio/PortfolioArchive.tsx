@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 import { PortfolioPreviewCard } from "@/components/portfolio/PortfolioPreviewCard";
@@ -75,9 +76,6 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 	return (
 		<div className="space-y-10">
 			<div className="space-y-2">
-				<p className="text-xs uppercase tracking-[0.18em] text-foreground">
-					Filters
-				</p>
 				<ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
 					{CATEGORY_FILTERS.map((category) => {
 						const isActive = activeCategory === category;
@@ -114,19 +112,29 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 			</div>
 
 			{filteredPosts.length > 0 ? (
-				<ul className="grid grid-cols-1 gap-8 md:grid-cols-2">
-					{filteredPosts.map((post) => (
-						<li key={post._id} className="h-full">
-							<PortfolioPreviewCard
-								headline={post.headline}
-								imageUrl={post.imageUrl}
-								imageAlt={post.imageAlt}
-								href={post.href}
-								slug={post.slug}
-								className="border-0 p-0"
-							/>
-						</li>
-					))}
+				<ul className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+					<AnimatePresence mode="popLayout">
+						{filteredPosts.map((post) => (
+							<motion.li
+								key={post._id}
+								layout
+								initial={{ opacity: 0, scale: 0.96 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.96 }}
+								transition={{ duration: 0.2, ease: "easeOut" }}
+								className="h-full"
+							>
+								<PortfolioPreviewCard
+									headline={post.headline}
+									imageUrl={post.imageUrl}
+									imageAlt={post.imageAlt}
+									href={post.href}
+									slug={post.slug}
+									className="border-0 p-0"
+								/>
+							</motion.li>
+						))}
+					</AnimatePresence>
 				</ul>
 			) : (
 				<div className="border-t border-border py-10 text-center">

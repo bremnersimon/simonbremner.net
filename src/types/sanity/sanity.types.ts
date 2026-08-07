@@ -1067,6 +1067,7 @@ export type SoftwareType = {
 	_updatedAt: string;
 	_rev: string;
 	name?: string;
+	category?: "design" | "development";
 	description?: string;
 	icon?: {
 		asset?: {

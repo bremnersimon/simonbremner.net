@@ -40,6 +40,21 @@ export async function getCameras() {
 	);
 }
 
+export async function getSoftwareTypes() {
+	return await client.fetch(
+		`*[_type == "softwareType"]{
+      _id,
+      name,
+      category,
+      description,
+      icon{
+        ..., 
+        asset->
+      }
+    } | order(name asc)`,
+	);
+}
+
 export async function getHomePageProjects() {
 	return await client.fetch(`{
     "featuredProjects": *[
@@ -71,68 +86,6 @@ export async function getAllPostsByType(
     "category": _type
   } | order(publishedAt desc)[0...$limit]`,
 		{ type, limit },
-	);
-}
-
-export async function getPortfolioPosts(limit = 24) {
-	return await client.fetch(
-		`*[_type == "portfolio"] | order(publishedAt desc)[0...$limit]{
-      _id,
-      headline,
-      slug,
-      introduction,
-      category,
-      serviceTags,
-      colorsUsed,
-      publishedAt,
-      heroImage{
-        ...,
-        asset->
-      }
-    }`,
-		{ limit },
-	);
-}
-
-export async function getPortfolioPostBySlug(slug: string) {
-	if (!slug) {
-		throw new Error("Portfolio slug is required");
-	}
-
-	return await client.fetch(
-		`*[_type == "portfolio" && slug.current == $slug][0]{
-      _id,
-      headline,
-      slug,
-      category,
-      introduction,
-      publishedAt,
-      serviceTags,
-      colorsUsed,
-      brandLogo{
-        ...,
-        asset->
-      },
-      heroImage{
-        ...,
-        asset->
-      },
-      content[]{
-        ...,
-        _type == "image" => {
-          ...,
-          asset->
-        },
-        _type == "imageCarousel" => {
-          ...,
-          images[]{
-            ...,
-            asset->
-          }
-        }
-      }
-    }`,
-		{ slug },
 	);
 }
 
@@ -584,6 +537,102 @@ export async function getPhotosByCategory(categorySlug: string, limit = 50) {
       iso
     }`,
 		{ categorySlug, limit },
+	);
+}
+
+export async function getPortfolioPosts(limit = 48) {
+	return await client.fetch(
+		`*[_type == "portfolio"] | order(publishedAt desc)[0...$limit]{
+      _id,
+      headline,
+      slug,
+      category,
+      introduction,
+      publishedAt,
+      techStack[]->{
+        _id,
+        name,
+        category,
+        description,
+        icon{
+          ..., 
+          asset->
+        }
+      },
+      serviceTags,
+      colorsUsed,
+      brandLogo{
+        ...,
+        asset->
+      },
+      heroImage{
+        ...,
+        asset->
+      },
+      content[]{
+        ...,
+        _type == "image" => {
+          ...,
+          asset->
+        },
+        _type == "imageCarousel" => {
+          ...,
+          images[]{
+            ...,
+            asset->
+          }
+        }
+      }
+    }`,
+		{ limit },
+	);
+}
+
+export async function getPortfolioPostBySlug(slug: string) {
+	return await client.fetch(
+		`*[_type == "portfolio" && slug.current == $slug][0]{
+      _id,
+      headline,
+      slug,
+      category,
+      introduction,
+      publishedAt,
+      techStack[]->{
+        _id,
+        name,
+        category,
+        description,
+        icon{
+          ..., 
+          asset->
+        }
+      },
+      serviceTags,
+      colorsUsed,
+      brandLogo{
+        ...,
+        asset->
+      },
+      heroImage{
+        ...,
+        asset->
+      },
+      content[]{
+        ...,
+        _type == "image" => {
+          ...,
+          asset->
+        },
+        _type == "imageCarousel" => {
+          ...,
+          images[]{
+            ...,
+            asset->
+          }
+        }
+      }
+    }`,
+		{ slug },
 	);
 }
 

@@ -85,7 +85,7 @@ export default defineType({
 			title: "Introduction Text",
 			type: "text",
 			rows: 4,
-			validation: (Rule) => Rule.required().max(320),
+			validation: (Rule) => Rule.required(),
 			group: "core",
 		}),
 		defineField({
@@ -112,21 +112,17 @@ export default defineType({
 			group: "core",
 		}),
 		defineField({
-			name: "brandLogo",
-			title: "Brand Logo",
-			type: "image",
-			description: "Optional",
-			options: {
-				hotspot: true,
-			},
-			fields: [
-				defineField({
-					name: "alt",
-					title: "Alt Text",
-					type: "string",
+			name: "techStack",
+			title: "Tech Stack",
+			type: "array",
+			description: "Select the software used for this project.",
+			of: [
+				defineArrayMember({
+					type: "reference",
+					to: [{ type: "softwareType" }],
 				}),
 			],
-			group: "branding",
+			group: "content",
 		}),
 		defineField({
 			name: "serviceTags",
@@ -136,47 +132,26 @@ export default defineType({
 				"Suggested tags: Branding, Print, Web Design, Development. You can also add custom values.",
 			of: [defineArrayMember({ type: "string" })],
 			options: {
-				list: ["Branding", "Print", "Web Design", "Development", "Logo Design"],
+				list: [
+					"Branding",
+					"Print",
+					"Web Design",
+					"Development",
+					"Logo Design",
+					"Product Design",
+					"UI/UX Design",
+					"Illustration",
+					"Photo Editing",
+					"Animation",
+					"Video Production",
+					"Marketing",
+					"SEO",
+					"Content Creation",
+					"Packaging Design",
+					"photography",
+				],
 				layout: "grid",
 			},
-			validation: (Rule) => Rule.required().min(1),
-			group: "branding",
-		}),
-		defineField({
-			name: "colorsUsed",
-			title: "Colours Used",
-			type: "array",
-			of: [
-				defineArrayMember({
-					type: "object",
-					name: "colorSwatch",
-					title: "Colour",
-					fields: [
-						defineField({
-							name: "name",
-							title: "Name",
-							type: "string",
-							validation: (Rule) => Rule.required(),
-						}),
-						defineField({
-							name: "hex",
-							title: "Hex",
-							type: "string",
-							validation: (Rule) =>
-								Rule.required().regex(/^#(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/, {
-									name: "hex",
-									invert: false,
-								}),
-						}),
-					],
-					preview: {
-						select: {
-							title: "name",
-							subtitle: "hex",
-						},
-					},
-				}),
-			],
 			validation: (Rule) => Rule.required().min(1),
 			group: "branding",
 		}),

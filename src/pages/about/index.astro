@@ -5,9 +5,9 @@ import AnimatedHero from "@/components/main/AnimatedHero.astro";
 import Container from "@/components/main/Container.astro";
 import EquipmentSection from "@/components/main/EquipmentSection.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
-import { getCameras, getLenses } from "@/lib/sanity";
+import { getCameras, getLenses, getSoftwareTypes } from "@/lib/sanity";
 import type { AboutHeroTextProps } from "@/types/types";
-import type { Camera, Lens } from "@/types/sanity/sanity.types";
+import type { Camera, Lens, SoftwareType } from "@/types/sanity/sanity.types";
 
 const heroText: AboutHeroTextProps = {
   headline: "About",
@@ -17,9 +17,10 @@ const heroText: AboutHeroTextProps = {
 };
 
 // Fetch equipment data
-const [cameras, lenses] = await Promise.all([
+const [cameras, lenses, softwareItems] = await Promise.all([
   getCameras() as Promise<Camera[]>,
   getLenses() as Promise<Lens[]>,
+  getSoftwareTypes() as Promise<SoftwareType[]>,
 ]);
 ---
 
@@ -54,9 +55,13 @@ const [cameras, lenses] = await Promise.all([
 
   {/* Equipment Section */}
   {
-    (cameras.length > 0 || lenses.length > 0) && (
+    (cameras.length > 0 || lenses.length > 0 || softwareItems.length > 0) && (
       <Container className="py-16 lg:py-24">
-        <EquipmentSection cameras={cameras} lenses={lenses} />
+        <EquipmentSection
+          cameras={cameras}
+          lenses={lenses}
+          softwareItems={softwareItems}
+        />
       </Container>
     )
   }

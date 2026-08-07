@@ -1,3 +1,5 @@
+import type { SoftwareType } from "@/types/sanity/sanity.types";
+
 export type PortfolioCategory = "design" | "development";
 
 export interface PortfolioImage {
@@ -88,6 +90,7 @@ export interface PortfolioPost {
 	category?: PortfolioCategory[];
 	introduction?: string;
 	publishedAt?: string;
+	techStack?: SoftwareType[];
 	serviceTags?: string[];
 	colorsUsed?: PortfolioColorSwatch[];
 	brandLogo?: PortfolioImage;

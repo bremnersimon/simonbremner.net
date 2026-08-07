@@ -1,5 +1,6 @@
 ---
 import Container from "@/components/main/Container.astro";
+import EquipmentSection from "@/components/main/EquipmentSection.astro";
 import PortfolioContentRenderer from "@/components/portfolio/PortfolioContentRenderer.astro";
 import { Separator } from "@/components/shad-ui/separator";
 import PageLayout from "@/layouts/PageLayout.astro";
@@ -70,6 +71,12 @@ const imageTransitionName = getPortfolioTransitionName(
                         )}
 
                         <header class="mx-auto w-full max-w-[800px] space-y-5 px-5">
+                            <a
+                                href="/portfolio"
+                                class="inline-flex items-center text-sm text-foreground/60 transition-colors hover:text-foreground"
+                            >
+                                &larr; Back to Portfolio
+                            </a>
                             {(post.serviceTags || []).length > 0 && (
                                 <ul
                                     class="flex flex-wrap gap-2"
@@ -95,6 +102,16 @@ const imageTransitionName = getPortfolioTransitionName(
                         </header>
 
                         <PortfolioContentRenderer content={post.content} />
+
+                        {(post.techStack || []).length > 0 && (
+                            <div class="pt-8 sm:pt-12">
+                                <EquipmentSection
+                                    cameras={[]}
+                                    lenses={[]}
+                                    softwareItems={post.techStack || []}
+                                />
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div class="rounded-lg border border-dashed border-border p-10 text-center">

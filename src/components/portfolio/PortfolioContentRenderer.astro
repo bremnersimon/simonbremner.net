@@ -58,7 +58,6 @@ const { content = [] } = Astro.props;
                 case "imageCarousel":
                     return (
                         <PortfolioImageCarouselEntry
-                            client:visible
                             images={(item as PortfolioImageCarousel).images}
                         />
                     );

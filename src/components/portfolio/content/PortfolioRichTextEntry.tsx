@@ -62,7 +62,7 @@ const textComponents = {
 
 export function PortfolioRichTextEntry({ value }: PortfolioRichTextEntryProps) {
 	return (
-		<div className="mx-auto w-full max-w-[800px] px-5">
+		<div className="mx-auto w-full max-w-[800px] px-5 md:px-0 my-20">
 			<PortableText value={[value]} components={textComponents} />
 		</div>
 	);
