@@ -10,9 +10,7 @@ export default $config({
 					: input?.stage === "staging"
 						? "retain"
 						: "remove",
-			protect:
-				["production"].includes(input?.stage) ||
-				["staging"].includes(input?.stage),
+			protect: ["production", "staging"].includes(input?.stage ?? "") || false,
 			home: "aws",
 			providers: {
 				aws: {
@@ -22,12 +20,36 @@ export default $config({
 		};
 	},
 	async run() {
-		const username = new sst.Secret("USERNAME");
-		const password = new sst.Secret("PASSWORD");
-		const basicAuth = $resolve([username.value, password.value]).apply(
-			([username, password]) =>
-				Buffer.from(`${username}:${password}`).toString("base64"),
-		);
+		// Define an empty edge config by default
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		let edgeConfig: any = undefined;
+
+		// Only construct and apply basic auth if the current stage is "staging"
+		if ($app.stage === "staging") {
+			const username = new sst.Secret("USERNAME");
+			const password = new sst.Secret("PASSWORD");
+			const basicAuth = $resolve([username.value, password.value]).apply(
+				([username, password]) =>
+					Buffer.from(`${username}:${password}`).toString("base64"),
+			);
+
+			edgeConfig = {
+				viewerRequest: {
+					injection: $interpolate`
+              if (
+                  !event.request.headers.authorization
+                    || event.request.headers.authorization.value !== "Basic ${basicAuth}"
+                 ) {
+                return {
+                  statusCode: 401,
+                  headers: {
+                    "www-authenticate": { value: "Basic" }
+                  }
+                };
+              }`,
+				},
+			};
+		}
 
 		new sst.aws.Astro("simonbremner-net", {
 			domain: {
@@ -45,24 +67,8 @@ export default $config({
 							: "www.dev.simonbremner.net",
 				],
 			},
-			edge: {
-				viewerRequest: {
-					injection: `
-        var auth = event.request.headers.authorization;
-        var expected = "Basic " + "USERNAME:PASSWORD_BASE64"; // Replace with encoded string or logic
-        if (!auth || auth.value !== expected) {
-          return {
-            statusCode: 401,
-            statusDescription: "Unauthorized",
-            headers: {
-              "www-authenticate": { value: 'Basic realm="Secure Area"' }
-            }
-          };
-        }
-        return event.request;
-      `,
-				},
-			},
+			// This will be undefined for dev/production, skipping the injection entirely
+			edge: edgeConfig,
 		});
 	},
 });
