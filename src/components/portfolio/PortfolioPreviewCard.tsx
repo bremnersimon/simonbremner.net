@@ -45,7 +45,7 @@ export function PortfolioPreviewCard({
 								src={imageUrl}
 								alt={imageAlt || headline || "Portfolio image"}
 								className={cn(
-									"h-[320px] w-full object-cover sm:h-[420px] group-hover:scale-[1.02] transition-transform duration-300",
+									"aspect-[2/1] w-full object-cover group-hover:scale-[1.05] transition-transform duration-300",
 									imageClassName,
 								)}
 								loading={loading}
@@ -59,12 +59,12 @@ export function PortfolioPreviewCard({
 				</div>
 
 				<div className="flex items-start justify-between gap-4 border-b border-border pb-2">
-					<HeadingTag className="text-xs font-medium uppercase tracking-[0.1em] text-foreground/90 sm:text-sm">
+					<HeadingTag className="text-xs font-medium text-foreground/90 sm:text-sm">
 						{headline || "Untitled"}
 					</HeadingTag>
-					<span className="group-hover:opacity-100 opacity-100 md:opacity-0 shrink-0 text-[10px] uppercase tracking-[0.12em] text-foreground/80 sm:text-xs transition-opacity duration-300">
-						view project
-						<span aria-hidden="true"> -&gt;</span>
+					<span className="opacity-100 md:opacity-0 group-hover:opacity-100 opacity-100 md:opacity-0 shrink-0 text-[10px] text-foreground/80 sm:text-xs transition-opacity duration-300">
+						View Project
+						<span aria-hidden="true"> {">"}</span>
 					</span>
 				</div>
 			</div>

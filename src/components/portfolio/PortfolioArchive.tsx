@@ -98,8 +98,8 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 									}}
 									className={
 										isActive
-											? "border-b border-foreground pb-1 text-sm uppercase tracking-[0.12em] text-foreground"
-											: "border-b border-transparent pb-1 text-sm uppercase tracking-[0.12em] text-foreground/70 transition-colors hover:border-foreground/60 hover:text-foreground"
+											? "border-b border-foreground pb-1 text-sm tracking-[0.12em] text-foreground"
+											: "border-b border-transparent pb-1 text-sm tracking-[0.12em] text-foreground/70 transition-colors hover:border-foreground/60 hover:text-foreground"
 									}
 									aria-current={isActive ? "page" : undefined}
 								>
@@ -112,7 +112,7 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 			</div>
 
 			{filteredPosts.length > 0 ? (
-				<ul className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+				<ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 					<AnimatePresence mode="popLayout">
 						{filteredPosts.map((post) => (
 							<motion.li

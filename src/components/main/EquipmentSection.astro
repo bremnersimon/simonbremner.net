@@ -86,7 +86,7 @@ const softwareItemsByCategory = Object.fromEntries(
                 <h4 class="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
                   {label}
                 </h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
                   {categoryItems.map((softwareItem) => (
                     <EquipmentCard item={softwareItem} type="software" />
                   ))}
