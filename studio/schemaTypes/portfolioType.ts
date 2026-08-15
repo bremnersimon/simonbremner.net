@@ -297,6 +297,73 @@ export default defineType({
 				}),
 				defineArrayMember({
 					type: "object",
+					name: "codeBlock",
+					title: "Code Block",
+					fields: [
+						defineField({
+							name: "code",
+							title: "Code",
+							type: "text",
+							rows: 12,
+							validation: (Rule) => Rule.required(),
+						}),
+						defineField({
+							name: "language",
+							title: "Language",
+							type: "string",
+							options: {
+								list: [
+									{ title: "JavaScript", value: "javascript" },
+									{ title: "TypeScript", value: "typescript" },
+									{ title: "JSX", value: "jsx" },
+									{ title: "TSX", value: "tsx" },
+									{ title: "HTML", value: "html" },
+									{ title: "CSS", value: "css" },
+									{ title: "JSON", value: "json" },
+									{ title: "Bash", value: "bash" },
+									{ title: "Shell", value: "shell" },
+									{ title: "Python", value: "python" },
+									{ title: "SQL", value: "sql" },
+									{ title: "YAML", value: "yaml" },
+									{ title: "Markdown", value: "markdown" },
+								],
+								layout: "dropdown",
+							},
+							initialValue: "typescript",
+							validation: (Rule) => Rule.required(),
+						}),
+						defineField({
+							name: "filename",
+							title: "Filename (optional)",
+							type: "string",
+						}),
+					],
+					preview: {
+						select: {
+							language: "language",
+							filename: "filename",
+							code: "code",
+						},
+						prepare({ language, filename, code }) {
+							const subtitleParts = [language || "plaintext"];
+
+							if (filename) {
+								subtitleParts.push(filename);
+							}
+
+							if (code) {
+								subtitleParts.push(`${String(code).length} chars`);
+							}
+
+							return {
+								title: "Code Block",
+								subtitle: subtitleParts.join(" • "),
+							};
+						},
+					},
+				}),
+				defineArrayMember({
+					type: "object",
 					name: "imageCarousel",
 					title: "Image Carousel",
 					fields: [

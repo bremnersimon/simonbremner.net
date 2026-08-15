@@ -1,5 +1,6 @@
 ---
 import PortfolioCalloutEntry from "@/components/portfolio/content/PortfolioCalloutEntry.astro";
+import { PortfolioCodeBlockEntry } from "@/components/portfolio/content/PortfolioCodeBlockEntry";
 import PortfolioCtaEntry from "@/components/portfolio/content/PortfolioCtaEntry.astro";
 import { PortfolioImageCarouselEntry } from "@/components/portfolio/content/PortfolioImageCarouselEntry";
 import PortfolioImageEntry from "@/components/portfolio/content/PortfolioImageEntry.astro";
@@ -12,6 +13,7 @@ import PortfolioVideoEmbedEntry from "@/components/portfolio/content/PortfolioVi
 import type { PortfolioContentItem } from "@/types/portfolio";
 import type {
     PortfolioCallout,
+    PortfolioCodeBlock,
     PortfolioCta,
     PortfolioImageCarousel,
     PortfolioInlineImage,
@@ -55,6 +57,13 @@ const { content = [] } = Astro.props;
                     );
                 case "cta":
                     return <PortfolioCtaEntry value={item as PortfolioCta} />;
+                case "codeBlock":
+                    return (
+                        <PortfolioCodeBlockEntry
+                            client:load
+                            value={item as PortfolioCodeBlock}
+                        />
+                    );
                 case "imageCarousel":
                     return (
                         <PortfolioImageCarouselEntry

@@ -12,8 +12,6 @@ import type { SEOProps } from "@/types/types";
 
 const year = new Date().getFullYear();
 
-const isProduction = import.meta.env.PROD;
-
 type Props = SEOProps;
 
 const {
@@ -30,7 +28,7 @@ const {
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
-    {isProduction && <TagManager />}
+    <TagManager />
     <SEO
       title={title}
       description={description}

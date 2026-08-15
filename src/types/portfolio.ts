@@ -50,6 +50,29 @@ export interface PortfolioImageCarousel {
 	images?: PortfolioImage[];
 }
 
+export type PortfolioCodeLanguage =
+	| "javascript"
+	| "typescript"
+	| "jsx"
+	| "tsx"
+	| "html"
+	| "css"
+	| "json"
+	| "bash"
+	| "shell"
+	| "python"
+	| "sql"
+	| "yaml"
+	| "markdown";
+
+export interface PortfolioCodeBlock {
+	_key: string;
+	_type: "codeBlock";
+	code?: string;
+	language?: PortfolioCodeLanguage;
+	filename?: string;
+}
+
 export interface PortfolioRichBlock {
 	_key: string;
 	_type: "block";
@@ -81,6 +104,7 @@ export type PortfolioContentItem =
 	| PortfolioVideoEmbed
 	| PortfolioCta
 	| PortfolioImageCarousel
+	| PortfolioCodeBlock
 	| { _key?: string; _type?: string; [key: string]: unknown };
 
 export interface PortfolioPost {
