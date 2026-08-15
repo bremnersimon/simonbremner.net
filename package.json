@@ -7,7 +7,12 @@
 		"build": "astro build",
 		"dev": "astro dev --mode development",
 		"preview": "astro preview",
-		"scurry": "sst deploy --stage production"
+		"scurry": "sst deploy --stage production",
+		"check": "astro check",
+		"lint": "biome check",
+		"format": "biome format",
+		"format:check": "biome check --apply",
+		"format:write": "biome format --write"
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.10",
@@ -56,6 +61,7 @@
 		"react-is": "^19.2.8",
 		"sanity": "^3.99.0",
 		"sharp": "^0.33.5",
+		"shiki": "^4.4.3",
 		"sonner": "^2.0.7",
 		"sst": "3.17.25",
 		"styled-components": "^6.4.4",

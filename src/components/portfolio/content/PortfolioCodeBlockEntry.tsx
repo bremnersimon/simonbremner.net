@@ -55,6 +55,7 @@ const availableLanguages = new Set([
 	"sql",
 	"yaml",
 	"markdown",
+	"plaintext",
 ]);
 
 hljs.registerLanguage("javascript", javascript);

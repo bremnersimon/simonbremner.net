@@ -326,6 +326,7 @@ export default defineType({
 									{ title: "SQL", value: "sql" },
 									{ title: "YAML", value: "yaml" },
 									{ title: "Markdown", value: "markdown" },
+									{ title: "Astro", value: "astro" },
 								],
 								layout: "dropdown",
 							},
