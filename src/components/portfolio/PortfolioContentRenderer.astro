@@ -1,0 +1,78 @@
+---
+import PortfolioCalloutEntry from "@/components/portfolio/content/PortfolioCalloutEntry.astro";
+import { PortfolioCodeBlockEntry } from "@/components/portfolio/content/PortfolioCodeBlockEntry";
+import PortfolioCtaEntry from "@/components/portfolio/content/PortfolioCtaEntry.astro";
+import { PortfolioImageCarouselEntry } from "@/components/portfolio/content/PortfolioImageCarouselEntry";
+import PortfolioImageEntry from "@/components/portfolio/content/PortfolioImageEntry.astro";
+import {
+    type PortfolioPortableTextBlock,
+    PortfolioRichTextEntry,
+} from "@/components/portfolio/content/PortfolioRichTextEntry";
+import PortfolioUnknownEntry from "@/components/portfolio/content/PortfolioUnknownEntry.astro";
+import PortfolioVideoEmbedEntry from "@/components/portfolio/content/PortfolioVideoEmbedEntry.astro";
+import type { PortfolioContentItem } from "@/types/portfolio";
+import type {
+    PortfolioCallout,
+    PortfolioCodeBlock,
+    PortfolioCta,
+    PortfolioImageCarousel,
+    PortfolioInlineImage,
+    PortfolioVideoEmbed,
+} from "@/types/portfolio";
+
+interface Props {
+    content?: PortfolioContentItem[];
+}
+
+const { content = [] } = Astro.props;
+---
+
+<section class="space-y-5" aria-label="Portfolio content">
+    {
+        content.map((item) => {
+            switch (item._type) {
+                case "block":
+                    return (
+                        <PortfolioRichTextEntry
+                            value={item as PortfolioPortableTextBlock}
+                        />
+                    );
+                case "image":
+                    return (
+                        <PortfolioImageEntry
+                            value={item as PortfolioInlineImage}
+                        />
+                    );
+                case "callout":
+                    return (
+                        <PortfolioCalloutEntry
+                            value={item as PortfolioCallout}
+                        />
+                    );
+                case "videoEmbed":
+                    return (
+                        <PortfolioVideoEmbedEntry
+                            value={item as PortfolioVideoEmbed}
+                        />
+                    );
+                case "cta":
+                    return <PortfolioCtaEntry value={item as PortfolioCta} />;
+                case "codeBlock":
+                    return (
+                        <PortfolioCodeBlockEntry
+                            client:load
+                            value={item as PortfolioCodeBlock}
+                        />
+                    );
+                case "imageCarousel":
+                    return (
+                        <PortfolioImageCarouselEntry
+                            images={(item as PortfolioImageCarousel).images}
+                        />
+                    );
+                default:
+                    return <PortfolioUnknownEntry typeName={item._type} />;
+            }
+        })
+    }
+</section>

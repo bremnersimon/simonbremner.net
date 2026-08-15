@@ -1,0 +1,63 @@
+---
+import AnimatedHero from "@/components/main/AnimatedHero.astro";
+import Container from "@/components/main/Container.astro";
+import { PortfolioArchive } from "@/components/portfolio/PortfolioArchive";
+import PageLayout from "@/layouts/PageLayout.astro";
+import { getPortfolioPosts, urlForImage } from "@/lib/sanity";
+import type { PortfolioPost } from "@/types/portfolio";
+
+const posts = (await getPortfolioPosts(48)) as PortfolioPost[];
+const archivePosts = posts.map((post) => {
+    const slug = post.slug?.current;
+
+    return {
+        _id: post._id,
+        headline: post.headline,
+        introduction: post.introduction,
+        slug,
+        href: slug ? `/portfolio/${slug}` : undefined,
+        category: post.category || [],
+        serviceTags: post.serviceTags || [],
+        imageUrl: post.heroImage?.asset
+            ? urlForImage(post.heroImage)
+                  .width(900)
+                  .height(450)
+                  .fit("crop")
+                  .format("webp")
+                  .url()
+            : "",
+        imageAlt: post.heroImage?.alt || post.headline || "Portfolio image",
+    };
+});
+---
+
+<PageLayout
+    title="Portfolio | Simon Bremner"
+    description="Portfolio project posts."
+>
+    <section class="w-full pb-16 pt-24">
+        <Container>
+            <header class="mb-10 space-y-3">
+                <AnimatedHero
+                    headline="PORTFOLIO"
+                    ariaLabel="Portfolio"
+                    noWrap
+                    containerClassName="mb-[clamp(1.25rem,3vw,2.5rem)] w-full"
+                    headlineClassName="font-thin [line-height:0.88] [letter-spacing:0.015em] text-[3.25rem] sm:text-[4.75rem] md:text-[6.5rem] lg:text-[8.5rem] xl:text-[10.5rem] 2xl:text-[12rem]"
+                />
+            </header>
+
+            {
+                archivePosts.length > 0 ? (
+                    <PortfolioArchive client:load posts={archivePosts} />
+                ) : (
+                    <div class="rounded-lg border border-dashed border-border p-10 text-center">
+                        <p class="text-sm text-muted-foreground">
+                            No portfolio posts found.
+                        </p>
+                    </div>
+                )
+            }
+        </Container>
+    </section>
+</PageLayout>

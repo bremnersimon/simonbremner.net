@@ -1,13 +1,26 @@
 ---
 import type { Camera, Lens } from "@/types/sanity/sanity.types";
+import type { SoftwareType } from "@/types/sanity/sanity.types";
 import EquipmentCard from "./EquipmentCard.astro";
 
 type Props = {
   cameras: Camera[];
   lenses: Lens[];
+  softwareItems: SoftwareType[];
 };
 
-const { cameras, lenses } = Astro.props;
+const { cameras, lenses, softwareItems } = Astro.props;
+const softwareCategories = [
+  { key: "design", label: "Design" },
+  { key: "development", label: "Development" },
+] as const;
+
+const softwareItemsByCategory = Object.fromEntries(
+  softwareCategories.map(({ key }) => [
+    key,
+    softwareItems.filter((softwareItem) => softwareItem.category === key),
+  ]),
+);
 ---
 
 <div class="space-y-16">
@@ -22,30 +35,67 @@ const { cameras, lenses } = Astro.props;
   </div> -->
 
   <!-- Cameras Section -->
-  {cameras.length > 0 && (
-    <div class="space-y-6">
-      <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
-        Cameras
-      </h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {cameras.map((camera) => (
-          <EquipmentCard item={camera} type="camera" />
-        ))}
+  {
+    cameras.length > 0 && (
+      <div class="space-y-6">
+        <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
+          Cameras
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {cameras.map((camera) => (
+            <EquipmentCard item={camera} type="camera" />
+          ))}
+        </div>
       </div>
-    </div>
-  )}
+    )
+  }
 
   <!-- Lenses Section -->
-  {lenses.length > 0 && (
-    <div class="space-y-6">
-      <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
-        Lenses
-      </h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {lenses.map((lens) => (
-          <EquipmentCard item={lens} type="lens" />
-        ))}
+  {
+    lenses.length > 0 && (
+      <div class="space-y-6">
+        <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
+          Lenses
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {lenses.map((lens) => (
+            <EquipmentCard item={lens} type="lens" />
+          ))}
+        </div>
       </div>
-    </div>
-  )}
+    )
+  }
+
+  {/* Tech Stack Section */}
+  {
+    softwareItems.length > 0 && (
+      <div class="space-y-6">
+        <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
+          Tech Stack
+        </h3>
+        <div class="space-y-10">
+          {softwareCategories.map(({ key, label }) => {
+            const categoryItems = softwareItemsByCategory[key];
+
+            if (categoryItems.length === 0) {
+              return null;
+            }
+
+            return (
+              <div class="space-y-4">
+                <h4 class="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                  {label}
+                </h4>
+                <div class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+                  {categoryItems.map((softwareItem) => (
+                    <EquipmentCard item={softwareItem} type="software" />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    )
+  }
 </div>

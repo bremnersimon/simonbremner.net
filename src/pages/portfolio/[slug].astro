@@ -1,0 +1,137 @@
+---
+import Container from "@/components/main/Container.astro";
+import EquipmentSection from "@/components/main/EquipmentSection.astro";
+import PortfolioContentRenderer from "@/components/portfolio/PortfolioContentRenderer.astro";
+import { Separator } from "@/components/shad-ui/separator";
+import PageLayout from "@/layouts/PageLayout.astro";
+import { getPortfolioTransitionName } from "@/lib/portfolio";
+import { getPortfolioPostBySlug, urlForImage } from "@/lib/sanity";
+import type { PortfolioPost } from "@/types/portfolio";
+
+const slug = Astro.params.slug;
+const post = slug
+    ? ((await getPortfolioPostBySlug(slug)) as PortfolioPost | null)
+    : null;
+
+if (!post) {
+    Astro.response.status = 404;
+}
+
+const heroImageUrl = post?.heroImage?.asset
+    ? urlForImage(post.heroImage).width(1800).fit("max").format("webp").url()
+    : undefined;
+
+const seoTitle = post?.headline
+    ? `${post.headline} | Portfolio`
+    : "Portfolio | Simon Bremner";
+const seoDescription = post?.introduction || "Portfolio project";
+const imageTransitionName = getPortfolioTransitionName(
+    post?.slug?.current,
+    "image",
+);
+---
+
+<PageLayout
+    title={seoTitle}
+    description={seoDescription}
+    pageType="article"
+    image={heroImageUrl}
+>
+    <section class="w-full pb-16 pt-24">
+        <Container>
+            {
+                post ? (
+                    <div class="space-y-10">
+                        {heroImageUrl ? (
+                            <div
+                                class="overflow-hidden"
+                                style={
+                                    imageTransitionName
+                                        ? `view-transition-name: ${imageTransitionName};`
+                                        : undefined
+                                }
+                            >
+                                <img
+                                    src={heroImageUrl}
+                                    alt={
+                                        post.heroImage?.alt ||
+                                        post.headline ||
+                                        "Portfolio image"
+                                    }
+                                    class="aspect-[2/1] w-full object-cover"
+                                    loading="eager"
+                                />
+                            </div>
+                        ) : (
+                            <div class="flex h-[320px] items-center justify-center border border-border/60 sm:h-[420px] md:h-[560px]">
+                                <p class="text-xs text-muted-foreground">
+                                    No image
+                                </p>
+                            </div>
+                        )}
+
+                        <header class="mx-auto w-full max-w-[1000px] space-y-5 px-5">
+                            <a
+                                href="/portfolio"
+                                class="inline-flex items-center text-sm text-foreground/60 transition-colors hover:text-foreground"
+                            >
+                                &larr; Back to Portfolio
+                            </a>
+
+                            <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">
+                                {post.headline || "Untitled"}
+                            </h1>
+
+                            <Separator />
+                        </header>
+
+                        <div class="mx-auto grid w-full max-w-[1000px] grid-cols-1 gap-8 px-5 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:gap-10">
+                            {post.introduction && (
+                                <p class="max-w-prose text-md whitespace-pre-line leading-relaxed text-foreground/90">
+                                    {post.introduction}
+                                </p>
+                            )}
+
+                            {(post.serviceTags || []).length > 0 && (
+                                <div class="space-y-3" aria-label="Services">
+                                    <h2 class="text-lg font-semibold tracking-tight">
+                                        Services
+                                    </h2>
+                                    <ul
+                                        class="space-y-1.5 text-xs leading-relaxed text-foreground/90"
+                                        aria-label="Portfolio services"
+                                    >
+                                        {(post.serviceTags || []).map((tag) => (
+                                            <li>{tag}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+
+                        <PortfolioContentRenderer content={post.content} />
+
+                        {(post.techStack || []).length > 0 && (
+                            <div class="pt-8 sm:pt-12">
+                                <EquipmentSection
+                                    cameras={[]}
+                                    lenses={[]}
+                                    softwareItems={post.techStack || []}
+                                />
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div class="rounded-lg border border-dashed border-border p-10 text-center">
+                        <h1 class="text-2xl font-semibold">
+                            Portfolio post not found
+                        </h1>
+                        <p class="mt-2 text-sm text-muted-foreground">
+                            This post does not exist or is unavailable.
+                        </p>
+                    </div>
+                )
+            }
+        </Container>
+    </section>
+</PageLayout>

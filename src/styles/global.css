@@ -125,13 +125,13 @@
 }
 
 /* Enhanced View Transition Animations */
-::view-transition-old(root) {
+/* ::view-transition-old(root) {
 	animation: fade-out 250ms ease-in-out;
 }
 
 ::view-transition-new(root) {
 	animation: fade-in 250ms ease-in-out;
-}
+} */
 
 @keyframes fade-out {
 	from {
@@ -149,4 +149,61 @@
 	to {
 		opacity: 1;
 	}
+}
+
+.portfolio-code-block .hljs-comment,
+.portfolio-code-block .hljs-quote {
+	color: hsl(25 5.3% 44.7%);
+}
+
+.dark .portfolio-code-block .hljs-comment,
+.dark .portfolio-code-block .hljs-quote {
+	color: hsl(24 5.4% 63.9%);
+}
+
+.portfolio-code-block .hljs-keyword,
+.portfolio-code-block .hljs-selector-tag,
+.portfolio-code-block .hljs-literal,
+.portfolio-code-block .hljs-section,
+.portfolio-code-block .hljs-link,
+.portfolio-code-block .hljs-title {
+	color: hsl(20.5 90.2% 48.2%);
+}
+
+.portfolio-code-block .hljs-string,
+.portfolio-code-block .hljs-name,
+.portfolio-code-block .hljs-type,
+.portfolio-code-block .hljs-attribute,
+.portfolio-code-block .hljs-symbol,
+.portfolio-code-block .hljs-bullet,
+.portfolio-code-block .hljs-addition,
+.portfolio-code-block .hljs-template-tag,
+.portfolio-code-block .hljs-template-variable {
+	color: hsl(173 58% 39%);
+}
+
+.portfolio-code-block .hljs-number,
+.portfolio-code-block .hljs-selector-id,
+.portfolio-code-block .hljs-selector-class,
+.portfolio-code-block .hljs-meta,
+.portfolio-code-block .hljs-built_in,
+.portfolio-code-block .hljs-builtin-name,
+.portfolio-code-block .hljs-attr,
+.portfolio-code-block .hljs-variable,
+.portfolio-code-block .hljs-regexp,
+.portfolio-code-block .hljs-deletion {
+	color: hsl(12 76% 61%);
+}
+
+.dark .portfolio-code-block .hljs-number,
+.dark .portfolio-code-block .hljs-selector-id,
+.dark .portfolio-code-block .hljs-selector-class,
+.dark .portfolio-code-block .hljs-meta,
+.dark .portfolio-code-block .hljs-built_in,
+.dark .portfolio-code-block .hljs-builtin-name,
+.dark .portfolio-code-block .hljs-attr,
+.dark .portfolio-code-block .hljs-variable,
+.dark .portfolio-code-block .hljs-regexp,
+.dark .portfolio-code-block .hljs-deletion {
+	color: hsl(27 87% 67%);
 }

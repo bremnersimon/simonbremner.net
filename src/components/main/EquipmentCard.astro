@@ -1,19 +1,21 @@
 ---
 import type { Camera, Lens } from "@/types/sanity/sanity.types";
+import type { SoftwareType } from "@/types/sanity/sanity.types";
+import { urlForImage } from "@/lib/sanity";
 
 type Props = {
-  item: Camera | Lens;
-  type: "camera" | "lens";
+  item: Camera | Lens | SoftwareType;
+  type: "camera" | "lens" | "software";
 };
 
 const { item, type } = Astro.props;
 
 // Helper function to format lens display
 function formatLensInfo(lens: Lens) {
-  const focal = lens.focalLength?.max 
+  const focal = lens.focalLength?.max
     ? `${lens.focalLength.min}-${lens.focalLength.max}`
     : lens.focalLength?.min;
-  
+
   return {
     specs: [focal, lens.maxAperture].filter(Boolean).join(" • "),
   };
@@ -27,27 +29,79 @@ function formatCameraInfo(camera: Camera) {
 }
 
 const isLens = type === "lens";
-const displayInfo = isLens 
-  ? formatLensInfo(item as Lens) 
+const isSoftware = type === "software";
+const hardwareItem = !isSoftware ? (item as Camera | Lens) : null;
+const displayInfo = isLens
+  ? formatLensInfo(item as Lens)
   : formatCameraInfo(item as Camera);
+
+const softwareItem = isSoftware ? (item as SoftwareType) : null;
+const logoUrl = softwareItem?.icon
+  ? urlForImage(softwareItem.icon)
+      .width(144)
+      .height(144)
+      .fit("max")
+      .format("webp")
+      .url()
+  : "";
+const logoFallback = softwareItem?.name?.slice(0, 2).toUpperCase() ?? "";
+const softwareTooltip = [softwareItem?.name, softwareItem?.description]
+  .filter(Boolean)
+  .join("\n");
 ---
 
-<div class="group p-6 border border-border rounded-lg transition-colors hover:bg-muted/20">
-  <div class="space-y-2">
-    <h3 class="font-medium text-foreground">
-      {item.name}
-    </h3>
-    
-    {item.brand && (
-      <p class="text-sm text-muted-foreground">
-        {item.brand}
-      </p>
-    )}
-    
-    {displayInfo.specs && (
-      <p class="text-sm text-muted-foreground font-mono">
-        {displayInfo.specs}
-      </p>
-    )}
+<div
+  class:list={[
+    "group border border-border rounded-lg transition-colors hover:bg-muted/20",
+    isSoftware ? "p-3" : "p-6",
+  ]}
+  title={isSoftware ? softwareTooltip : undefined}
+>
+  <div class:list={["space-y-2", isSoftware && "space-y-4"]}>
+    {
+      isSoftware ? (
+        <div class="flex items-center gap-2">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-muted/40">
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt={
+                  softwareItem?.icon?.alt ||
+                  softwareItem?.name ||
+                  "Software logo"
+                }
+                class="h-full w-full object-contain p-1.5"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="text-xs font-medium text-muted-foreground">
+                {logoFallback}
+              </span>
+            )}
+          </div>
+
+          <div class="min-w-0">
+            <h3 class="truncate text-sm font-medium leading-tight text-foreground">
+              {item.name}
+            </h3>
+          </div>
+        </div>
+      ) : (
+        <div class="space-y-2">
+          <h3 class="font-medium text-foreground">{item.name}</h3>
+
+          {hardwareItem?.brand && (
+            <p class="text-sm text-muted-foreground">{hardwareItem.brand}</p>
+          )}
+
+          {displayInfo.specs && (
+            <p class="text-sm text-muted-foreground font-mono">
+              {displayInfo.specs}
+            </p>
+          )}
+        </div>
+      )
+    }
   </div>
 </div>

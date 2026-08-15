@@ -47,7 +47,7 @@ const {
   >
     <TagManagerBody />
     <Navbar client:idle transition:name="navbar" transition:persist />
-    <main id="page-content" class="flex-grow" transition:animate="fade">
+    <main id="page-content" class="flex-grow">
       <slot />
     </main>
     <Footer title={title} year={year} transition:animate="none" />

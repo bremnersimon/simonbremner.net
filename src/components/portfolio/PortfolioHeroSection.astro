@@ -1,0 +1,39 @@
+---
+import { urlForImage } from "@/lib/sanity";
+import type { PortfolioImage } from "@/types/portfolio";
+
+interface Props {
+    heroImage?: PortfolioImage;
+}
+
+const { heroImage } = Astro.props;
+const heroUrl = heroImage?.asset
+    ? urlForImage(heroImage).width(2000).fit("max").format("webp").url()
+    : "";
+---
+
+<section class="space-y-3" aria-label="Hero image section">
+    {
+        heroUrl ? (
+            <figure class="space-y-2">
+                <img
+                    src={heroUrl}
+                    alt={heroImage?.alt || "Portfolio hero image"}
+                    class="w-full rounded-lg border border-border object-cover"
+                    loading="eager"
+                />
+                {heroImage?.caption && (
+                    <figcaption class="text-xs text-muted-foreground">
+                        {heroImage.caption}
+                    </figcaption>
+                )}
+            </figure>
+        ) : (
+            <div class="flex min-h-72 items-center justify-center rounded-lg border border-dashed border-border bg-muted/20">
+                <p class="text-sm text-muted-foreground">
+                    No hero image provided.
+                </p>
+            </div>
+        )
+    }
+</section>

@@ -1,0 +1,36 @@
+---
+import type { PortfolioCta } from "@/types/portfolio";
+
+interface Props {
+    value: PortfolioCta;
+}
+
+const { value } = Astro.props;
+
+const classes =
+    value.style === "secondary"
+        ? "border border-border bg-transparent text-foreground hover:bg-muted"
+        : "bg-foreground text-background hover:opacity-90";
+---
+
+<div
+    class="mx-auto w-full max-w-[1100px] px-5"
+    aria-label="Call to action block"
+>
+    {
+        value.url && value.label ? (
+            <a
+                href={value.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={`inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition ${classes}`}
+            >
+                {value.label}
+            </a>
+        ) : (
+            <p class="text-sm text-muted-foreground">
+                CTA is missing label or URL.
+            </p>
+        )
+    }
+</div>

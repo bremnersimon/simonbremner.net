@@ -1,0 +1,77 @@
+---
+import type { PortfolioVideoEmbed } from "@/types/portfolio";
+
+interface Props {
+    value: PortfolioVideoEmbed;
+}
+
+const { value } = Astro.props;
+
+function toEmbedUrl(url?: string) {
+    if (!url) return "";
+
+    try {
+        const parsed = new URL(url);
+        const host = parsed.hostname.replace("www.", "");
+
+        if (host === "youtube.com" || host === "youtu.be") {
+            const id =
+                host === "youtu.be"
+                    ? parsed.pathname.slice(1)
+                    : parsed.searchParams.get("v");
+            return id ? `https://www.youtube.com/embed/${id}` : "";
+        }
+
+        if (host === "vimeo.com") {
+            const id = parsed.pathname.split("/").filter(Boolean)[0];
+            return id ? `https://player.vimeo.com/video/${id}` : "";
+        }
+
+        return "";
+    } catch {
+        return "";
+    }
+}
+
+const embedUrl = toEmbedUrl(value.url);
+---
+
+<section class="mx-auto w-full max-w-[1100px] px-5" aria-label="Video block">
+    {
+        embedUrl ? (
+            <div
+                class="relative overflow-hidden rounded-md border border-border/50"
+                style="padding-top: 56.25%"
+            >
+                <iframe
+                    src={embedUrl}
+                    title={value.caption || "Embedded video"}
+                    class="absolute inset-0 h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                />
+            </div>
+        ) : (
+            <div class="rounded-md border border-dashed border-border bg-muted/20 p-4">
+                <p class="text-sm text-muted-foreground">
+                    Video preview unavailable for this URL.
+                </p>
+                {value.url && (
+                    <a
+                        href={value.url}
+                        class="mt-2 inline-block text-sm font-medium text-primary underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Open video link
+                    </a>
+                )}
+            </div>
+        )
+    }
+    {
+        value.caption && (
+            <p class="text-xs text-muted-foreground">{value.caption}</p>
+        )
+    }
+</section>

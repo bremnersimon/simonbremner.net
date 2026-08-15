@@ -1,0 +1,37 @@
+---
+import { urlForImage } from "@/lib/sanity";
+import type { PortfolioInlineImage } from "@/types/portfolio";
+
+interface Props {
+    value: PortfolioInlineImage;
+}
+
+const { value } = Astro.props;
+const imageUrl = value?.asset
+    ? urlForImage(value).width(1800).fit("max").format("webp").url()
+    : "";
+---
+
+<article class="px-5" aria-label="Image block">
+    {
+        imageUrl ? (
+            <img
+                src={imageUrl}
+                alt={value.alt || "Portfolio content image"}
+                class="w-full object-cover border border-foreground/50"
+                loading="lazy"
+            />
+        ) : (
+            <div class="flex min-h-48 items-center justify-center border border-dashed border-border bg-muted/20">
+                <p class="text-sm text-muted-foreground">
+                    Image asset missing.
+                </p>
+            </div>
+        )
+    }
+    <!-- {
+        value.caption && (
+            <p class="text-xs text-muted-foreground">{value.caption}</p>
+        )
+    } -->
+</article>
