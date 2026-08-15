@@ -64,7 +64,7 @@ export function PortfolioPreviewCard({
 					</HeadingTag>
 					<span className="opacity-100 md:opacity-0 group-hover:opacity-100 opacity-100 md:opacity-0 shrink-0 text-[10px] text-foreground/80 sm:text-xs transition-opacity duration-300">
 						View Project
-						<span aria-hidden="true"> {">"}</span>
+						<span aria-hidden="true"> &#8594;</span>
 					</span>
 				</div>
 			</div>
