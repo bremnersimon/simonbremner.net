@@ -112,7 +112,7 @@ export interface PortfolioPost {
 	headline?: string;
 	slug?: { current?: string };
 	category?: PortfolioCategory[];
-	introduction?: string;
+	introduction?: string | PortfolioRichBlock[];
 	publishedAt?: string;
 	techStack?: SoftwareType[];
 	serviceTags?: string[];

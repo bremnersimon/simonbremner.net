@@ -4,39 +4,39 @@ import { cn } from "@/lib/utils";
 import type { SocialLink } from "@/lib/sanity";
 
 interface Props {
-  links: SocialLink[];
-  layout?: "stacked" | "inline";
-  ariaLabel?: string;
-  textClass?: string;
-  class?: string;
+    links: SocialLink[];
+    layout?: "stacked" | "inline";
+    ariaLabel?: string;
+    textClass?: string;
+    class?: string;
 }
 
 const {
-  links,
-  layout = "stacked",
-  ariaLabel = "Social media and resume links",
-  textClass = "text-sm sm:text-base",
-  class: className,
+    links,
+    layout = "stacked",
+    ariaLabel = "Social media and resume links",
+    textClass = "text-sm sm:text-base",
+    class: className,
 } = Astro.props;
 ---
 
 {
-  links.length > 0 && (
-    <nav aria-label={ariaLabel} class={className}>
-      <ul
-        class={cn(
-          textClass,
-          layout === "stacked"
-            ? "space-y-3"
-            : "flex flex-row flex-wrap items-center gap-x-6 gap-y-2"
-        )}
-      >
-        {links.map((link) => (
-          <li>
-            <SocialLinkItem link={link} />
-          </li>
-        ))}
-      </ul>
-    </nav>
-  )
+    links.length > 0 && (
+        <nav aria-label={ariaLabel} class={className}>
+            <ul
+                class={cn(
+                    textClass,
+                    layout === "stacked"
+                        ? "space-y-3"
+                        : "flex flex-row flex-wrap items-center gap-x-6 gap-y-2",
+                )}
+            >
+                {links.map((link) => (
+                    <li>
+                        <SocialLinkItem link={link} />
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    )
 }
