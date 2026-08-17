@@ -23,8 +23,8 @@ export interface FooterSection {
 }
 
 export interface FooterProps {
-	title: string;
-	sections: FooterSection[];
+	title?: string;
+	sections?: FooterSection[];
 	year?: number;
 }
 

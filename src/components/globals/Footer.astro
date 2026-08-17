@@ -1,5 +1,8 @@
 ---
 import Container from "@/components/main/Container.astro";
+import SocialLinkItem from "@/components/main/SocialLinkItem.astro";
+import SocialLinks from "@/components/main/SocialLinks.astro";
+import { getSocialLinks } from "@/lib/sanity";
 import type { FooterProps } from "@/types";
 const { year = 2025 } = Astro.props as FooterProps;
 const links = [
@@ -7,17 +10,85 @@ const links = [
   { title: "Portfolio", href: "/portfolio" },
   { title: "About", href: "/about" },
 ];
+const tagline =
+  "Graphic Designer and Full Stack Developer who loves taking photos.";
+
+const socialLinks = await getSocialLinks();
+// getSocialLinks() folds the resume entry in with the socials; it is the only one
+// pointing at a Sanity file asset.
+const isResume = (link: (typeof socialLinks)[number]) =>
+  link.href.includes("/files/") || /resume|cv/i.test(link.label);
+const resumeLink = socialLinks.find(isResume);
+const socialOnly = socialLinks.filter((link) => !isResume(link));
+
+const headingClass =
+  "text-xs uppercase tracking-[0.15em] text-muted-foreground";
+const linkClass =
+  "inline-flex min-h-8 items-center text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 ---
 
-<footer class="w-full overflow-hidden border-t">
+<footer class="w-full overflow-hidden border-t mt-16">
   <Container>
-    <div class="border-t py-8 px-4 md:px-0 flex flex-row justify-between">
-      <div class="flex flex-row flex-wrap gap-4">
+    <div
+      class="grid grid-cols-1 gap-10 py-12 px-4 sm:grid-cols-2 md:grid-cols-3 md:px-0"
+    >
+      <div>
         <a href="/" class="text-2xl font-thin">Simon Bremner</a>
+        <p class="mt-3 max-w-xs text-sm text-muted-foreground leading-relaxed">
+          {tagline}
+        </p>
+        {
+          resumeLink && (
+            <SocialLinkItem
+              link={resumeLink}
+              label="Download Resume"
+              iconSize={16}
+              class="mt-6 gap-2 border-b border-border pb-0.5 text-sm hover:border-foreground"
+            />
+          )
+        }
       </div>
-      <p class="text-sm text-muted-foreground text-right">
+
+      <div>
+        <h2 class={headingClass}>Explore</h2>
+        <nav aria-label="Footer">
+          <ul class="mt-4 space-y-3">
+            {
+              links.map((link) => (
+                <li>
+                  <a href={link.href} class={linkClass}>
+                    {link.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+
+      {
+        socialOnly.length > 0 && (
+          <div>
+            <h2 class={headingClass}>Connect</h2>
+            <SocialLinks
+              links={socialOnly}
+              layout="stacked"
+              ariaLabel="Social media links"
+              textClass="text-sm"
+              class="mt-4"
+            />
+          </div>
+        )
+      }
+    </div>
+
+    <div
+      class="border-t py-6 px-4 md:px-0 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p class="text-sm text-muted-foreground">
         © {year} simonbremner.net. All rights reserved.
       </p>
+      <p class="text-sm text-muted-foreground">Built with Astro</p>
     </div>
   </Container>
 </footer>

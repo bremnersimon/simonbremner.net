@@ -55,6 +55,58 @@ export async function getSoftwareTypes() {
 	);
 }
 
+// Social links & resume (singleton)
+export interface SocialLink {
+	label: string;
+	href: string;
+	iconUrl: string;
+	isSvg: boolean;
+	isExternal: boolean;
+}
+
+export async function getSocialLinks(): Promise<SocialLink[]> {
+	const settings = await client.fetch<{
+		resumeUrl: string | null;
+		links: Array<{
+			label: string;
+			linkType: "external" | "resume";
+			url: string | null;
+			iconUrl: string | null;
+			iconExtension: string | null;
+		}> | null;
+	} | null>(
+		`*[_type == "socialSettings"][0]{
+      "resumeUrl": resumeFile.asset->url,
+      links[]{
+        label,
+        linkType,
+        url,
+        "iconUrl": icon.asset->url,
+        "iconExtension": icon.asset->extension
+      }
+    }`,
+	);
+
+	if (!settings?.links) return [];
+
+	return settings.links.flatMap((link) => {
+		const href =
+			link.linkType === "resume" ? settings.resumeUrl : (link.url ?? null);
+
+		if (!href || !link.iconUrl) return [];
+
+		return [
+			{
+				label: link.label,
+				href,
+				iconUrl: link.iconUrl,
+				isSvg: link.iconExtension === "svg",
+				isExternal: !href.startsWith("mailto:"),
+			},
+		];
+	});
+}
+
 // Gallery Functions for Photos
 export async function getAllPhotos(limit = 50, offset = 0) {
 	const endIndex = offset + limit - 1;
