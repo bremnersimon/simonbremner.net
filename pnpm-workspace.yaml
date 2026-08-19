@@ -9,3 +9,5 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - '@biomejs/biome'
+
+linkWorkspacePackages: true

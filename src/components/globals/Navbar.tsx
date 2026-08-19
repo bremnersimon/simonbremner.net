@@ -74,6 +74,7 @@ export const Navbar = () => {
 											href={link.href}
 											active={isLinkActive(currentPath, link.href)}
 											className="bg-transparent hover:bg-transparent focus:bg-transparent relative flex h-10 w-max items-center justify-center rounded-none px-4 py-2 text-sm font-medium after:absolute after:bottom-1 after:left-4 after:right-4 after:h-px after:bg-foreground after:opacity-0 after:transition-opacity hover:after:opacity-100 data-[active]:after:opacity-100"
+											data-astro-prefetch
 										>
 											{link.title}
 										</NavigationMenuLink>

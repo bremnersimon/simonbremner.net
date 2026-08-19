@@ -9,7 +9,7 @@ export default defineConfig({
 	name: "default",
 	title: process.env.SANITY_STUDIO_PROJECT_TITLE || "",
 	projectId: process.env.SANITY_STUDIO_PROJECT_ID || "",
-	dataset: "production",
+	dataset: process.env.SANITY_STUDIO_DATASET || "production",
 	plugins: [
 		structureTool({
 			structure: (S) =>

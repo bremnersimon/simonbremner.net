@@ -1,5 +1,5 @@
 {
-	"name": "simonbremner.net-studio",
+	"name": "studio",
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
@@ -9,6 +9,7 @@
 		"start": "sanity start"
 	},
 	"dependencies": {
+		"@sanity/sdk-react": "^2.19.0",
 		"@sanity/vision": "^6.10.1",
 		"react": "^19.2.8",
 		"react-dom": "^19.2.8",
