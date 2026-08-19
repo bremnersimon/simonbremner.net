@@ -5,7 +5,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 // Sanity configuration (create a sanity.config.ts file with this info)
 const config = {
 	projectId: process.env.SANITY_STUDIO_PROJECT_ID || "", // Replace with your Sanity project ID
-	dataset: process.env.SANITY_STUDIO_DATASET || "production",
+	dataset: process.env.SANITY_STUDIO_DATA_SET || "production",
 	apiVersion: "2023-05-03",
 	useCdn: true,
 };

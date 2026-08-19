@@ -10,8 +10,6 @@ import { defineConfig } from "astro/config";
 
 import partytown from "@astrojs/partytown";
 
-const { SANITY_PROJECT_ID, DATA_SET } = loadEnv(process.env.NODE_ENV, process.cwd(), "");
-
 
 export default defineConfig({
 	output: "server",
@@ -24,8 +22,8 @@ export default defineConfig({
 	integrations: [
 		react(),
 		sanity({
-			projectId: process.env.SANITY_STUDIO_PROJECT_ID,
-			dataset: process.env.SANITY_STUDIO_DATA_SET,
+			projectId: process.env.SANITY_STUDIO_PROJECT_ID || "",
+			dataset: process.env.SANITY_STUDIO_DATA_SET || "production",
 			apiVersion: "2026-07-30",
 			useCdn: true,
 		}),
