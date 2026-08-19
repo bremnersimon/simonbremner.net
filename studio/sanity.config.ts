@@ -7,10 +7,9 @@ const SINGLETON_TYPES = new Set(["socialSettings"]);
 
 export default defineConfig({
 	name: "default",
-	title: "simonbremner.net",
-	projectId: "hzdtear2",
-	dataset: "production",
-
+	title: process.env.SANITY_STUDIO_PROJECT_TITLE || "",
+	projectId: process.env.SANITY_STUDIO_PROJECT_ID || "",
+	dataset: process.env.SANITY_STUDIO_DATASET || "production",
 	plugins: [
 		structureTool({
 			structure: (S) =>
@@ -41,7 +40,8 @@ export default defineConfig({
 			SINGLETON_TYPES.has(context.schemaType)
 				? input.filter(
 						({ action }) =>
-							action && ["publish", "discardChanges", "restore"].includes(action),
+							action &&
+							["publish", "discardChanges", "restore"].includes(action),
 					)
 				: input,
 	},

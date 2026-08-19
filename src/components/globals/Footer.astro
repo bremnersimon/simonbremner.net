@@ -21,8 +21,7 @@ const isResume = (link: (typeof socialLinks)[number]) =>
 const resumeLink = socialLinks.find(isResume);
 const socialOnly = socialLinks.filter((link) => !isResume(link));
 
-const headingClass =
-  "text-xs uppercase tracking-[0.15em] text-muted-foreground";
+const headingClass = "text-xs text-muted-foreground";
 const linkClass =
   "inline-flex min-h-8 items-center text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 ---
