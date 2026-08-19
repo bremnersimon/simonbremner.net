@@ -12,12 +12,18 @@ import {
 	SheetTrigger,
 } from "@/components/shad-ui/sheet";
 import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "../shad-ui/button";
 
 type NavbarProps = {
 	title: string;
 	href: string;
 };
+
+function isLinkActive(pathname: string, href: string) {
+	if (href === "/") return pathname === "/";
+	return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export const Navbar = () => {
 	const navigationLinks: NavbarProps[] = [
@@ -34,6 +40,17 @@ export const Navbar = () => {
 			href: "/about",
 		},
 	];
+
+	// Navbar is a persisted island (transition:persist), so it isn't
+	// remounted on client-side navigation; re-read the path after each swap.
+	const [currentPath, setCurrentPath] = useState("");
+
+	useEffect(() => {
+		const updatePath = () => setCurrentPath(window.location.pathname);
+		updatePath();
+		document.addEventListener("astro:page-load", updatePath);
+		return () => document.removeEventListener("astro:page-load", updatePath);
+	}, []);
 
 	return (
 		<header className="bg-background fixed top-0 right-0 left-0 z-20 w-full">
@@ -55,7 +72,8 @@ export const Navbar = () => {
 									<NavigationMenuItem key={link.title}>
 										<NavigationMenuLink
 											href={link.href}
-											className="bg-transparent hover:bg-transparent flex h-10 w-max items-center justify-center rounded-none hover:border-b hover:border-foreground focus:bg-transparent px-4 py-2 text-sm font-medium"
+											active={isLinkActive(currentPath, link.href)}
+											className="bg-transparent hover:bg-transparent focus:bg-transparent relative flex h-10 w-max items-center justify-center rounded-none px-4 py-2 text-sm font-medium after:absolute after:bottom-1 after:left-4 after:right-4 after:h-px after:bg-foreground after:opacity-0 after:transition-opacity hover:after:opacity-100 data-[active]:after:opacity-100"
 										>
 											{link.title}
 										</NavigationMenuLink>
