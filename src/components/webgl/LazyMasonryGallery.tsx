@@ -9,7 +9,11 @@ import {
 	DialogDescription,
 	DialogTitle,
 } from "../shad-ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../shad-ui/tooltip";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "../shad-ui/popover";
 import MasonryGrid from "./MasonryGrid";
 
 interface LazyMasonryGalleryProps {
@@ -522,7 +526,7 @@ const LazyMasonryGallery = ({
 												type="button"
 												variant="ghost"
 												size="icon"
-												className="absolute cursor-pointer left-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
+															className="fixed cursor-pointer left-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
 												onClick={goToPreviousImage}
 												disabled={!canGoPrevious}
 												aria-label="Previous image"
@@ -562,7 +566,7 @@ const LazyMasonryGallery = ({
 												type="button"
 												variant="ghost"
 												size="icon"
-												className="absolute cursor-pointer right-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
+															className="fixed cursor-pointer right-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
 												onClick={() => {
 													void goToNextImage();
 												}}
@@ -583,70 +587,71 @@ const LazyMasonryGallery = ({
 										)}
 
 										{isModalImageReady && (
-											<div className="hidden md:block absolute bottom-4 right-4 z-10">
-												<Tooltip>
-													<TooltipTrigger asChild>
+											<div className="absolute bottom-4 right-4 z-10">
+												<Popover>
+													<PopoverTrigger asChild>
 														<button
 															type="button"
-															tabIndex={-1}
-															className="flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
+															className="flex items-center justify-center rounded-full bg-gray-100 p-2 text-gray-600 shadow-sm transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
 															aria-label="Show photo details"
 														>
-															<Info
-																size={16}
-																className="text-gray-600 dark:text-gray-300"
-															/>
+															<Info size={16} />
 															<span className="sr-only">Photo details</span>
 														</button>
-													</TooltipTrigger>
-													<TooltipContent className="max-w-xl p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-xl">
+													</PopoverTrigger>
+													<PopoverContent
+														align="end"
+														side="top"
+														sideOffset={8}
+														className="max-w-xl border border-gray-200 bg-white p-6 shadow-xl dark:border-gray-700 dark:bg-gray-900"
+													>
 														<div className="grid grid-cols-3 gap-y-6 gap-x-8 justify-center items-start text-base text-muted-foreground">
 															{selected.location && (
 																<div className="flex flex-col items-start">
-																	<span className="text-[0.65rem] uppercase tracking-widest text-gray-400 mb-1">
+																	<span className="mb-1 text-[0.65rem] uppercase tracking-widest text-gray-400">
 																		Location
 																	</span>
-																	<span className="font-medium text-lg text-gray-900 dark:text-gray-100">
+																	<span className="text-lg font-medium text-gray-900 dark:text-gray-100">
 																		{selected.location}
 																	</span>
 																</div>
 															)}
 															{selected.shutterSpeed && (
 																<div className="flex flex-col items-start">
-																	<span className="text-[0.65rem] uppercase tracking-widest text-gray-400 mb-1">
+																	<span className="mb-1 text-[0.65rem] uppercase tracking-widest text-gray-400">
 																		Shutter
 																	</span>
-																	<span className="font-medium text-lg text-gray-900 dark:text-gray-100">
+																	<span className="text-lg font-medium text-gray-900 dark:text-gray-100">
 																		{selected.shutterSpeed}
 																	</span>
 																</div>
 															)}
 															{selected.iso && (
 																<div className="flex flex-col items-start">
-																	<span className="text-[0.65rem] uppercase tracking-widest text-gray-400 mb-1">
+																	<span className="mb-1 text-[0.65rem] uppercase tracking-widest text-gray-400">
 																		ISO
 																	</span>
-																	<span className="font-medium text-lg text-gray-900 dark:text-gray-100">
+																	<span className="text-lg font-medium text-gray-900 dark:text-gray-100">
 																		{selected.iso}
 																	</span>
 																</div>
 															)}
 															{selected.aperture && (
 																<div className="flex flex-col items-start">
-																	<span className="text-[0.65rem] uppercase tracking-widest text-gray-400 mb-1">
+																	<span className="mb-1 text-[0.65rem] uppercase tracking-widest text-gray-400">
 																		Aperture
 																	</span>
-																	<span className="font-medium text-lg text-gray-900 dark:text-gray-100">
+																	<span className="text-lg font-medium text-gray-900 dark:text-gray-100">
 																		{selected.aperture}
 																	</span>
 																</div>
 															)}
 															{selected.lens && (
 																<div className="flex flex-col items-start">
-																	<span className="text-[0.65rem] uppercase tracking-widest text-gray-400 mb-1">
+																	<span className="mb-1 text-[0.65rem] uppercase tracking-widest text-gray-400">
 																		Lens
 																	</span>
-																	<span className="font-medium text-lg text-gray-900 dark:text-gray-100">
+																	<span className="text-lg font-medium text-gray-900 dark:text-gray-100">
 																		{typeof selected.lens === "string"
 																			? selected.lens
 																			: selected.lens.name ||
@@ -657,10 +662,10 @@ const LazyMasonryGallery = ({
 															)}
 															{selected.camera && (
 																<div className="flex flex-col items-start">
-																	<span className="text-[0.65rem] uppercase tracking-widest text-gray-400 mb-1">
+																	<span className="mb-1 text-[0.65rem] uppercase tracking-widest text-gray-400">
 																		Camera
 																	</span>
-																	<span className="font-medium text-lg text-gray-900 dark:text-gray-100">
+																	<span className="text-lg font-medium text-gray-900 dark:text-gray-100">
 																		{typeof selected.camera === "string"
 																			? selected.camera
 																			: selected.camera.name ||
@@ -670,8 +675,8 @@ const LazyMasonryGallery = ({
 																</div>
 															)}
 														</div>
-													</TooltipContent>
-												</Tooltip>
+													</PopoverContent>
+												</Popover>
 											</div>
 										)}
 									</div>

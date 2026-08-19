@@ -83,8 +83,8 @@ export default defineType({
 		defineField({
 			name: "introduction",
 			title: "Introduction Text",
-			type: "text",
-			rows: 4,
+			type: "array",
+			of: [defineArrayMember({ type: "block" })],
 			validation: (Rule) => Rule.required(),
 			group: "core",
 		}),

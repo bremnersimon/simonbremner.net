@@ -41,7 +41,7 @@ const softwareItemsByCategory = Object.fromEntries(
         <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
           Cameras
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {cameras.map((camera) => (
             <EquipmentCard item={camera} type="camera" />
           ))}
@@ -57,7 +57,7 @@ const softwareItemsByCategory = Object.fromEntries(
         <h3 class="text-lg font-medium text-foreground border-b border-border pb-2">
           Lenses
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {lenses.map((lens) => (
             <EquipmentCard item={lens} type="lens" />
           ))}

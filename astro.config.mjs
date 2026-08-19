@@ -19,7 +19,7 @@ export default defineConfig({
 	site: "https://simonbremner.net",
 	prefetch: {
 		prefetchAll: true,
-		defaultStrategy: 'viewport'
+		// defaultStrategy: 'viewport'
 	},
 	integrations: [
 		react(),

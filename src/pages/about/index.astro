@@ -4,23 +4,31 @@ import headshot from "@/assets/sb-headshot.jpg";
 import AnimatedHero from "@/components/main/AnimatedHero.astro";
 import Container from "@/components/main/Container.astro";
 import EquipmentSection from "@/components/main/EquipmentSection.astro";
+import FilmDistortionImage from "@/components/webgl/FilmDistortionImage";
+import SocialLinks from "@/components/main/SocialLinks.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
-import { getCameras, getLenses, getSoftwareTypes } from "@/lib/sanity";
+import {
+  getCameras,
+  getLenses,
+  getSocialLinks,
+  getSoftwareTypes,
+} from "@/lib/sanity";
 import type { AboutHeroTextProps } from "@/types/types";
 import type { Camera, Lens, SoftwareType } from "@/types/sanity/sanity.types";
 
 const heroText: AboutHeroTextProps = {
   headline: "About",
   paragraphs: [
-    "Hello, my name is Simon Bremner. I'm a Graphic Designer and Web Developer who loves taking photos. I hope you enjoy.",
+    "Hello, my name is Simon Bremner. I'm a Graphic Designer and Full Stack Developer who loves taking photos. This website serves as a representation of my interests. I hope you enjoy.",
   ],
 };
 
 // Fetch equipment data
-const [cameras, lenses, softwareItems] = await Promise.all([
+const [cameras, lenses, softwareItems, socialLinks] = await Promise.all([
   getCameras() as Promise<Camera[]>,
   getLenses() as Promise<Lens[]>,
   getSoftwareTypes() as Promise<SoftwareType[]>,
+  getSocialLinks(),
 ]);
 ---
 
@@ -29,26 +37,25 @@ const [cameras, lenses, softwareItems] = await Promise.all([
   description="About me"
   image={ogImage}
 >
-  <Container className="px-6 lg:px-0 mt-4">
+  <Container className="px-4 lg:px-0 lg:px-0">
     <AnimatedHero
       headline={heroText.headline}
       paragraphs={heroText.paragraphs}
       uppercase
-      containerClassName="flex flex-col items-start justify-center gap-8 py-20"
+      containerClassName="flex flex-col items-start justify-center gap-8 pt-20"
       textContainerClassName="mb-6"
       headlineClassName="font-thin [line-height:0.88] [letter-spacing:0.015em] text-[3.25rem] sm:text-[4.75rem] md:text-[6.5rem] lg:text-[8.5rem] xl:text-[10.5rem] 2xl:text-[12rem]"
-      paragraphClassName="text-muted-foreground text-sm sm:text-base mt-4 leading-relaxed max-w-md"
+      paragraphClassName="text-muted-foreground text-sm sm:text-base mt-4 leading-relaxed max-w-xl"
       mediaClassName="w-full"
     >
-      <img
+      <SocialLinks slot="social" links={socialLinks} />
+      <FilmDistortionImage
+        client:visible
         src={headshot.src}
         alt="Portrait of Simon Bremner"
-        class="block w-full h-auto"
+        className="block w-full h-auto"
         width={headshot.width}
         height={headshot.height}
-        loading="eager"
-        decoding="async"
-        fetchpriority="high"
       />
     </AnimatedHero>
   </Container>

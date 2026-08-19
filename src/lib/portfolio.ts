@@ -1,4 +1,4 @@
-import type { PortfolioCategory } from "@/types/portfolio";
+import type { PortfolioCategory, PortfolioRichBlock } from "@/types/portfolio";
 
 export const PORTFOLIO_CATEGORY_LABELS: Record<PortfolioCategory, string> = {
 	design: "Design",
@@ -31,6 +31,22 @@ export function getPortfolioCategoryDisplay(categories: string[] = []) {
 	}
 
 	return getPortfolioCategoryLabels(categories).join(" & ");
+}
+
+export function getPortableTextPlainText(
+	blocks: string | PortfolioRichBlock[] = [],
+) {
+	if (typeof blocks === "string") {
+		return blocks.replace(/\s+/g, " ").trim();
+	}
+
+	return blocks
+		.map((block) =>
+			(block.children || []).map((child) => child.text || "").join(""),
+		)
+		.join(" ")
+		.replace(/\s+/g, " ")
+		.trim();
 }
 
 type PortfolioTransitionPart =

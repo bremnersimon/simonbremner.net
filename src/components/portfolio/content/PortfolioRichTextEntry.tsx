@@ -6,7 +6,8 @@ export interface PortfolioPortableTextBlock extends Record<string, unknown> {
 }
 
 interface PortfolioRichTextEntryProps {
-	value: PortfolioPortableTextBlock;
+	value: PortfolioPortableTextBlock | PortfolioPortableTextBlock[];
+	className?: string;
 }
 
 const textComponents = {
@@ -60,10 +61,13 @@ const textComponents = {
 	},
 } satisfies Partial<PortableTextReactComponents>;
 
-export function PortfolioRichTextEntry({ value }: PortfolioRichTextEntryProps) {
+export function PortfolioRichTextEntry({ value, className }: PortfolioRichTextEntryProps) {
 	return (
-		<div className="mx-auto w-full max-w-[800px] px-5 md:px-0 my-20">
-			<PortableText value={[value]} components={textComponents} />
+		<div className={className || "mx-auto my-20 w-full max-w-[800px] px-5 md:px-0"}>
+			<PortableText
+				value={Array.isArray(value) ? value : [value]}
+				components={textComponents}
+			/>
 		</div>
 	);
 }
