@@ -4,9 +4,8 @@ import sitemap from "@astrojs/sitemap";
 import sanity from "@sanity/astro";
 import tailwindcss from "@tailwindcss/vite";
 import aws from "astro-sst";
-import {loadEnv} from "vite";
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 
 import partytown from "@astrojs/partytown";
 
@@ -22,8 +21,8 @@ export default defineConfig({
 	integrations: [
 		react(),
 		sanity({
-			projectId: process.env.SANITY_STUDIO_PROJECT_ID || "",
-			dataset: process.env.SANITY_STUDIO_DATA_SET || "production",
+			projectId: process.env.PUBLIC_PROJECT_ID || "",
+			dataset: process.env.PUBLIC_DATASET || "",
 			apiVersion: "2026-07-30",
 			useCdn: true,
 		}),
@@ -39,4 +38,10 @@ export default defineConfig({
 			},
 		},
 	},
+	env: {
+    schema: {
+      PUBLIC_PROJECT_ID: envField.string({ context: "server", access: "secret"}),
+      PUBLIC_DATASET: envField.string({ context: "server", access: "secret"}),
+    }
+  }
 });
