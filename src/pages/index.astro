@@ -1,10 +1,10 @@
 ---
-import PageLayout from "@/layouts/PageLayout.astro";
+import PageLayout from "@/layout/PageLayout.astro";
 import Container from "@/components/main/Container.astro";
 import AnimatedHero from "@/components/main/AnimatedHero.astro";
 import { mapGalleryPhoto } from "@/lib/galleryPhoto";
 import { getAllPhotos } from "@/lib/sanity";
-import LazyMasonryGallery from "@/components/webgl/LazyMasonryGallery";
+import LazyMasonryGallery from "@/components/main/LazyMasonryGallery";
 import ogImage from "@/assets/main-og-image.jpg";
 
 const initialPhotosPerPage = 6;

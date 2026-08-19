@@ -4,10 +4,10 @@ import "highlight.js/styles/github-dark.css";
 import MainOgImage from "@/assets/main-og-image.jpg";
 import Footer from "@/components/globals/Footer.astro";
 import { Navbar } from "@/components/globals/Navbar";
-import CommonHead from "@/lib/CommonHead.astro";
-import SEO from "@/lib/SEO.astro";
-import TagManager from "@/lib/TagManager.astro";
-import TagManagerBody from "@/lib/TagManagerBody.astro";
+import CommonHead from "@/components/seo/CommonHead.astro";
+import SEO from "@/components/seo/SEO.astro";
+import TagManager from "@/components/seo/TagManager.astro";
+import TagManagerBody from "@/components/seo/TagManagerBody.astro";
 import type { SEOProps } from "@/types/types";
 
 const year = new Date().getFullYear();
