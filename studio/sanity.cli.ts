@@ -4,7 +4,7 @@ export default defineCliConfig({
 	studioHost: "simonbremner",
 	api: {
 		projectId: process.env.SANITY_STUDIO_PROJECT_ID || "",
-		dataset: process.env.SANITY_STUDIO_DATASET || "production",
+		dataset: process.env.SANITY_STUDIO_DATA_SET || "production",
 	},
 	/**
 	 * Enable auto-updates for studios.
