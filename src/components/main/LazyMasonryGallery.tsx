@@ -468,7 +468,7 @@ const LazyMasonryGallery = ({
 
 			{!hasMore && images.length > 0 && (
 				<div className="text-center mt-16 mb-8">
-					<div className="inline-flex items-center px-4 py-2 bg-muted rounded-full">
+					<div className="inline-flex items-center px-4 py-2 bg-muted">
 						<span className="text-muted-foreground">
 							End of gallery • {images.length} photos total
 						</span>
@@ -494,7 +494,6 @@ const LazyMasonryGallery = ({
 							}}
 							onClick={(e) => e.stopPropagation()}
 						>
-							{/* Accessibility: DialogTitle and DialogDescription */}
 							<>
 								<span
 									style={{
@@ -526,7 +525,7 @@ const LazyMasonryGallery = ({
 												type="button"
 												variant="ghost"
 												size="icon"
-															className="fixed cursor-pointer left-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
+															className="fixed cursor-pointer left-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70"
 												onClick={goToPreviousImage}
 												disabled={!canGoPrevious}
 												aria-label="Previous image"
@@ -566,7 +565,7 @@ const LazyMasonryGallery = ({
 												type="button"
 												variant="ghost"
 												size="icon"
-															className="fixed cursor-pointer right-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
+															className="fixed cursor-pointer right-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70"
 												onClick={() => {
 													void goToNextImage();
 												}}
@@ -592,7 +591,7 @@ const LazyMasonryGallery = ({
 													<PopoverTrigger asChild>
 														<button
 															type="button"
-															className="flex items-center justify-center rounded-full bg-gray-100 p-2 text-gray-600 shadow-sm transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+															className="flex items-center justify-center rounded-full bg-gray-100 p-2 text-gray-600 shadow-sm transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 cursor-pointer"
 															aria-label="Show photo details"
 														>
 															<Info size={16} />

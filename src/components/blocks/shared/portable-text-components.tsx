@@ -65,7 +65,7 @@ export const textComponents = {
 		),
 		em: ({ children }: { children: React.ReactNode }) => <em>{children}</em>,
 		code: ({ children }: { children: React.ReactNode }) => (
-			<code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 font-mono text-sm">
+			<code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 font-mono text-sm">
 				{children}
 			</code>
 		),

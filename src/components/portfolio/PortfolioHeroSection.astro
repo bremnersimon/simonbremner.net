@@ -19,7 +19,7 @@ const heroUrl = heroImage?.asset
                 <img
                     src={heroUrl}
                     alt={heroImage?.alt || "Portfolio hero image"}
-                    class="w-full rounded-lg border border-border object-cover"
+                    class="w-full border border-border object-cover"
                     loading="eager"
                 />
                 {heroImage?.caption && (
@@ -29,7 +29,7 @@ const heroUrl = heroImage?.asset
                 )}
             </figure>
         ) : (
-            <div class="flex min-h-72 items-center justify-center rounded-lg border border-dashed border-border bg-muted/20">
+            <div class="flex min-h-72 items-center justify-center border border-dashed border-border bg-muted/20">
                 <p class="text-sm text-muted-foreground">
                     No hero image provided.
                 </p>
