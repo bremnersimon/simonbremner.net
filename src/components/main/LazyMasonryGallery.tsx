@@ -1,19 +1,17 @@
-import { ChevronLeft, ChevronRight, Info, Loader2 } from "lucide-react";
 import type { GalleryPhoto } from "@/lib/galleryPhoto";
+import { ChevronLeft, ChevronRight, Info, Loader2, X } from "lucide-react";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../shad-ui/button";
+import { ButtonGroup } from "../shad-ui/button-group";
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogTitle,
 } from "../shad-ui/dialog";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../shad-ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../shad-ui/popover";
 import MasonryGrid from "./MasonryGrid";
 
 interface LazyMasonryGalleryProps {
@@ -380,7 +378,7 @@ const LazyMasonryGallery = ({
 								key={imgKey}
 								ref={(el) => registerButton(el, imgKey)}
 								data-img-id={imgKey}
-								className="overflow-hidden cursor-pointer shadow-md relative w-full focus:outline-none transition-transform hover:scale-[1.02] focus:scale-[1.02]"
+								className="overflow-hidden cursor-pointer relative w-full focus:outline-none transition-transform hover:scale-[1.02] focus:scale-[1.02]"
 								style={{
 									width: "100%",
 									aspectRatio: `${img.dimensions.width} / ${img.dimensions.height}`,
@@ -468,7 +466,7 @@ const LazyMasonryGallery = ({
 
 			{!hasMore && images.length > 0 && (
 				<div className="text-center mt-16 mb-8">
-					<div className="inline-flex items-center px-4 py-2 bg-muted rounded-full">
+					<div className="inline-flex items-center px-4 py-2 bg-muted">
 						<span className="text-muted-foreground">
 							End of gallery • {images.length} photos total
 						</span>
@@ -480,7 +478,10 @@ const LazyMasonryGallery = ({
 				open={selectedIndex !== null}
 				onOpenChange={(open) => !open && setSelectedIndex(null)}
 			>
-				<DialogContent className="w-screen h-screen max-w-none max-h-none p-0 m-0 flex items-center justify-center bg-background">
+				<DialogContent
+					closeButton={false}
+					className="w-screen h-screen max-w-none max-h-none p-0 m-0 flex items-center justify-center bg-background"
+				>
 					{selected && (
 						// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
 						<div
@@ -494,7 +495,6 @@ const LazyMasonryGallery = ({
 							}}
 							onClick={(e) => e.stopPropagation()}
 						>
-							{/* Accessibility: DialogTitle and DialogDescription */}
 							<>
 								<span
 									style={{
@@ -518,29 +518,14 @@ const LazyMasonryGallery = ({
 								</span>
 								<div className="flex flex-col items-center w-full h-full">
 									<div
-										className="relative w-full h-full flex justify-center items-center"
-										style={{ maxHeight: "80vh" }}
+										className="flex h-full w-full items-center justify-center"
+										style={{ maxHeight: "calc(100dvh - 7rem)" }}
 									>
-										{isModalImageReady && (
-											<Button
-												type="button"
-												variant="ghost"
-												size="icon"
-															className="fixed cursor-pointer left-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
-												onClick={goToPreviousImage}
-												disabled={!canGoPrevious}
-												aria-label="Previous image"
-											>
-												<ChevronLeft className="h-6 w-6" />
-												<span className="sr-only">Previous image</span>
-											</Button>
-										)}
-
 										<div
 											style={{
 												width: "100%",
 												height: "auto",
-												maxHeight: "80vh",
+												maxHeight: "calc(100dvh - 7rem)",
 												display: "flex",
 												alignItems: "center",
 												justifyContent: "center",
@@ -553,7 +538,7 @@ const LazyMasonryGallery = ({
 												height={selected.image.height}
 												className="block object-contain"
 												style={{
-													maxHeight: "80vh",
+													maxHeight: "calc(100dvh - 7rem)",
 													maxWidth: "100%",
 													width: "auto",
 													height: "auto",
@@ -561,51 +546,73 @@ const LazyMasonryGallery = ({
 											/>
 										</div>
 
-										{isModalImageReady && (
-											<Button
-												type="button"
-												variant="ghost"
-												size="icon"
-															className="fixed cursor-pointer right-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/70 rounded-full"
-												onClick={() => {
-													void goToNextImage();
-												}}
-												disabled={!canGoNext || isLoading}
-												aria-label="Next image"
-											>
-												{isLoading && isLastLoadedImage ? (
-													<Loader2 className="h-6 w-6 animate-spin" />
-												) : (
-													<ChevronRight className="h-6 w-6" />
-												)}
-												<span className="sr-only">
-													{isLoading && isLastLoadedImage
-														? "Loading next image"
-														: "Next image"}
-												</span>
-											</Button>
-										)}
+										<ButtonGroup
+											className="rounded-none absolute bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-10 -translate-x-1/2"
+											aria-busy={!isModalImageReady}
+										>
+											{/* Previous image */}
+											<ButtonGroup className="rounded-none bg-background/80 backdrop-blur-sm">
+												<Button
+													type="button"
+													variant="outline"
+													size="icon"
+													className="rounded-none cursor-pointer bg-transparent"
+													onClick={goToPreviousImage}
+													disabled={!isModalImageReady || !canGoPrevious}
+													aria-label="Previous image"
+												>
+													<ChevronLeft className="h-5 w-5" />
+													<span className="sr-only">Previous image</span>
+												</Button>
 
-										{isModalImageReady && (
-											<div className="absolute bottom-4 right-4 z-10">
+												{/* Next image */}
+												<Button
+													type="button"
+													variant="outline"
+													size="icon"
+													className="rounded-none cursor-pointer bg-transparent"
+													onClick={() => {
+														void goToNextImage();
+													}}
+													disabled={
+														!isModalImageReady || !canGoNext || isLoading
+													}
+													aria-label="Next image"
+												>
+													{isLoading && isLastLoadedImage ? (
+														<Loader2 className="h-5 w-5 animate-spin" />
+													) : (
+														<ChevronRight className="h-5 w-5" />
+													)}
+													<span className="sr-only">
+														{isLoading && isLastLoadedImage
+															? "Loading next image"
+															: "Next image"}
+													</span>
+												</Button>
+											</ButtonGroup>
+											<ButtonGroup className="rounded-none bg-background/80 backdrop-blur-sm">
 												<Popover>
 													<PopoverTrigger asChild>
-														<button
+														<Button
 															type="button"
-															className="flex items-center justify-center rounded-full bg-gray-100 p-2 text-gray-600 shadow-sm transition-colors hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+															variant="outline"
+															size="icon"
+															className="rounded-none cursor-pointer bg-transparent"
+															disabled={!isModalImageReady}
 															aria-label="Show photo details"
 														>
-															<Info size={16} />
+															<Info className="h-4 w-4" />
 															<span className="sr-only">Photo details</span>
-														</button>
+														</Button>
 													</PopoverTrigger>
 													<PopoverContent
-														align="end"
+														align="center"
 														side="top"
 														sideOffset={8}
-														className="max-w-xl border border-gray-200 bg-white p-6 shadow-xl dark:border-gray-700 dark:bg-gray-900"
+														className="w-[calc(100vw-2rem)] max-w-xl border border-gray-200 bg-white p-6 shadow-xl dark:border-gray-700 dark:bg-gray-900"
 													>
-														<div className="grid grid-cols-3 gap-y-6 gap-x-8 justify-center items-start text-base text-muted-foreground">
+														<div className="grid grid-cols-2 gap-x-8 gap-y-6 text-base text-muted-foreground sm:grid-cols-3">
 															{selected.location && (
 																<div className="flex flex-col items-start">
 																	<span className="mb-1 text-[0.65rem] uppercase tracking-widest text-gray-400">
@@ -677,8 +684,21 @@ const LazyMasonryGallery = ({
 														</div>
 													</PopoverContent>
 												</Popover>
-											</div>
-										)}
+
+												<DialogClose asChild>
+													<Button
+														type="button"
+														variant="outline"
+														size="icon"
+														className="rounded-none cursor-pointer bg-transparent"
+														aria-label="Close dialog"
+													>
+														<X className="h-5 w-5" />
+														<span className="sr-only">Close dialog</span>
+													</Button>
+												</DialogClose>
+											</ButtonGroup>
+										</ButtonGroup>
 									</div>
 								</div>
 							</>
