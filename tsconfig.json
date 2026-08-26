@@ -1,13 +1,25 @@
 {
 	"extends": "astro/tsconfigs/strict",
-	"include": [".astro/types.d.ts", "/types/index.d.ts", "env.d.ts", "**/*", "**/**/*"],
-	"exclude": ["dist", "node_modules","sst.config.ts"],
+	"include": [
+		".astro/types.d.ts",
+		"/types/index.d.ts",
+		"env.d.ts",
+		"**/*",
+		"**/**/*"
+	],
+	"exclude": [
+		"dist",
+		"node_modules",
+		"sst.config.ts"
+	],
 	"compilerOptions": {
 		"esModuleInterop": true,
 		"jsx": "react-jsx",
 		"jsxImportSource": "react",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": [
+				"./src/*"
+			]
 		}
 	}
 }

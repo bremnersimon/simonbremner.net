@@ -111,8 +111,12 @@ interface PortfolioCodeBlockEntryProps {
 	value: PortfolioCodeBlock;
 }
 
-export function PortfolioCodeBlockEntry({ value }: PortfolioCodeBlockEntryProps) {
-	const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
+export function PortfolioCodeBlockEntry({
+	value,
+}: PortfolioCodeBlockEntryProps) {
+	const [copyState, setCopyState] = useState<"idle" | "copied" | "error">(
+		"idle",
+	);
 	const source = value.code || "";
 	const normalizedLanguage = normalizeLanguage(value.language);
 	const languageLabel = languageLabels[normalizedLanguage] || "Plain Text";
@@ -173,12 +177,16 @@ export function PortfolioCodeBlockEntry({ value }: PortfolioCodeBlockEntryProps)
 				<pre className="overflow-x-auto bg-background p-0 text-sm leading-6">
 					<code className="hljs block min-w-max bg-background text-foreground">
 						{highlightedLines.map((line, index) => (
-							<div key={`${value._key}-line-${index}`} className="grid grid-cols-[3rem_1fr]">
+							<div
+								key={`${value._key}-line-${index}`}
+								className="grid grid-cols-[3rem_1fr]"
+							>
 								<span className="select-none border-r border-border px-3 text-right text-xs text-muted-foreground">
 									{index + 1}
 								</span>
 								<span
 									className="whitespace-pre px-4"
+									// biome-ignore lint/security/noDangerouslySetInnerHtml: Using dangerouslySetInnerHTML to render highlighted code safely. TODO: Sanitize html before rendering.
 									dangerouslySetInnerHTML={{ __html: line || " " }}
 								/>
 							</div>

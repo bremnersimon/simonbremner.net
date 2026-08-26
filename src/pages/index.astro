@@ -4,7 +4,7 @@ import Container from "@/components/main/Container.astro";
 import AnimatedHero from "@/components/main/AnimatedHero.astro";
 import { mapGalleryPhoto } from "@/lib/galleryPhoto";
 import { getAllPhotos } from "@/lib/sanity";
-import LazyMasonryGallery from "@/components/main/LazyMasonryGallery";
+import MasonryGallery from "@/components/main/MasonryGallery";
 import ogImage from "@/assets/main-og-image.jpg";
 
 const initialPhotosPerPage = 6;
@@ -44,7 +44,7 @@ const lcpPhoto = galleryPhotos[0];
                 containerClassName="mb-[clamp(1.25rem,3vw,2.5rem)] w-full"
                 headlineClassName="font-thin [line-height:0.88] [letter-spacing:0.015em] text-[3.25rem] sm:text-[4.75rem] md:text-[6.5rem] lg:text-[8.5rem] xl:text-[10.5rem] 2xl:text-[12rem]"
             />
-            <LazyMasonryGallery
+            <MasonryGallery
                 client:visible={{ rootMargin: "600px" }}
                 initialImages={galleryPhotos}
                 photosPerPage={15}

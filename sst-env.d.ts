@@ -4,22 +4,14 @@
 /* deno-fmt-ignore-file */
 
 declare module "sst" {
-  export interface Resource {
-    "PASSWORD": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "USERNAME": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "simonbremner-net": {
-      "type": "sst.aws.Astro"
-      "url": string
-    }
-  }
+	export interface Resource {
+		"simonbremner-net": {
+			type: "sst.aws.Astro";
+			url: string;
+		};
+	}
 }
 /// <reference path="sst-env.d.ts" />
 
-import "sst"
-export {}
+import "sst";
+export {};

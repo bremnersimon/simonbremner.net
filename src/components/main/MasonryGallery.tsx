@@ -14,15 +14,15 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "../shad-ui/popover";
 import MasonryGrid from "./MasonryGrid";
 
-interface LazyMasonryGalleryProps {
+interface MasonryGalleryProps {
 	initialImages: GalleryPhoto[];
 	photosPerPage?: number;
 }
 
-const LazyMasonryGallery = ({
+const MasonryGallery = ({
 	initialImages,
 	photosPerPage = 20,
-}: LazyMasonryGalleryProps) => {
+}: MasonryGalleryProps) => {
 	const [images, setImages] = useState<GalleryPhoto[]>(initialImages || []);
 	const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 	const [columns, setColumns] = useState(1);
@@ -710,4 +710,4 @@ const LazyMasonryGallery = ({
 	);
 };
 
-export default LazyMasonryGallery;
+export default MasonryGallery;

@@ -11,10 +11,12 @@
 			"node_modules",
 			"dist",
 			".astro",
+			".sst",
 			".vscode",
 			"src/types/sanity/sanity.types.ts",
 			"src/lib/sanity.image.ts",
-			"src/types/index.d.ts"
+			"src/types/index.d.ts",
+			"sst-env.d.ts"
 		]
 	},
 	"formatter": {
