@@ -610,7 +610,7 @@ const MasonryGallery = ({
 														align="center"
 														side="top"
 														sideOffset={8}
-														className="w-[calc(100vw-2rem)] max-w-xl border border-gray-200 bg-white p-6 shadow-xl dark:border-gray-700 dark:bg-gray-900"
+														className="w-[calc(100vw-2rem)] max-w-xl border border-gray-200 bg-white p-6 shadow-xl dark:border-gray-700 dark:bg-background"
 													>
 														<div className="grid grid-cols-2 gap-x-8 gap-y-6 text-base text-muted-foreground sm:grid-cols-3">
 															{selected.location && (
