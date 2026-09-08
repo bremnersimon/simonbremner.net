@@ -491,7 +491,7 @@ const MasonryGallery = ({
 					className="w-screen h-screen max-w-none max-h-none p-0 m-0 flex items-center justify-center bg-background"
 				>
 					{selected && (
-						// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+						// biome-ignore lint/a11y/useKeyWithClickEvents: Functional element with click handler but no key event
 						<div
 							style={{
 								maxWidth: "90vw",
