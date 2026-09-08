@@ -1,4 +1,35 @@
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+
+import { urlForImage } from "@/lib/sanity";
 import type { PortfolioCategory, PortfolioRichBlock } from "@/types/portfolio";
+
+type PortfolioImageVariant = "archive" | "hero";
+
+const PORTFOLIO_IMAGE_DIMENSIONS: Record<
+	PortfolioImageVariant,
+	{ width: number; height: number }
+> = {
+	archive: { width: 900, height: 450 },
+	hero: { width: 1800, height: 900 },
+};
+
+export function getPortfolioImageUrl(
+	source: SanityImageSource | null | undefined,
+	variant: PortfolioImageVariant,
+) {
+	if (!source) {
+		return "";
+	}
+
+	const { width, height } = PORTFOLIO_IMAGE_DIMENSIONS[variant];
+
+	return urlForImage(source)
+		.width(width)
+		.height(height)
+		.fit("crop")
+		.format("webp")
+		.url();
+}
 
 export const PORTFOLIO_CATEGORY_LABELS: Record<PortfolioCategory, string> = {
 	design: "Design",

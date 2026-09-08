@@ -3,8 +3,11 @@ import AnimatedHero from "@/components/main/AnimatedHero.astro";
 import Container from "@/components/main/Container.astro";
 import { PortfolioArchive } from "@/components/portfolio/PortfolioArchive";
 import PageLayout from "@/layout/PageLayout.astro";
-import { getPortableTextPlainText } from "@/lib/portfolio";
-import { getPortfolioPosts, urlForImage } from "@/lib/sanity";
+import {
+    getPortableTextPlainText,
+    getPortfolioImageUrl,
+} from "@/lib/portfolio";
+import { getPortfolioPosts } from "@/lib/sanity";
 import type { PortfolioPost } from "@/types/portfolio";
 
 const posts = (await getPortfolioPosts(48)) as PortfolioPost[];
@@ -19,14 +22,8 @@ const archivePosts = posts.map((post) => {
         href: slug ? `/portfolio/${slug}` : undefined,
         category: post.category || [],
         serviceTags: post.serviceTags || [],
-        imageUrl: post.heroImage?.asset
-            ? urlForImage(post.heroImage)
-                  .width(900)
-                  .height(450)
-                  .fit("crop")
-                  .format("webp")
-                  .url()
-            : "",
+        imageUrl: getPortfolioImageUrl(post.heroImage, "archive"),
+        heroImageUrl: getPortfolioImageUrl(post.heroImage, "hero"),
         imageAlt: post.heroImage?.alt || post.headline || "Portfolio image",
     };
 });

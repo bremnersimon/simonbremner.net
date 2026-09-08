@@ -13,6 +13,7 @@ type PortfolioArchivePost = {
 	category?: string[];
 	serviceTags?: string[];
 	imageUrl?: string;
+	heroImageUrl?: string;
 	imageAlt?: string;
 };
 
@@ -127,6 +128,7 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 								<PortfolioPreviewCard
 									headline={post.headline}
 									imageUrl={post.imageUrl}
+									heroImageUrl={post.heroImageUrl}
 									imageAlt={post.imageAlt}
 									href={post.href}
 									slug={post.slug}
