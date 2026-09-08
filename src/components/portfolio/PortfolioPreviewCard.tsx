@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 type PortfolioPreviewCardProps = {
 	headline?: string;
 	imageUrl?: string;
+	heroImageUrl?: string;
 	imageAlt?: string;
 	href?: string;
 	slug?: string;
@@ -13,9 +14,25 @@ type PortfolioPreviewCardProps = {
 	loading?: "eager" | "lazy";
 };
 
+const heroImagePreloads = new Map<string, Promise<void>>();
+
+function preloadHeroImage(heroImageUrl: string | undefined) {
+	if (!heroImageUrl || typeof Image === "undefined" || heroImagePreloads.has(heroImageUrl)) {
+		return;
+	}
+
+	const image = new Image();
+	image.src = heroImageUrl;
+	heroImagePreloads.set(
+		heroImageUrl,
+		image.decode().catch(() => undefined),
+	);
+}
+
 export function PortfolioPreviewCard({
 	headline,
 	imageUrl,
+	heroImageUrl,
 	imageAlt,
 	href,
 	slug,
@@ -76,7 +93,13 @@ export function PortfolioPreviewCard({
 	}
 
 	return (
-		<a href={href} className="group block h-full border-foreground">
+		<a
+			href={href}
+			className="group block h-full border-foreground"
+			onPointerEnter={() => preloadHeroImage(heroImageUrl)}
+			onFocus={() => preloadHeroImage(heroImageUrl)}
+			onPointerDown={() => preloadHeroImage(heroImageUrl)}
+		>
 			{card}
 		</a>
 	);

@@ -10,9 +10,10 @@ import { Separator } from "@/components/shad-ui/separator";
 import PageLayout from "@/layout/PageLayout.astro";
 import {
     getPortableTextPlainText,
+    getPortfolioImageUrl,
     getPortfolioTransitionName,
 } from "@/lib/portfolio";
-import { getPortfolioPostBySlug, urlForImage } from "@/lib/sanity";
+import { getPortfolioPostBySlug } from "@/lib/sanity";
 import type { PortfolioPost } from "@/types/portfolio";
 
 const slug = Astro.params.slug;
@@ -24,9 +25,7 @@ if (!post) {
     Astro.response.status = 404;
 }
 
-const heroImageUrl = post?.heroImage?.asset
-    ? urlForImage(post.heroImage).width(1800).fit("max").format("webp").url()
-    : undefined;
+const heroImageUrl = getPortfolioImageUrl(post?.heroImage, "hero") || undefined;
 
 const seoTitle = post?.headline
     ? `${post.headline} | Portfolio`
@@ -69,6 +68,7 @@ const imageTransitionName = getPortfolioTransitionName(
                                     }
                                     class="aspect-[2/1] w-full object-cover"
                                     loading="eager"
+                                    fetchpriority="high"
                                 />
                             </div>
                         ) : (
