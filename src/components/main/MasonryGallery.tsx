@@ -1,5 +1,12 @@
 import type { GalleryPhoto } from "@/lib/galleryPhoto";
-import { ChevronLeft, ChevronRight, Info, Loader2, X } from "lucide-react";
+import {
+	ChevronLeft,
+	ChevronRight,
+	Info,
+	Keyboard,
+	Loader2,
+	X,
+} from "lucide-react";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "../shad-ui/button";
@@ -11,6 +18,7 @@ import {
 	DialogDescription,
 	DialogTitle,
 } from "../shad-ui/dialog";
+import { Kbd } from "../shad-ui/kbd";
 import { Popover, PopoverContent, PopoverTrigger } from "../shad-ui/popover";
 import MasonryGrid from "./MasonryGrid";
 
@@ -483,7 +491,7 @@ const MasonryGallery = ({
 					className="w-screen h-screen max-w-none max-h-none p-0 m-0 flex items-center justify-center bg-background"
 				>
 					{selected && (
-						// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+						// biome-ignore lint/a11y/useKeyWithClickEvents: Functional element with click handler but no key event
 						<div
 							style={{
 								maxWidth: "90vw",
@@ -592,6 +600,44 @@ const MasonryGallery = ({
 												</Button>
 											</ButtonGroup>
 											<ButtonGroup className="rounded-none bg-background/80 backdrop-blur-sm">
+												<Popover>
+													<PopoverTrigger asChild>
+														<Button
+															type="button"
+															variant="outline"
+															size="icon"
+															className="rounded-none cursor-pointer bg-transparent"
+															disabled={!isModalImageReady}
+															aria-label="Show keyboard shortcuts"
+														>
+															<Keyboard className="h-4 w-4" />
+															<span className="sr-only">
+																Keyboard shortcuts
+															</span>
+														</Button>
+													</PopoverTrigger>
+													<PopoverContent
+														align="center"
+														side="top"
+														sideOffset={8}
+														className="w-64 border border-gray-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-background"
+													>
+														<div className="grid gap-3 text-sm">
+															<div className="flex items-center justify-between gap-6">
+																<span>Close modal</span>
+																<Kbd className="min-w-8">Esc</Kbd>
+															</div>
+															<div className="flex items-center justify-between gap-6">
+																<span>Previous picture</span>
+																<Kbd className="min-w-8">←</Kbd>
+															</div>
+															<div className="flex items-center justify-between gap-6">
+																<span>Next picture</span>
+																<Kbd className="min-w-8">→</Kbd>
+															</div>
+														</div>
+													</PopoverContent>
+												</Popover>
 												<Popover>
 													<PopoverTrigger asChild>
 														<Button
