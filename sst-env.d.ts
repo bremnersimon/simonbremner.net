@@ -5,14 +5,6 @@
 
 declare module "sst" {
   export interface Resource {
-    "PASSWORD": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
-    "USERNAME": {
-      "type": "sst.sst.Secret"
-      "value": string
-    }
     "simonbremner-net": {
       "type": "sst.aws.Astro"
       "url": string
