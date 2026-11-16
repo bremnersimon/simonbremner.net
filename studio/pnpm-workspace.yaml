@@ -1,5 +1,5 @@
-onlyBuiltDependencies:
-  - '@biomejs/biome'
+allowBuilds:
+  esbuild: false
 packages:
   - '.'
   - 'studio'

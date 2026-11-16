@@ -12,6 +12,17 @@ export default defineType({
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
+			name: "exifNames",
+			title: "EXIF Camera Names",
+			type: "array",
+			description:
+				"Names reported by photo imports, e.g., Canon EOS R6m2. Add each variant separately to match this camera without changing its display name. Publish changes, then retry the photo import.",
+			of: [
+				{ type: "string", validation: (Rule) => Rule.required().regex(/\S/) },
+			],
+			validation: (Rule) => Rule.unique(),
+		}),
+		defineField({
 			name: "brand",
 			title: "Brand",
 			type: "string",
