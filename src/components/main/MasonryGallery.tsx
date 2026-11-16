@@ -5,6 +5,7 @@ import {
 	Info,
 	Keyboard,
 	Loader2,
+	Plus,
 	X,
 } from "lucide-react";
 import type React from "react";
@@ -27,6 +28,8 @@ interface MasonryGalleryProps {
 	photosPerPage?: number;
 }
 
+const SWIPE_THRESHOLD = 50;
+
 const MasonryGallery = ({
 	initialImages,
 	photosPerPage = 20,
@@ -43,6 +46,13 @@ const MasonryGallery = ({
 		{},
 	);
 	const isFetchingRef = useRef(false);
+	const pendingFetchRef = useRef<Promise<number> | null>(null);
+	const navigationVersionRef = useRef(0);
+	const touchStartRef = useRef<{
+		id: number;
+		x: number;
+		y: number;
+	} | null>(null);
 	const sentinelRef = useRef<HTMLDivElement>(null);
 	const lastFetchAtRef = useRef(0);
 	const resizeObserverRef = useRef<ResizeObserver | null>(null);
@@ -166,40 +176,47 @@ const MasonryGallery = ({
 	}, []);
 
 	const loadMorePhotos = useCallback(async (): Promise<number> => {
-		if (isFetchingRef.current || !hasMore) return 0;
+		if (pendingFetchRef.current) return pendingFetchRef.current;
+		if (!hasMore) return 0;
 
 		isFetchingRef.current = true;
 		setIsLoading(true);
-		try {
-			const response = await fetch(
-				`/api/photos?offset=${offset}&limit=${photosPerPage}`,
-			);
-			if (!response.ok) {
-				throw new Error("Failed to fetch photos");
+		const pendingFetch = (async () => {
+			try {
+				const response = await fetch(
+					`/api/photos?offset=${offset}&limit=${photosPerPage}`,
+				);
+				if (!response.ok) {
+					throw new Error("Failed to fetch photos");
+				}
+
+				const data = await response.json();
+
+				if (data.photos && data.photos.length > 0) {
+					setImages((prev) => [...prev, ...data.photos]);
+					setOffset((prev) => prev + data.photos.length);
+					setHasMore(data.hasMore);
+					return data.photos.length;
+				}
+
+				setHasMore(false);
+				return 0;
+			} catch (error) {
+				console.error("Error loading more photos:", error);
+				setHasMore(false);
+				return 0;
+			} finally {
+				isFetchingRef.current = false;
+				pendingFetchRef.current = null;
+				setIsLoading(false);
 			}
-
-			const data = await response.json();
-
-			if (data.photos && data.photos.length > 0) {
-				setImages((prev) => [...prev, ...data.photos]);
-				setOffset((prev) => prev + data.photos.length);
-				setHasMore(data.hasMore);
-				return data.photos.length;
-			}
-
-			setHasMore(false);
-			return 0;
-		} catch (error) {
-			console.error("Error loading more photos:", error);
-			setHasMore(false);
-			return 0;
-		} finally {
-			isFetchingRef.current = false;
-			setIsLoading(false);
-		}
+		})();
+		pendingFetchRef.current = pendingFetch;
+		return pendingFetch;
 	}, [offset, photosPerPage, hasMore]);
 
 	const goToPreviousImage = useCallback(() => {
+		navigationVersionRef.current += 1;
 		setSelectedIndex((prev) => {
 			if (prev === null || prev <= 0) return prev;
 			return prev - 1;
@@ -208,6 +225,7 @@ const MasonryGallery = ({
 
 	const goToNextImage = useCallback(async () => {
 		if (selectedIndex === null) return;
+		const navigationVersion = ++navigationVersionRef.current;
 
 		if (selectedIndex < images.length - 1) {
 			setSelectedIndex((prev) => {
@@ -222,10 +240,52 @@ const MasonryGallery = ({
 		const previousLength = images.length;
 		const loadedCount = await loadMorePhotos();
 
-		if (loadedCount > 0) {
-			setSelectedIndex(previousLength);
+		if (loadedCount > 0 && navigationVersion === navigationVersionRef.current) {
+			setSelectedIndex((prev) =>
+				prev === selectedIndex ? previousLength : prev,
+			);
 		}
 	}, [selectedIndex, images.length, hasMore, loadMorePhotos]);
+
+	const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+		if (event.touches.length !== 1) {
+			touchStartRef.current = null;
+			return;
+		}
+
+		const touch = event.touches[0];
+		touchStartRef.current = {
+			id: touch.identifier,
+			x: touch.clientX,
+			y: touch.clientY,
+		};
+	};
+
+	const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+		const start = touchStartRef.current;
+		touchStartRef.current = null;
+		if (!start || event.touches.length !== 0 || !isModalImageReady) return;
+
+		const touch = Array.from(event.changedTouches).find(
+			(item) => item.identifier === start.id,
+		);
+		if (!touch) return;
+
+		const deltaX = touch.clientX - start.x;
+		const deltaY = touch.clientY - start.y;
+		if (
+			Math.abs(deltaX) < SWIPE_THRESHOLD ||
+			Math.abs(deltaX) <= Math.abs(deltaY) * 1.5
+		) {
+			return;
+		}
+
+		if (deltaX > 0 && canGoPrevious) {
+			goToPreviousImage();
+		} else if (deltaX < 0 && canGoNext && !isLoading) {
+			void goToNextImage();
+		}
+	};
 
 	const handleManualLoadMore = useCallback(() => {
 		void loadMorePhotos();
@@ -392,7 +452,10 @@ const MasonryGallery = ({
 									aspectRatio: `${img.dimensions.width} / ${img.dimensions.height}`,
 									backgroundColor: "hsl(var(--muted))",
 								}}
-								onClick={() => setSelectedIndex(i)}
+								onClick={() => {
+									navigationVersionRef.current += 1;
+									setSelectedIndex(i);
+								}}
 								tabIndex={0}
 								aria-label={img.image.alt || img.title || `View photo ${i + 1}`}
 							>
@@ -463,7 +526,11 @@ const MasonryGallery = ({
 						disabled={isLoading}
 						className="min-w-40"
 					>
-						{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+						{isLoading ? (
+							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+						) : (
+							<Plus className="mr-2 h-4 w-4" />
+						)}
 						{isLoading ? "Loading..." : "Load more"}
 					</Button>
 					{/* <p className="text-center text-xs text-muted-foreground">
@@ -484,7 +551,12 @@ const MasonryGallery = ({
 
 			<Dialog
 				open={selectedIndex !== null}
-				onOpenChange={(open) => !open && setSelectedIndex(null)}
+				onOpenChange={(open) => {
+					if (!open) {
+						navigationVersionRef.current += 1;
+						setSelectedIndex(null);
+					}
+				}}
 			>
 				<DialogContent
 					closeButton={false}
@@ -537,6 +609,17 @@ const MasonryGallery = ({
 												display: "flex",
 												alignItems: "center",
 												justifyContent: "center",
+												touchAction: "pan-y pinch-zoom",
+											}}
+											onTouchStart={handleTouchStart}
+											onTouchMove={(event) => {
+												if (event.touches.length !== 1) {
+													touchStartRef.current = null;
+												}
+											}}
+											onTouchEnd={handleTouchEnd}
+											onTouchCancel={() => {
+												touchStartRef.current = null;
 											}}
 										>
 											<img

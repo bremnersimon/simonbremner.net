@@ -33,7 +33,8 @@ function toCategoryFilter(value: string | null): PortfolioFilterCategory {
 }
 
 export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
-	const [activeCategory, setActiveCategory] = useState<PortfolioFilterCategory>("all");
+	const [activeCategory, setActiveCategory] =
+		useState<PortfolioFilterCategory>("all");
 
 	useEffect(() => {
 		const syncFromUrl = () => {
@@ -85,9 +86,7 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 								? "/portfolio"
 								: `/portfolio?category=${category}`;
 						const label =
-							category === "all"
-								? "All"
-								: getPortfolioCategoryLabel(category);
+							category === "all" ? "All" : getPortfolioCategoryLabel(category);
 
 						return (
 							<li key={category}>
@@ -113,7 +112,7 @@ export function PortfolioArchive({ posts }: PortfolioArchiveProps) {
 			</div>
 
 			{filteredPosts.length > 0 ? (
-				<ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+				<ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2">
 					<AnimatePresence mode="popLayout">
 						{filteredPosts.map((post) => (
 							<motion.li
