@@ -9,6 +9,7 @@ import {
 } from "@/lib/portfolio";
 import { getPortfolioPosts } from "@/lib/sanity";
 import type { PortfolioPost } from "@/types/portfolio";
+import headshot from "@/assets/sb-headshot.jpg";
 
 const posts = (await getPortfolioPosts(48)) as PortfolioPost[];
 const archivePosts = posts.map((post) => {
@@ -31,7 +32,8 @@ const archivePosts = posts.map((post) => {
 
 <PageLayout
     title="Portfolio | Simon Bremner"
-    description="Portfolio project posts."
+    description="A portfolio page of design & development work by Simon Bremner."
+    image={headshot}
 >
     <section class="w-full pb-16 pt-24">
         <Container>
