@@ -5,6 +5,7 @@ import {
 	Info,
 	Keyboard,
 	Loader2,
+	Plus,
 	X,
 } from "lucide-react";
 import type React from "react";
@@ -463,7 +464,11 @@ const MasonryGallery = ({
 						disabled={isLoading}
 						className="min-w-40"
 					>
-						{isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+						{isLoading ? (
+							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+						) : (
+							<Plus className="mr-2 h-4 w-4" />
+						)}
 						{isLoading ? "Loading..." : "Load more"}
 					</Button>
 					{/* <p className="text-center text-xs text-muted-foreground">

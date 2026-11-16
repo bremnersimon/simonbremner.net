@@ -2,12 +2,10 @@ packages:
   - .
   - studio
 
-ignoredBuiltDependencies:
-  - aws-sdk
-  - esbuild
-  - sharp
-
-onlyBuiltDependencies:
-  - '@biomejs/biome'
-
 linkWorkspacePackages: true
+
+allowBuilds:
+  '@biomejs/biome': true
+  aws-sdk: true
+  esbuild: true
+  sharp: true
