@@ -12,7 +12,7 @@ const { item, type } = Astro.props;
 
 // Helper function to format lens display
 function formatLensInfo(lens: Lens) {
-  const focal = lens.focalLength?.max
+  const focal = lens.focalLength?.max && lens.focalLength.max !== lens.focalLength.min
     ? `${lens.focalLength.min}-${lens.focalLength.max}`
     : lens.focalLength?.min;
 
