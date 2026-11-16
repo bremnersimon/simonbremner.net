@@ -97,7 +97,7 @@ export default function PhotoMetadataInput(props: ObjectInputProps) {
 				equipment: async (requestSignal) =>
 					parseEquipment(
 						await activeClient.fetch<unknown>(
-							"*[_type in $types]{_id, _type, name, brand, modelNumber}",
+							"*[_type in $types]{_id, _type, name, brand, modelNumber, exifNames}",
 							{ types: ["camera", "lens"] },
 							{ signal: requestSignal },
 						),
@@ -249,28 +249,28 @@ export default function PhotoMetadataInput(props: ObjectInputProps) {
 									extracted EXIF. Retry or enter the fields manually.
 								</Text>
 							)}
-							{preview.extraction.raw?.DateTimeOriginal != null &&
-								preview.extraction.raw.OffsetTimeOriginal == null && (
-									<Stack gap={2}>
-										<Text as="label" htmlFor={`${props.id}-offset`} size={1}>
-											Capture UTC offset (default: fixed EST, no daylight
-											saving)
-										</Text>
-										<Select
-											id={`${props.id}-offset`}
-											value={offset}
-											disabled={props.readOnly}
-											onChange={(event) => setOffset(event.currentTarget.value)}
-										>
-											{OFFSETS.map((zone) => (
-												<option key={zone} value={zone}>
-													UTC{zone}
-													{zone === "-05:00" ? " (fixed EST)" : ""}
-												</option>
-											))}
-										</Select>
-									</Stack>
-								)}
+							{proposals.some(
+								(item) => item.field === "dateTaken" && item.requiresOffset,
+							) && (
+								<Stack gap={2}>
+									<Text as="label" htmlFor={`${props.id}-offset`} size={1}>
+										Capture UTC offset (default: fixed EST, no daylight saving)
+									</Text>
+									<Select
+										id={`${props.id}-offset`}
+										value={offset}
+										disabled={props.readOnly}
+										onChange={(event) => setOffset(event.currentTarget.value)}
+									>
+										{OFFSETS.map((zone) => (
+											<option key={zone} value={zone}>
+												UTC{zone}
+												{zone === "-05:00" ? " (fixed EST)" : ""}
+											</option>
+										))}
+									</Select>
+								</Stack>
+							)}
 							{proposals.map((item) => (
 								<Flex key={item.field} gap={3} align="flex-start">
 									<Checkbox

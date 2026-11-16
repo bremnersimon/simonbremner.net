@@ -12,6 +12,17 @@ export default defineType({
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
+			name: "exifNames",
+			title: "EXIF Lens Names",
+			type: "array",
+			description:
+				"Names reported by photo imports, e.g., RF100-400mm F5.6-8 IS USM. Add each variant separately to match this lens without changing its display name. Publish changes, then retry the photo import.",
+			of: [
+				{ type: "string", validation: (Rule) => Rule.required().regex(/\S/) },
+			],
+			validation: (Rule) => Rule.unique(),
+		}),
+		defineField({
 			name: "brand",
 			title: "Brand",
 			type: "string",

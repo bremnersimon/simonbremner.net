@@ -58,13 +58,13 @@ test("Lightroom values map to the existing fields, respecting embedded offset", 
 		lens: { _type: "reference", _ref: "lens-1" },
 		focalLength: "400mm",
 		aperture: "f/8",
-		shutterSpeed: "1/250s",
+		shutterSpeed: "1/250",
 		iso: 8000,
 		dateTaken: "2026-11-06T13:04:01.000Z",
 	});
 });
 
-test("Sanity technical metadata is preferred; its normalized date is not guessed", () => {
+test("Sanity stored capture date falls back to selected offset, not its normalized Z suffix", () => {
 	const proposals = buildProposals(
 		{
 			image: { Make: "Canon", Model: "Canon EOS R6m2" },
@@ -80,6 +80,68 @@ test("Sanity technical metadata is preferred; its normalized date is not guessed
 	assert.equal(proposals.find((p) => p.field === "focalLength")?.value, "85mm");
 	assert.equal(
 		proposals.find((p) => p.field === "dateTaken")?.value,
+		"2026-11-06T14:04:01.000Z",
+	);
+	const date = proposals.find((p) => p.field === "dateTaken");
+	assert.equal(date?.requiresOffset, true);
+	assert.match(date?.message ?? "", /original timezone unverified/);
+});
+
+test("stored-date fallback works with empty EXIF and honors offset changes", () => {
+	const metadata = { exif: { DateTimeOriginal: "2026-11-06T09:04:01.000Z" } };
+	for (const raw of [undefined, {}, { DateTimeOriginal: "" }]) {
+		const date = buildProposals(metadata, raw, [], "-04:00").find(
+			(p) => p.field === "dateTaken",
+		);
+		assert.equal(date?.value, "2026-11-06T13:04:01.000Z");
+		assert.equal(date?.requiresOffset, true);
+	}
+});
+
+test("stored summer dates still default to fixed EST and ignore normalized offset suffixes", () => {
+	for (const suffix of ["Z", "+00:00", "-04:00", ""]) {
+		const date = captureDate(
+			undefined,
+			"-05:00",
+			`2026-07-06T09:04:01.000${suffix}`,
+		);
+		assert.equal(date.value, "2026-07-06T14:04:01.000Z");
+		assert.equal(date.requiresOffset, true);
+	}
+});
+
+test("original EXIF date and verified offset take precedence over stored dates", () => {
+	const date = captureDate(lightroom, "-05:00", "2026-11-06T09:04:01.000Z");
+	assert.equal(date.value, "2026-11-06T13:04:01.000Z");
+	assert.equal(date.requiresOffset, false);
+	assert.doesNotMatch(date.message ?? "", /unverified/);
+	const withoutOffset = { DateTimeOriginal: "2026:11:06 10:00:00" };
+	assert.equal(
+		captureDate(withoutOffset, "-05:00", "2026-11-06T09:04:01.000Z").value,
+		"2026-11-06T15:00:00.000Z",
+	);
+	assert.equal(captureDate(withoutOffset).requiresOffset, true);
+});
+
+test("missing and malformed stored dates remain unavailable without overwriting fields", () => {
+	for (const storedDate of [
+		undefined,
+		null,
+		123,
+		"",
+		"bad",
+		"2026-02-30T09:04:01.000Z",
+	]) {
+		const date = captureDate(undefined, "-05:00", storedDate);
+		assert.equal(date.value, undefined);
+		assert.ok(date.message);
+	}
+	assert.equal(
+		captureDate(
+			{ DateTimeOriginal: "bad" },
+			"-05:00",
+			"2026-11-06T09:04:01.000Z",
+		).value,
 		undefined,
 	);
 });
@@ -106,7 +168,7 @@ test("partial metadata never substitutes APEX aperture, equivalent focal length,
 		proposals.find((p) => p.field === "dateTaken")?.value,
 		undefined,
 	);
-	assert.equal(proposals.find((p) => p.field === "shutterSpeed")?.value, "2s");
+	assert.equal(proposals.find((p) => p.field === "shutterSpeed")?.value, "2");
 });
 
 test("invalid scalar tags are explained and do not suppress valid fields", () => {
@@ -127,18 +189,16 @@ test("invalid scalar tags are explained and do not suppress valid fields", () =>
 		assert.equal(proposal?.value, undefined);
 		assert.match(proposal?.message ?? "", /Invalid/);
 	}
-	assert.equal(
-		proposals.find((p) => p.field === "shutterSpeed")?.value,
-		"0.4s",
-	);
+	assert.equal(proposals.find((p) => p.field === "shutterSpeed")?.value, "0.4");
 });
 
 test("fractional, long, and approximate reciprocal exposures retain precision", () => {
-	assert.equal(formatExposure(1 / 125), "1/125s");
-	assert.equal(formatExposure(0.3), "0.3s");
-	assert.equal(formatExposure(0.66666667), "0.66666667s");
-	assert.equal(formatExposure(1.5), "1.5s");
-	assert.equal(formatExposure(30), "30s");
+	assert.equal(formatExposure(1 / 1000), "1/1000");
+	assert.equal(formatExposure(1 / 125), "1/125");
+	assert.equal(formatExposure(0.3), "0.3");
+	assert.equal(formatExposure(0.66666667), "0.66666667");
+	assert.equal(formatExposure(1.5), "1.5");
+	assert.equal(formatExposure(30), "30");
 });
 
 test("decimal focal length and aperture are retained", () => {
@@ -241,6 +301,135 @@ test("equipment responses are guarded at runtime", () => {
 		() => parseEquipment([{ _id: "bad", _type: "camera", name: 42 }]),
 		/Invalid equipment/,
 	);
+});
+
+test("camera and lens aliases route import names without changing display names", () => {
+	const mapped: Equipment[] = [
+		{
+			...equipment[0],
+			name: "My Canon camera",
+			modelNumber: undefined,
+			exifNames: ["Canon EOS R6m2", "EOS R6 Mark II"],
+		},
+		{
+			...equipment[1],
+			name: "Canon RF 100-400mm",
+			exifNames: ["RF100-400mm F5.6-8 IS USM", "Another lens export name"],
+		},
+	];
+	const parsed = parseEquipment(mapped);
+	const proposals = buildProposals({}, lightroom, parsed);
+	assert.deepEqual(proposals.find((p) => p.field === "camera")?.value, {
+		_type: "reference",
+		_ref: "camera-1",
+	});
+	assert.deepEqual(proposals.find((p) => p.field === "lens")?.value, {
+		_type: "reference",
+		_ref: "lens-1",
+	});
+	assert.deepEqual(
+		matchEquipment("camera", "EOS R6 Mark II", "Canon", parsed).value,
+		{
+			_type: "reference",
+			_ref: "camera-1",
+		},
+	);
+	assert.equal(mapped[0].name, "My Canon camera");
+	assert.deepEqual(
+		matchEquipment("lens", "Another lens export name", undefined, parsed).value,
+		{
+			_type: "reference",
+			_ref: "lens-1",
+		},
+	);
+	assert.equal(mapped[1].name, "Canon RF 100-400mm");
+});
+
+test("aliases normalize case, whitespace and brand prefixes without fuzzy matching", () => {
+	for (const kind of ["camera", "lens"] as const) {
+		const mapped: Equipment[] = [
+			{
+				_id: "mapped",
+				_type: kind,
+				name: "Display name",
+				brand: "Canon",
+				exifNames: ["Canon Export   Model", " ", "export model"],
+			},
+		];
+		assert.deepEqual(
+			matchEquipment(kind, " CANON canon EXPORT model ", "Canon", mapped).value,
+			{
+				_type: "reference",
+				_ref: "mapped",
+			},
+		);
+		assert.equal(
+			matchEquipment(kind, "Export", "Canon", mapped).value,
+			undefined,
+		);
+		assert.equal(
+			matchEquipment(kind, "Export Model", "Sony", mapped).value,
+			undefined,
+		);
+		assert.equal(
+			matchEquipment(
+				kind === "camera" ? "lens" : "camera",
+				"Export Model",
+				undefined,
+				mapped,
+			).value,
+			undefined,
+		);
+	}
+});
+
+test("alias collisions across records stay ambiguous, including display-name matches", () => {
+	for (const kind of ["camera", "lens"] as const) {
+		const first: Equipment = {
+			_id: "first",
+			_type: kind,
+			name: "First display name",
+			exifNames: ["Export Model", "Canon Export Model"],
+		};
+		const duplicate: Equipment = { ...first, _id: "second" };
+		const named: Equipment = {
+			_id: "named",
+			_type: kind,
+			name: "Export Model",
+		};
+		assert.equal(
+			matchEquipment(kind, "Export Model", "Canon", [first, duplicate]).value,
+			undefined,
+		);
+		assert.equal(
+			matchEquipment(kind, "Export Model", "Canon", [first, named]).value,
+			undefined,
+		);
+		assert.deepEqual(
+			matchEquipment(kind, "Export Model", "Canon", [first]).value,
+			{
+				_type: "reference",
+				_ref: "first",
+			},
+		);
+	}
+});
+
+test("alias parsing supports legacy equipment and rejects malformed aliases", () => {
+	assert.equal(
+		parseEquipment([{ ...equipment[0], exifNames: null }])[0].exifNames,
+		undefined,
+	);
+	assert.deepEqual(
+		parseEquipment([{ ...equipment[1], exifNames: [] }])[0].exifNames,
+		[],
+	);
+	for (const exifNames of ["single string", [42], ["valid", null]]) {
+		assert.throws(
+			() => parseEquipment([{ ...equipment[0], exifNames }]),
+			/Invalid equipment EXIF names/,
+		);
+	}
 });
 
 test("confirmation only applies selected valid values and never unsets missing tags", () => {

@@ -19,12 +19,14 @@ export type Equipment = {
 	name: string;
 	brand?: string;
 	modelNumber?: string;
+	exifNames?: string[];
 };
 export type Proposal = {
 	field: PhotoField;
 	label: string;
 	value?: PhotoValue;
 	message?: string;
+	requiresOffset?: boolean;
 };
 
 function isRecord(value: unknown): value is Metadata {
@@ -55,6 +57,14 @@ export function parseEquipment(value: unknown): Equipment[] {
 		if (typeof item.brand === "string") equipment.brand = item.brand;
 		if (typeof item.modelNumber === "string")
 			equipment.modelNumber = item.modelNumber;
+		if (item.exifNames != null) {
+			if (
+				!Array.isArray(item.exifNames) ||
+				!item.exifNames.every((name: unknown) => typeof name === "string")
+			)
+				throw new Error("Invalid equipment EXIF names.");
+			equipment.exifNames = item.exifNames;
+		}
 		return equipment;
 	});
 }
@@ -98,7 +108,11 @@ export function matchEquipment(
 			return false;
 		const prefix = brand ?? item.brand;
 		const target = withoutBrand(name, prefix);
-		return [item.name, kind === "camera" ? item.modelNumber : undefined].some(
+		return [
+			item.name,
+			kind === "camera" ? item.modelNumber : undefined,
+			...(item.exifNames ?? []),
+		].some(
 			(candidate) => candidate && withoutBrand(candidate, prefix) === target,
 		);
 	});
@@ -122,16 +136,20 @@ export function formatExposure(seconds: number): string {
 	const denominator = Math.round(reciprocal);
 	// Only round to a reciprocal when the stored exposure agrees within 0.1%.
 	if (seconds < 1 && Math.abs(reciprocal - denominator) / reciprocal < 0.001)
-		return `1/${denominator}s`;
-	return `${Number(seconds.toPrecision(8))}s`;
+		return `1/${denominator}`;
+	return `${Number(seconds.toPrecision(8))}`;
 }
 
 export function captureDate(
 	raw: Metadata | undefined,
 	offset = "-05:00",
+	storedDate?: unknown,
 ): Proposal {
-	const base = { field: "dateTaken", label: "Date Taken" } as const;
-	const timestamp = text(raw?.DateTimeOriginal);
+	const original = text(raw?.DateTimeOriginal);
+	const stored = original ? undefined : text(storedDate);
+	// Sanity's normalized suffix does not establish the camera's original offset.
+	const timestamp = original ?? stored?.replace(/(?:Z|[+-]\d{2}:\d{2})$/, "");
+	const base: Proposal = { field: "dateTaken", label: "Date Taken" };
 	if (!timestamp)
 		return {
 			...base,
@@ -142,7 +160,10 @@ export function captureDate(
 		/^(\d{4})[:-](\d{2})[:-](\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-]\d{2}:\d{2})?$/.exec(
 			timestamp,
 		);
-	const embedded = text(raw?.OffsetTimeOriginal) ?? match?.[8];
+	const embedded = original
+		? (text(raw?.OffsetTimeOriginal) ?? match?.[8])
+		: undefined;
+	base.requiresOffset = !embedded;
 	const zone = embedded === "Z" ? "+00:00" : (embedded ?? offset);
 	const zoneMatch = /^([+-])(\d{2}):(\d{2})$/.exec(zone);
 	if (
@@ -173,7 +194,7 @@ export function captureDate(
 	return {
 		...base,
 		value: new Date(wall.getTime() - offsetMinutes * 60_000).toISOString(),
-		message: `${timestamp} / ${embedded ? "embedded offset" : "selected offset"} ${zone}.`,
+		message: `${stored ? "Using Sanity's stored capture timestamp; original timezone unverified. Confirm the capture UTC offset. " : ""}${timestamp} / ${embedded ? "embedded offset" : "selected offset"} ${zone}.`,
 	};
 }
 
@@ -209,8 +230,7 @@ export function buildProposals(
 		scalar("aperture", "Aperture", "FNumber", (n) => `f/${n}`),
 		scalar("shutterSpeed", "Shutter Speed", "ExposureTime", formatExposure),
 		scalar("iso", "ISO", "ISO", (n) => n),
-		// Sanity's normalized datetime cannot establish the original offset.
-		captureDate(raw, offset),
+		captureDate(raw, offset, exif.DateTimeOriginal),
 	];
 }
 

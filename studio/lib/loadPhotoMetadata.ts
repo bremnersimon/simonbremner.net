@@ -56,7 +56,7 @@ export async function loadPhotoMetadata(
 			(error: unknown) => {
 				signal.throwIfAborted();
 				warnings.push(
-					`Original EXIF could not be read: ${errorMessage(error)}. Date Taken requires manual entry.`,
+					`Original EXIF could not be read: ${errorMessage(error)}. If a stored capture date is available, confirm its UTC offset; otherwise enter Date Taken manually.`,
 				);
 				return undefined;
 			},

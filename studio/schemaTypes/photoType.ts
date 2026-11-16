@@ -95,7 +95,7 @@ export default defineType({
 			name: "shutterSpeed",
 			title: "Shutter Speed",
 			type: "string",
-			description: "e.g., '1/125s', '2s'",
+			description: "Exposure in seconds, e.g., '1/125', '2' (without a suffix)",
 			group: "technical",
 		}),
 		defineField({
