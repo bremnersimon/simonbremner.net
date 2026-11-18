@@ -57,8 +57,8 @@ export const Navbar = () => {
 			<div className="container mx-auto flex h-14 w-full items-center justify-between px-4 lg:px-6">
 				{/* Logo always visible */}
 				<div className="flex items-center">
-					<a href="/" className="text-2xl font-thin">
-						Simon Bremner
+					<a href="/" className="text-2xl font-bold">
+						SB.
 					</a>
 				</div>
 
