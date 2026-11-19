@@ -1,8 +1,16 @@
 @import "tailwindcss";
+@import "@fontsource/lato/100.css";
+@import "@fontsource/lato/400.css";
+@import "@fontsource/lato/400-italic.css";
+@import "@fontsource/lato/700.css";
 
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+	--font-sans: "Lato", ui-sans-serif, system-ui, sans-serif;
+}
 
 :root {
 	--background: oklch(1 0 0);

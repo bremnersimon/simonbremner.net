@@ -1,80 +1,81 @@
 ---
 type AnimatedHeroProps = {
-    headline: string;
-    paragraphs?: string[];
-    ariaLabel?: string;
-    uppercase?: boolean;
-    noWrap?: boolean;
-    containerClassName?: string;
-    textContainerClassName?: string;
-    headlineClassName?: string;
-    paragraphClassName?: string;
-    mediaClassName?: string;
+	headline: string;
+	paragraphs?: string[];
+	ariaLabel?: string;
+	uppercase?: boolean;
+	noWrap?: boolean;
+	containerClassName?: string;
+	textContainerClassName?: string;
+	headlineClassName?: string;
+	paragraphClassName?: string;
+	mediaClassName?: string;
 };
 
 const {
-    headline,
-    paragraphs = [],
-    ariaLabel,
-    uppercase = false,
-    noWrap = false,
-    containerClassName = "",
-    textContainerClassName = "",
-    headlineClassName = "",
-    paragraphClassName = "",
-    mediaClassName = "",
+	headline,
+	paragraphs = [],
+	ariaLabel,
+	uppercase = false,
+	noWrap = false,
+	containerClassName = "",
+	textContainerClassName = "",
+	headlineClassName = "",
+	paragraphClassName = "",
+	mediaClassName = "",
 } = Astro.props as AnimatedHeroProps;
 
 const headlineCharacters = [...headline].map((char, index) => ({
-    char,
-    index,
-    isSpace: char === " ",
+	char,
+	index,
+	isSpace: char === " ",
 }));
 const staggerableIndices = headlineCharacters
-    .filter((item) => !item.isSpace)
-    .map((item) => item.index);
+	.filter((item) => !item.isSpace)
+	.map((item) => item.index);
 const staggerOrder = [...staggerableIndices].sort((a, b) => {
-    const hashA = (Math.imul(a + 1, 2654435761) >>> 0) % 104729;
-    const hashB = (Math.imul(b + 1, 2654435761) >>> 0) % 104729;
-    return hashA - hashB;
+	const hashA = (Math.imul(a + 1, 2654435761) >>> 0) % 104729;
+	const hashB = (Math.imul(b + 1, 2654435761) >>> 0) % 104729;
+	return hashA - hashB;
 });
 const staggerLookup = new Map(
-    staggerOrder.map((characterIndex, staggerIndex) => [
-        characterIndex,
-        staggerIndex,
-    ]),
+	staggerOrder.map((characterIndex, staggerIndex) => [
+		characterIndex,
+		staggerIndex,
+	]),
 );
 
 const headlineClasses = [
-    "animated-hero-headline",
-    "m-0",
-    "inline-block",
-    "w-auto",
-    "max-w-none",
-    uppercase ? "uppercase" : "",
-    noWrap ? "whitespace-nowrap" : "",
-    headlineClassName,
+	"animated-hero-headline",
+	"m-0",
+	"inline-block",
+	"w-auto",
+	"max-w-none",
+	uppercase ? "uppercase" : "",
+	noWrap ? "whitespace-nowrap" : "",
+	headlineClassName,
+	"[line-height:0.88] [letter-spacing:0.015em] text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[4rem] xl:text-[6rem] 2xl:text-[8rem]",
 ]
-    .filter(Boolean)
-    .join(" ");
+	.filter(Boolean)
+	.join(" ");
 
 const textContainerClasses = ["animated-hero-text", textContainerClassName]
-    .filter(Boolean)
-    .join(" ");
+	.filter(Boolean)
+	.join(" ");
 
 const paragraphClasses = ["animated-hero-paragraph", paragraphClassName]
-    .filter(Boolean)
-    .join(" ");
+	.filter(Boolean)
+	.join(" ");
 
 const containerClasses = ["animated-hero", containerClassName]
-    .filter(Boolean)
-    .join(" ");
+	.filter(Boolean)
+	.join(" ");
 
 const hasMedia = Astro.slots.has("default");
 const hasSocial = Astro.slots.has("social");
 const mediaClasses = ["animated-hero-media", mediaClassName]
-    .filter(Boolean)
-    .join(" ");
+	.filter(Boolean)
+	.join(" ");
 ---
 
 <div class={containerClasses} data-animated-hero>

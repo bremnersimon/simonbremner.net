@@ -19,6 +19,7 @@
 		"@astrojs/partytown": "^2.1.7",
 		"@astrojs/react": "^4.4.2",
 		"@astrojs/sitemap": "^3.7.3",
+		"@fontsource/lato": "^5.3.0",
 		"@lucide/astro": "^0.503.0",
 		"@portabletext/react": "^3.2.4",
 		"@radix-ui/react-accordion": "^1.2.20",

@@ -20,6 +20,8 @@ type NavbarProps = {
 	href: string;
 };
 
+const WORDMARK_SCROLL_THRESHOLD = 64;
+
 function isLinkActive(pathname: string, href: string) {
 	if (href === "/") return pathname === "/";
 	return pathname === href || pathname.startsWith(`${href}/`);
@@ -44,23 +46,59 @@ export const Navbar = () => {
 	// Navbar is a persisted island (transition:persist), so it isn't
 	// remounted on client-side navigation; re-read the path after each swap.
 	const [currentPath, setCurrentPath] = useState("");
+	const [isWordmarkCompact, setIsWordmarkCompact] = useState(false);
 
 	useEffect(() => {
-		const updatePath = () => setCurrentPath(window.location.pathname);
-		updatePath();
-		document.addEventListener("astro:page-load", updatePath);
-		return () => document.removeEventListener("astro:page-load", updatePath);
+		const updateWordmark = () => {
+			setIsWordmarkCompact(window.scrollY > WORDMARK_SCROLL_THRESHOLD);
+		};
+		const updatePage = () => {
+			setCurrentPath(window.location.pathname);
+			updateWordmark();
+		};
+
+		updatePage();
+		window.addEventListener("scroll", updateWordmark, { passive: true });
+		window.addEventListener("pageshow", updateWordmark);
+		document.addEventListener("astro:page-load", updatePage);
+		return () => {
+			window.removeEventListener("scroll", updateWordmark);
+			window.removeEventListener("pageshow", updateWordmark);
+			document.removeEventListener("astro:page-load", updatePage);
+		};
 	}, []);
+
+	const wordmarkTailClass = `grid transition-[grid-template-columns,opacity] duration-300 ease-in-out motion-reduce:transition-none ${
+		isWordmarkCompact
+			? "grid-cols-[0fr] opacity-0"
+			: "grid-cols-[1fr] opacity-100"
+	}`;
 
 	return (
 		<header className="bg-background fixed top-0 right-0 left-0 z-20 w-full">
-			<div className="container mx-auto flex h-14 w-full items-center justify-between px-4 lg:px-6">
-				{/* Logo always visible */}
-				<div className="flex items-center">
-					<a href="/" className="text-2xl font-bold">
-						SB.
-					</a>
-				</div>
+			<div className="container mx-auto flex h-14 w-full items-center justify-between px-4 md:px-0">
+				{/* biome-ignore lint/a11y/useAnchorContent: No fix is working to resolve this linting error */}
+				<a
+					href="/"
+					aria-label="Simon Bremner home button"
+					className="text-2xl font-bold"
+				>
+					<span aria-hidden="true" className="flex">
+						S
+						<span className={wordmarkTailClass}>
+							<span className="min-w-0 overflow-hidden whitespace-pre">
+								{"imon "}
+							</span>
+						</span>
+						B
+						<span className={wordmarkTailClass}>
+							<span className="min-w-0 overflow-hidden whitespace-pre">
+								remner
+							</span>
+						</span>
+						<span className="font-bold text-primary">.</span>
+					</span>
+				</a>
 
 				{/* Right side controls (nav links + theme toggle + mobile menu) */}
 				<div className="flex items-center gap-2">
