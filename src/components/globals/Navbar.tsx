@@ -17,9 +17,9 @@ import { Button } from "../shad-ui/button";
 import {
 	navigationLinks,
 	type NavigationLinkProps,
-} from "@/components/globals/navigationLinks";
+} from "@/utils/navigationLinks";
 
-const WORDMARK_SCROLL_THRESHOLD = 64;
+const wordmarkScrollThreshold = 64;
 
 function isLinkActive(pathname: string, href: string) {
 	if (href === "/") return pathname === "/";
@@ -34,7 +34,7 @@ export const Navbar = () => {
 
 	useEffect(() => {
 		const updateWordmark = () => {
-			setIsWordmarkCompact(window.scrollY > WORDMARK_SCROLL_THRESHOLD);
+			setIsWordmarkCompact(window.scrollY > wordmarkScrollThreshold);
 		};
 		const updatePage = () => {
 			setCurrentPath(window.location.pathname);

@@ -17,7 +17,11 @@ type PortfolioPreviewCardProps = {
 const heroImagePreloads = new Map<string, Promise<void>>();
 
 function preloadHeroImage(heroImageUrl: string | undefined) {
-	if (!heroImageUrl || typeof Image === "undefined" || heroImagePreloads.has(heroImageUrl)) {
+	if (
+		!heroImageUrl ||
+		typeof Image === "undefined" ||
+		heroImagePreloads.has(heroImageUrl)
+	) {
 		return;
 	}
 
@@ -54,7 +58,11 @@ export function PortfolioPreviewCard({
 			<div className="space-y-3 group">
 				<div
 					className="relative overflow-hidden"
-					style={imageTransitionName ? { viewTransitionName: imageTransitionName } : undefined}
+					style={
+						imageTransitionName
+							? { viewTransitionName: imageTransitionName }
+							: undefined
+					}
 				>
 					{imageUrl ? (
 						<>
@@ -75,8 +83,8 @@ export function PortfolioPreviewCard({
 					)}
 				</div>
 
-				<div className="flex items-start justify-between gap-4 border-b border-border pb-2">
-					<HeadingTag className="text-xs font-medium text-foreground/90 sm:text-sm">
+				<div className="flex items-start justify-between gap-4 pb-2">
+					<HeadingTag className="text-xs font-bold text-foreground/90 sm:text-sm">
 						{headline || "Untitled"}
 					</HeadingTag>
 					<span className="opacity-100 md:opacity-0 group-hover:opacity-100 opacity-100 md:opacity-0 shrink-0 text-[10px] text-foreground/80 sm:text-xs transition-opacity duration-300">
@@ -95,7 +103,7 @@ export function PortfolioPreviewCard({
 	return (
 		<a
 			href={href}
-			className="group block h-full border-foreground"
+			className="group block h-full font-bold"
 			onPointerEnter={() => preloadHeroImage(heroImageUrl)}
 			onFocus={() => preloadHeroImage(heroImageUrl)}
 			onPointerDown={() => preloadHeroImage(heroImageUrl)}

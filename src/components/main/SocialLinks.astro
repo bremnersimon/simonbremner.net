@@ -31,7 +31,7 @@ const {
                         : "flex flex-row flex-wrap items-center gap-x-6 gap-y-2",
                 )}
             >
-                {links.map((link) => (
+                {links.map((link: SocialLink) => (
                     <li>
                         <SocialLinkItem link={link} />
                     </li>
