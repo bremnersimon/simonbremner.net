@@ -8,27 +8,27 @@ import FilmDistortionImage from "@/components/webgl/FilmDistortionImage";
 import SocialLinks from "@/components/main/SocialLinks.astro";
 import PageLayout from "@/layout/PageLayout.astro";
 import {
-  getCameras,
-  getLenses,
-  getSocialLinks,
-  getSoftwareTypes,
+	getCameras,
+	getLenses,
+	getSocialLinks,
+	getSoftwareTypes,
 } from "@/lib/sanity";
 import type { AboutHeroTextProps } from "@/types/types";
 import type { Camera, Lens, SoftwareType } from "@/types/sanity/sanity.types";
 
 const heroText: AboutHeroTextProps = {
-  headline: "About",
-  paragraphs: [
-    "Hello, my name is Simon Bremner. I'm a Graphic Designer and Full Stack Developer who loves taking photos. This website serves as a representation of my interests. I hope you enjoy.",
-  ],
+	headline: "About",
+	paragraphs: [
+		"Hello, my name is Simon Bremner. I'm a Graphic Designer and Full Stack Developer who loves taking photos. This website serves as a representation of my interests. I hope you enjoy.",
+	],
 };
 
 // Fetch equipment data
 const [cameras, lenses, softwareItems, socialLinks] = await Promise.all([
-  getCameras() as Promise<Camera[]>,
-  getLenses() as Promise<Lens[]>,
-  getSoftwareTypes() as Promise<SoftwareType[]>,
-  getSocialLinks(),
+	getCameras() as Promise<Camera[]>,
+	getLenses() as Promise<Lens[]>,
+	getSoftwareTypes() as Promise<SoftwareType[]>,
+	getSocialLinks(),
 ]);
 ---
 
@@ -37,7 +37,7 @@ const [cameras, lenses, softwareItems, socialLinks] = await Promise.all([
   description="About Simon Bremner"
   image={ogImage}
 >
-  <Container className="px-4 lg:px-0 lg:px-0">
+  <Container className="px-4 lg:px-0">
     <AnimatedHero
       headline={heroText.headline}
       paragraphs={heroText.paragraphs}

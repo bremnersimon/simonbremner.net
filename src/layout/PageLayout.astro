@@ -72,7 +72,12 @@ const {
     >
     </div>
     <IntroAnimation client:load transition:persist />
-    <Navbar client:idle transition:name="navbar" transition:persist />
+    <Navbar
+      client:idle
+      transition:name="navbar"
+      transition:persist
+      transition:animate="none"
+    />
     <main id="page-content" class="flex-grow">
       <slot />
     </main>

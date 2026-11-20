@@ -29,10 +29,7 @@ export const LogoTransition = ({ onComplete }: LogoTransitionProps) => {
 		// Brief delay so the opacity-0 start state paints before fading in
 		const timeouts = [
 			window.setTimeout(() => setPhase("full"), 20),
-			window.setTimeout(
-				() => setPhase("compact"),
-				FADE_IN_MS + HOLD_FULL_MS,
-			),
+			window.setTimeout(() => setPhase("compact"), FADE_IN_MS + HOLD_FULL_MS),
 			window.setTimeout(
 				() => setPhase("fade"),
 				FADE_IN_MS + HOLD_FULL_MS + COLLAPSE_MS + HOLD_COMPACT_MS,
@@ -59,9 +56,7 @@ export const LogoTransition = ({ onComplete }: LogoTransitionProps) => {
 
 	// Same grid-collapse technique as the Navbar wordmark
 	const wordmarkTailClass = `grid transition-[grid-template-columns,opacity] duration-[500ms] ${FLUID_EASE} motion-reduce:transition-none ${
-		isCompact
-			? "grid-cols-[0fr] opacity-0"
-			: "grid-cols-[1fr] opacity-100"
+		isCompact ? "grid-cols-[0fr] opacity-0" : "grid-cols-[1fr] opacity-100"
 	}`;
 
 	return (

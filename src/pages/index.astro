@@ -18,43 +18,13 @@ const lcpPhoto = galleryPhotos[0];
     description="A photography gallery created and curated by Simon Bremner."
     image={ogImage}
 >
-    {
-        lcpPhoto && (
-            <Fragment slot="head">
-                <link
-                    rel="preload"
-                    as="image"
-                    href={lcpPhoto.image.src}
-                    imagesrcset={
-                        lcpPhoto.image.srcSetAvif || lcpPhoto.image.srcSetWebp
-                    }
-                    imagesizes={lcpPhoto.image.sizes}
-                    fetchpriority="high"
-                />
-            </Fragment>
-        )
-    }
+
     <section id="gallery" class="w-full pt-24 pb-20">
         <Container>
-            <AnimatedHero
-                headline="Gallery"
-                ariaLabel="Gallery"
-                uppercase
-                noWrap
-                containerClassName="mb-[clamp(1.25rem,3vw,2.5rem)] w-full"
-                headlineClassName="font-normal text-xl"
-            />
+            <h1 class="text-4xl font-bold mb-8">
+                <span class="">A Multidisciplinary Visual Creative working</span>
+                <span class="text-primary">{"."}</span>
+            </h1>
         </Container>
     </section>
 </PageLayout>
-
-<style>
-    .photo-item {
-        page-break-inside: avoid;
-        break-inside: avoid;
-    }
-
-    [data-slot="dialog-overlay"] {
-        backdrop-filter: blur(8px);
-    }
-</style>
