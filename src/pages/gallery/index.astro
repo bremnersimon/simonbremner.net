@@ -1,0 +1,65 @@
+---
+import PageLayout from "@/layout/PageLayout.astro";
+import Container from "@/components/main/Container.astro";
+import AnimatedHero from "@/components/main/AnimatedHero.astro";
+import { mapGalleryPhoto } from "@/lib/galleryPhoto";
+import { getAllPhotos } from "@/lib/sanity";
+import MasonryGallery from "@/components/main/MasonryGallery";
+import ogImage from "@/assets/main-og-image.jpg";
+
+const initialPhotosPerPage = 6;
+const photos = await getAllPhotos(initialPhotosPerPage, 0);
+const galleryPhotos = photos.map(mapGalleryPhoto);
+const lcpPhoto = galleryPhotos[0];
+---
+
+<PageLayout
+    title="Gallery | Simon Bremner"
+    description="A photography gallery created and curated by Simon Bremner."
+    image={ogImage}
+>
+    {
+        lcpPhoto && (
+            <Fragment slot="head">
+                <link
+                    rel="preload"
+                    as="image"
+                    href={lcpPhoto.image.src}
+                    imagesrcset={
+                        lcpPhoto.image.srcSetAvif || lcpPhoto.image.srcSetWebp
+                    }
+                    imagesizes={lcpPhoto.image.sizes}
+                    fetchpriority="high"
+                />
+            </Fragment>
+        )
+    }
+    <section id="gallery" class="w-full pt-24 pb-20">
+        <Container>
+            <!-- <AnimatedHero
+                headline="Gallery"
+                ariaLabel="Gallery"
+                uppercase
+                noWrap
+                containerClassName="mb-[clamp(1.25rem,3vw,2.5rem)] w-full"
+                headlineClassName="font-normal text-xl"
+            /> -->
+            <MasonryGallery
+                client:visible={{ rootMargin: "600px" }}
+                initialImages={galleryPhotos}
+                photosPerPage={15}
+            />
+        </Container>
+    </section>
+</PageLayout>
+
+<style>
+    .photo-item {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    [data-slot="dialog-overlay"] {
+        backdrop-filter: blur(8px);
+    }
+</style>

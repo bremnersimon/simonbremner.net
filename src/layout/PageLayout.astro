@@ -3,6 +3,7 @@ import "../styles/global.css";
 import "highlight.js/styles/github-dark.css";
 import MainOgImage from "@/assets/main-og-image.jpg";
 import Footer from "@/components/globals/Footer.astro";
+import { IntroAnimation } from "@/components/globals/IntroAnimation";
 import { Navbar } from "@/components/globals/Navbar";
 import CommonHead from "@/components/seo/CommonHead.astro";
 import SEO from "@/components/seo/SEO.astro";
@@ -39,6 +40,23 @@ const {
       article={article ? article : undefined}
     />
     <CommonHead title={title} description={description} />
+    <script is:inline>
+      // Anti-flash gate for the opening animation: mark the document before
+      // first paint so a static cover hides content until the island hydrates.
+      try {
+        if (!sessionStorage.getItem("intro-played")) {
+          document.documentElement.setAttribute("data-intro", "pending");
+        }
+      } catch {}
+    </script>
+    <style is:global>
+      #intro-cover {
+        display: none;
+      }
+      html[data-intro="pending"] #intro-cover {
+        display: block;
+      }
+    </style>
     <slot name="head" />
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
@@ -46,6 +64,14 @@ const {
     class="text-foreground bg-background flex flex-col min-h-screen m-0 w-full h-full"
   >
     <TagManagerBody />
+    <div
+      id="intro-cover"
+      aria-hidden="true"
+      class="bg-background pointer-events-none fixed inset-0 z-50"
+      transition:persist
+    >
+    </div>
+    <IntroAnimation client:load transition:persist />
     <Navbar client:idle transition:name="navbar" transition:persist />
     <main id="page-content" class="flex-grow">
       <slot />

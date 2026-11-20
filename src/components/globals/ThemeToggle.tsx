@@ -7,7 +7,7 @@ export function ThemeToggle() {
 	const [theme, setTheme] = useState<"light" | "dark">("light");
 	// Add a mounting state to track if we're in the browser
 	const [mounted, setMounted] = useState(false);
-
+	const strokeWidth = 3;
 	// This useEffect runs once after component mount
 	useEffect(() => {
 		// Once mounted, we can safely access the document
@@ -63,14 +63,20 @@ export function ThemeToggle() {
 	return (
 		<Button
 			type="button"
-			className="cursor-pointer focus:outline-none"
+			className="cursor-pointer focus:outline-none font-bold"
 			variant="ghost"
 			size="icon"
 			onClick={toggleTheme}
 			aria-label="Toggle theme"
 		>
-			<Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-			<Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+			<Sun
+				strokeWidth={strokeWidth}
+				className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+			/>
+			<Moon
+				strokeWidth={strokeWidth}
+				className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+			/>
 		</Button>
 	);
 }

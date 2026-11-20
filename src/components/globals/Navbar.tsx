@@ -14,11 +14,10 @@ import {
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../shad-ui/button";
-
-type NavbarProps = {
-	title: string;
-	href: string;
-};
+import {
+	navigationLinks,
+	type NavigationLinkProps,
+} from "@/components/globals/navigationLinks";
 
 const WORDMARK_SCROLL_THRESHOLD = 64;
 
@@ -28,21 +27,6 @@ function isLinkActive(pathname: string, href: string) {
 }
 
 export const Navbar = () => {
-	const navigationLinks: NavbarProps[] = [
-		{
-			title: "Gallery",
-			href: "/",
-		},
-		{
-			title: "Portfolio",
-			href: "/portfolio",
-		},
-		{
-			title: "About",
-			href: "/about",
-		},
-	];
-
 	// Navbar is a persisted island (transition:persist), so it isn't
 	// remounted on client-side navigation; re-read the path after each swap.
 	const [currentPath, setCurrentPath] = useState("");
@@ -106,7 +90,7 @@ export const Navbar = () => {
 					<div className="hidden md:flex">
 						<NavigationMenu>
 							<NavigationMenuList>
-								{navigationLinks.map((link) => (
+								{navigationLinks.map((link: NavigationLinkProps) => (
 									<NavigationMenuItem key={link.title}>
 										<NavigationMenuLink
 											href={link.href}
