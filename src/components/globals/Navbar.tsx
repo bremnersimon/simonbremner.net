@@ -70,7 +70,7 @@ export const Navbar = () => {
 
 	const wordmarkTailClass = `grid transition-[grid-template-columns,opacity] duration-300 ease-in-out motion-reduce:transition-none ${
 		isWordmarkCompact
-			? "grid-cols-[0fr] opacity-0"
+			? "grid-cols-[0fr] opacity-0 group-hover:grid-cols-[1fr] group-hover:opacity-100 group-focus-visible:grid-cols-[1fr] group-focus-visible:opacity-100"
 			: "grid-cols-[1fr] opacity-100"
 	}`;
 
@@ -81,7 +81,7 @@ export const Navbar = () => {
 				<a
 					href="/"
 					aria-label="Simon Bremner home button"
-					className="text-2xl font-bold"
+					className="group text-2xl font-bold"
 				>
 					<span aria-hidden="true" className="flex">
 						S
