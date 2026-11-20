@@ -3,7 +3,10 @@ import {
 	isTransitionBeforeSwapEvent,
 	navigate,
 } from "astro:transitions/client";
-import portfolioImage from "@/assets/about-og-image.jpg";
+import acfpLogo from "@/assets/clients/acfp.svg?url";
+import deviceMagicLogo from "@/assets/clients/devicemagic.svg?url";
+import momentfeedLogo from "@/assets/clients/momentfeed.svg?url";
+import payorsightLogo from "@/assets/clients/payorsight.svg?url";
 import galleryImage from "@/assets/main-og-image.jpg";
 import aboutImage from "@/assets/sb-headshot.jpg";
 import { FluidImage } from "@/components/globals/FluidImage";
@@ -37,10 +40,16 @@ function isLinkActive(pathname: string, href: string) {
 	return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+const portfolioLogos = [
+	acfpLogo,
+	deviceMagicLogo,
+	momentfeedLogo,
+	payorsightLogo,
+];
+
 // Placeholder images for the menu hover effect; "/" uses the generated logo card
 const menuImages: Record<string, ImageMetadata> = {
 	"/gallery": galleryImage,
-	"/portfolio": portfolioImage,
 	"/about": aboutImage,
 };
 
@@ -48,12 +57,13 @@ function buildMenuImageItems(logoCardSrc: string | null) {
 	return navigationLinks
 		.map((link) => ({
 			href: link.href,
+			logos: link.href === "/portfolio" ? portfolioLogos : undefined,
 			src:
 				link.href === "/"
 					? (logoCardSrc ?? "")
 					: (menuImages[link.href]?.src ?? ""),
 		}))
-		.filter((item) => item.src !== "");
+		.filter((item) => item.src !== "" || item.logos);
 }
 
 // Expo-out: fast start that glides smoothly to rest
@@ -192,7 +202,6 @@ export const Navbar = () => {
 	const [displayedHref, setDisplayedHref] = useState<string | null>(null);
 	const imageX = useMotionValue(0);
 	const imageY = useMotionValue(0);
-	const imageScale = useMotionValue(0);
 	const imageOpacity = useMotionValue(0);
 	const navRef = useRef<HTMLElement | null>(null);
 	// Pending hover-out; hover persists briefly so the cursor can travel to the image
@@ -321,17 +330,15 @@ export const Navbar = () => {
 		if (isMenuOpen && hoveredHref) return;
 		imageX.stop();
 		imageY.stop();
-		imageScale.stop();
 		snapImageRef.current = true;
-	}, [hoveredHref, imageScale, imageX, imageY, isMenuOpen]);
+	}, [hoveredHref, imageX, imageY, isMenuOpen]);
 
 	useEffect(
 		() => () => {
 			imageX.stop();
 			imageY.stop();
-			imageScale.stop();
 		},
-		[imageScale, imageX, imageY],
+		[imageX, imageY],
 	);
 
 	const closeMenu = useCallback(() => {
@@ -359,7 +366,10 @@ export const Navbar = () => {
 			const rect = event.currentTarget.getBoundingClientRect();
 			const x = rect.right - navRect.left + 24;
 			const y = rect.top - navRect.top + rect.height / 2;
-			if (snapImageRef.current || prefersReducedMotion) {
+			if (
+				prefersReducedMotion ||
+				(snapImageRef.current && imageOpacity.get() < 0.01)
+			) {
 				imageX.set(x);
 				imageY.set(y);
 			} else {
@@ -372,24 +382,9 @@ export const Navbar = () => {
 				animate(imageX, x, spring);
 				animate(imageY, y, spring);
 			}
-			if (imageOpacity.get() === 0) imageScale.set(0);
-			animate(
-				imageScale,
-				1,
-				prefersReducedMotion
-					? { duration: 0 }
-					: { type: "spring", stiffness: 200, damping: 22 },
-			);
 			snapImageRef.current = false;
 		},
-		[
-			cancelHoverClear,
-			imageOpacity,
-			imageScale,
-			imageX,
-			imageY,
-			prefersReducedMotion,
-		],
+		[cancelHoverClear, imageOpacity, imageX, imageY, prefersReducedMotion],
 	);
 
 	const handleLinkClick = useCallback(
@@ -522,7 +517,6 @@ export const Navbar = () => {
 									style={{
 										left: imageX,
 										top: imageY,
-										scale: imageScale,
 										opacity: imageOpacity,
 									}}
 									transition={
@@ -547,7 +541,7 @@ export const Navbar = () => {
 											hoveredHref
 												? `pointer-events-auto ${
 														isLinkActive(currentPath, hoveredHref)
-															? "cursor-default"
+															? "cursor-pointer"
 															: "cursor-pointer"
 													}`
 												: ""
@@ -561,6 +555,7 @@ export const Navbar = () => {
 										<FluidImage
 											items={menuImageItems}
 											activeHref={displayedHref}
+											isVisible={isMenuOpen && hoveredHref !== null}
 										/>
 									</a>
 								</motion.div>
@@ -591,9 +586,9 @@ export const Navbar = () => {
 											onFocus={(event) => handleLinkHover(event, link.href)}
 											onMouseLeave={scheduleHoverClear}
 											onBlur={scheduleHoverClear}
-											className={`block text-5xl font-bold tracking-tight md:text-7xl ${
-												active ? "cursor-default" : ""
-											}`}
+											className={
+												"block text-5xl font-bold tracking-tight md:text-7xl cursor-pointer"
+											}
 										>
 											{/* Highlight keeps the text legible over the image */}
 											<span

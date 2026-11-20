@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 export type FluidImageItem = {
 	href: string;
 	src: string;
+	logos?: readonly string[];
 };
 
 type FluidImageProps = {
 	items: FluidImageItem[];
 	activeHref: string | null;
+	isVisible: boolean;
 	className?: string;
 };
 
@@ -34,6 +36,11 @@ const CROSSFADE_SECONDS = 0.65;
 const CLOTH_INSET = 0; // free margin around the sheet so flapping edges stay visible
 const MAX_DPR = 2;
 const MAX_POINTER_SPEED = 3200;
+const LOGO_BACKGROUND = "#f5f5f5";
+const LOGO_CANVAS_SIZE = 768;
+const LOGO_WIDTH = 300;
+const LOGO_GAP = 80;
+const LOGO_SPEED = 35;
 
 const VERTEX_SHADER = `#version 300 es
 in vec3 aPos;
@@ -129,9 +136,19 @@ function coverScale(meshAspect: number, imageAspect: number): [number, number] {
 export const FluidImage = ({
 	items,
 	activeHref,
+	isVisible,
 	className,
 }: FluidImageProps) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const visibleRef = useRef(isVisible);
+	visibleRef.current = isVisible;
+	const logoItem = items.find((item) => item.logos);
+	const [logos, setLogos] = useState<HTMLImageElement[]>([]);
+	const [fallbackLogo, setFallbackLogo] = useState<string | null>(null);
+	const logosRef = useRef<HTMLImageElement[]>([]);
+	logosRef.current = logos;
+	const fallbackLogoRef = useRef(fallbackLogo);
+	fallbackLogoRef.current = fallbackLogo;
 	const stateRef = useRef<SimState>({
 		current: null,
 		from: null,
@@ -141,6 +158,42 @@ export const FluidImage = ({
 		wake: 0,
 	});
 	const [supported, setSupported] = useState(true);
+
+	useEffect(() => {
+		if (!logoItem?.logos) return;
+		let disposed = false;
+		const images = logoItem.logos.map((src) => {
+			const image = new Image();
+			const loaded = new Promise<HTMLImageElement | null>((resolve) => {
+				image.onload = () => resolve(image);
+				image.onerror = () => {
+					console.error("FluidImage logo failed to load:", src);
+					resolve(null);
+				};
+			});
+			image.src = src;
+			return { image, loaded };
+		});
+		void Promise.all(images.map(({ loaded }) => loaded)).then((results) => {
+			if (disposed) return;
+			const available = results.filter(
+				(image): image is HTMLImageElement => image !== null,
+			);
+			setLogos(available);
+			setFallbackLogo(
+				available.length
+					? available[Math.floor(Math.random() * available.length)].src
+					: null,
+			);
+		});
+		return () => {
+			disposed = true;
+			for (const { image } of images) {
+				image.onload = null;
+				image.onerror = null;
+			}
+		};
+	}, [logoItem]);
 
 	useEffect(() => {
 		const state = stateRef.current;
@@ -173,9 +226,21 @@ export const FluidImage = ({
 			return;
 		}
 
-		const reducedMotion = window.matchMedia(
+		const motionPreference = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
-		).matches;
+		);
+		let reducedMotion = motionPreference.matches;
+
+		const logoCanvas = document.createElement("canvas");
+		logoCanvas.width = LOGO_CANVAS_SIZE;
+		logoCanvas.height = LOGO_CANVAS_SIZE;
+		const logoContext = logoCanvas.getContext("2d");
+		if (logoItem && !logoContext) {
+			console.error("FluidImage could not create the logo canvas.");
+			gl.getExtension("WEBGL_lose_context")?.loseContext();
+			setSupported(false);
+			return;
+		}
 
 		const vertexShader = compileShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER);
 		const fragmentShader = compileShader(
@@ -357,6 +422,13 @@ export const FluidImage = ({
 			);
 			const entry: TextureEntry = { texture, aspect: 1, loaded: false };
 			textures.set(item.href, entry);
+			if (item.logos) {
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+				continue;
+			}
 			const image = new Image();
 			image.onload = () => {
 				entry.aspect = image.naturalWidth / image.naturalHeight;
@@ -392,6 +464,11 @@ export const FluidImage = ({
 		const resizeObserver = new ResizeObserver(resize);
 		resizeObserver.observe(canvas);
 		resize();
+		const onMotionPreferenceChange = () => {
+			reducedMotion = motionPreference.matches;
+			if (reducedMotion) layout();
+		};
+		motionPreference.addEventListener("change", onMotionPreferenceChange);
 
 		// --- Pointer brush ---
 		let lastPointerTime = 0;
@@ -543,6 +620,7 @@ export const FluidImage = ({
 		// --- Render loop ---
 		let frame = 0;
 		let lastFrame = 0;
+		let logoOffset = 0;
 		const render = (now: number) => {
 			const state = stateRef.current;
 			const dt = lastFrame ? Math.min((now - lastFrame) / 1000, 1 / 30) : 0;
@@ -555,6 +633,54 @@ export const FluidImage = ({
 				}
 			} else {
 				state.progress = 1;
+			}
+			const logoEntry = logoItem && textures.get(logoItem.href);
+			if (
+				logoItem &&
+				logoEntry &&
+				logoContext &&
+				visibleRef.current &&
+				(state.to === logoItem.href ||
+					(state.progress < 1 && state.from === logoItem.href))
+			) {
+				const images = logosRef.current;
+				logoContext.fillStyle = LOGO_BACKGROUND;
+				logoContext.fillRect(0, 0, LOGO_CANVAS_SIZE, LOGO_CANVAS_SIZE);
+				if (reducedMotion) {
+					const image = images.find(
+						(item) => item.src === fallbackLogoRef.current,
+					);
+					if (image) {
+						const height = (LOGO_WIDTH * image.naturalHeight) / image.naturalWidth;
+						logoContext.drawImage(
+							image,
+							(LOGO_CANVAS_SIZE - LOGO_WIDTH) / 2,
+							(LOGO_CANVAS_SIZE - height) / 2,
+							LOGO_WIDTH,
+							height,
+						);
+					}
+				} else if (images.length > 0) {
+					const stride = LOGO_WIDTH + LOGO_GAP;
+					const cycle = images.length * stride;
+					logoOffset = (logoOffset + dt * LOGO_SPEED) % cycle;
+					for (let x = -logoOffset; x < LOGO_CANVAS_SIZE; x += cycle) {
+						for (let i = 0; i < images.length; i++) {
+							const image = images[i];
+							const height = (LOGO_WIDTH * image.naturalHeight) / image.naturalWidth;
+							logoContext.drawImage(
+								image,
+								x + i * stride,
+								(LOGO_CANVAS_SIZE - height) / 2,
+								LOGO_WIDTH,
+								height,
+							);
+						}
+					}
+				}
+				gl.bindTexture(gl.TEXTURE_2D, logoEntry.texture);
+				gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, logoCanvas);
+				logoEntry.loaded = true;
 			}
 			gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
 			gl.bufferSubData(gl.ARRAY_BUFFER, 0, pos);
@@ -598,6 +724,7 @@ export const FluidImage = ({
 		return () => {
 			cancelAnimationFrame(frame);
 			resizeObserver.disconnect();
+			motionPreference.removeEventListener("change", onMotionPreferenceChange);
 			window.removeEventListener("pointermove", onPointerMove);
 			for (const entry of textures.values()) {
 				gl.deleteTexture(entry.texture);
@@ -611,22 +738,27 @@ export const FluidImage = ({
 			gl.deleteShader(fragmentShader);
 			gl.getExtension("WEBGL_lose_context")?.loseContext();
 		};
-	}, [items]);
+	}, [items, logoItem]);
 
 	if (!supported) {
 		// Plain crossfading images when WebGL2 is unavailable
 		return (
 			<div className={`relative ${className ?? ""}`}>
 				{items.map((item) => (
-					<img
+					<div
 						key={item.href}
-						src={item.src}
-						alt=""
-						aria-hidden="true"
-						className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+						className={`absolute inset-0 transition-opacity duration-500 ${
 							item.href === activeHref ? "opacity-100" : "opacity-0"
 						}`}
-					/>
+					>
+						{item.logos ? (
+							<div className="flex h-full w-full items-center justify-center" style={{ backgroundColor: LOGO_BACKGROUND }}>
+								{fallbackLogo && <img src={fallbackLogo} alt="" aria-hidden="true" className="w-[39%]" />}
+							</div>
+						) : (
+							<img src={item.src} alt="" aria-hidden="true" className="h-full w-full object-cover" />
+						)}
+					</div>
 				))}
 			</div>
 		);
