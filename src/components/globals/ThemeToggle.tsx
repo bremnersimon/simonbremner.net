@@ -2,7 +2,7 @@ import { Button } from "@/components/shad-ui/button";
 import { Moon, Sun, SunMoon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export function ThemeToggle() {
+export function ThemeToggle({ isDisabled }: { isDisabled: boolean }) {
 	// Initialize with a default value that will be updated after mount
 	const [theme, setTheme] = useState<"light" | "dark">("light");
 	// Add a mounting state to track if we're in the browser
@@ -68,6 +68,7 @@ export function ThemeToggle() {
 			size="icon"
 			onClick={toggleTheme}
 			aria-label="Toggle theme"
+			disabled={isDisabled}
 		>
 			<Sun
 				strokeWidth={strokeWidth}

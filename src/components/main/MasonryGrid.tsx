@@ -64,9 +64,9 @@ const MasonryGrid: React.FC<MasonryGridProps> = ({
 	);
 
 	return (
-		<div className={`w-full flex gap-4 md:gap-8 ${className}`}>
+		<div className={`w-full flex gap-4 md:gap-6 ${className}`}>
 			{cols.map((col, i) => (
-				<div key={columnIds[i]} className="flex flex-col gap-4 md:gap-8 flex-1">
+				<div key={columnIds[i]} className="flex flex-col gap-4 md:gap-6 flex-1">
 					{col}
 				</div>
 			))}

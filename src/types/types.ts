@@ -7,11 +7,6 @@ export type FadingSectionProps = {
 	button: { label: string; href: string; icon?: string; external?: boolean };
 };
 
-export type AboutHeroTextProps = {
-	headline: string;
-	paragraphs: string[];
-};
-
 export type SEOProps = {
 	title: string;
 	description: string;

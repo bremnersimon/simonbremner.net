@@ -472,7 +472,7 @@ export const Navbar = () => {
 						<span className="uppercase tracking-widest">Menu</span>
 						<MenuIcon isOpen={isMenuOpen} />
 					</button>
-					<ThemeToggle />
+					<ThemeToggle isDisabled={isMenuOpen} />
 				</div>
 			</div>
 
